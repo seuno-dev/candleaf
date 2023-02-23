@@ -2,6 +2,13 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
+class Collection(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
@@ -13,6 +20,10 @@ class Product(models.Model):
     )
     inventory = models.IntegerField(blank=True, default=0)
     last_update = models.DateTimeField(auto_now=True)
+    collection = models.ForeignKey(Collection, null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.title
 
 
 class ProductImage(models.Model):
