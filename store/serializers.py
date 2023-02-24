@@ -3,6 +3,23 @@ from rest_framework import serializers
 from . import models
 
 
+class CustomerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = models.Customer
+        fields = ['user_id', 'phone']
+
+    def save(self, **kwargs):
+        return super().save(**kwargs)
+
+
+class CreateCustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Customer
+        fields = ['user', 'phone']
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProductImage
