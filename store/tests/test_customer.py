@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 from django.urls import reverse
 from model_bakery import baker
 from rest_framework import status
@@ -18,6 +19,12 @@ def customers_detail_url():
         return reverse('customers-detail', kwargs=dict(pk=pk))
 
     return _method
+
+
+@pytest.fixture()
+def customer_auth():
+    customer = baker.make(models.Customer, user__is_staff=False)
+    return get_client_from_user(customer.user), customer
 
 
 @pytest.mark.django_db
@@ -107,18 +114,60 @@ class TestListCustomer:
 
 @pytest.mark.django_db
 class TestRetrieveCustomer:
-    def test_if_its_own_returns_200(self, customers_detail_url):
-        customer = baker.make(models.Customer, user__is_staff=False)
-        customer_client = get_client_from_user(customer.user)
+    def test_if_its_own_returns_200(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
 
-        response = customer_client.get(customers_detail_url(pk=customer.id))
+        response = customer_client.get(customers_detail_url(pk=customer.user.id))
 
         assert response.status_code == status.HTTP_200_OK
 
-    def test_if_it_not_theirs_return_403(self, customers_detail_url):
-        customers = baker.make(models.Customer, _quantity=2, user__is_staff=False)
-        customer_client = get_client_from_user(customers[0].user)
+    def test_if_it_not_its_own_return_403(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+        another_customer = baker.make(models.Customer, user__is_staff=False)
 
-        response = customer_client.get(customers_detail_url(pk=customers[1].id))
+        response = customer_client.get(customers_detail_url(pk=another_customer.user.id))
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestUpdateCustomer:
+    def test_user_if_its_own_returns_200(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+        user = customer.user
+
+        params = {
+            'first_name': 'a',
+            'last_name': 'b',
+        }
+        response = customer_client.patch('/auth/users/me/', params)
+        user.refresh_from_db()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert customer.user.first_name == params['first_name']
+        assert customer.user.last_name == params['last_name']
+
+    def test_customer_if_its_own_returns_200(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+
+        params = {
+            'phone': 'fwe',
+            'address': 'dasfjkl'
+        }
+        response = customer_client.patch(customers_detail_url(pk=customer.user.id), params)
+        customer.refresh_from_db()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert customer.phone == params['phone']
+        assert customer.address == params['address']
+
+    def test_customer_if_not_its_own_returns_403(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+        another_customer = baker.make(models.Customer)
+
+        response = customer_client.put(customers_detail_url(pk=another_customer.user.id), {
+            'phone': 'fwe',
+            'address': 'dasfjkl'
+        })
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
