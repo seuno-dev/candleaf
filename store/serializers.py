@@ -5,19 +5,16 @@ from . import models
 
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
+    user_first_name = serializers.StringRelatedField(read_only=True)
+    user_last_name = serializers.StringRelatedField(read_only=True)
+    user_email = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = models.Customer
-        fields = ['user_id', 'phone']
+        fields = ['user_id', 'user_first_name', 'user_last_name', 'user_email', 'phone']
 
     def save(self, **kwargs):
         return super().save(**kwargs)
-
-
-class CreateCustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Customer
-        fields = ['user', 'phone']
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
