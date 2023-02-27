@@ -106,7 +106,7 @@ class TestListCustomer:
 
 
 @pytest.mark.django_db
-class TestReadCustomerDetail:
+class TestRetrieveCustomer:
     def test_if_its_own_returns_200(self, customers_detail_url):
         customer = baker.make(models.Customer, user__is_staff=False)
         customer_client = get_client_from_user(customer.user)
