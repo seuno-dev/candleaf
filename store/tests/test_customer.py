@@ -1,5 +1,6 @@
 import pytest
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from model_bakery import baker
 from rest_framework import status
@@ -169,5 +170,25 @@ class TestUpdateCustomer:
             'phone': 'fwe',
             'address': 'dasfjkl'
         })
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestDeleteCustomer:
+    def test_if_its_own_returns_204(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+
+        response = customer_client.delete(customers_detail_url(pk=customer.user.id))
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert models.Customer.objects.filter(id=customer.id).count() == 0
+        assert get_user_model().objects.filter(id=customer.user.id).count() == 0
+
+    def test_if_not_its_own_returns_403(self, customers_detail_url, customer_auth):
+        customer_client, customer = customer_auth
+        another_customer = baker.make(models.Customer)
+
+        response = customer_client.delete(customers_detail_url(pk=another_customer.user.id))
 
         assert response.status_code == status.HTTP_403_FORBIDDEN

@@ -37,3 +37,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def perform_destroy(self, customer):
+        super().perform_destroy(customer)
+        customer.user.delete()
