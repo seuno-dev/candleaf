@@ -46,14 +46,27 @@ class TestRegisterCustomer:
 
     def test_customer_if_correct_returns_201(self, authenticated_client):
         response_create = authenticated_client.post(reverse('customers-list'), {
-            'phone': '907890'
+            'phone': '907890',
+            'address': 'a'
         })
 
         assert response_create.status_code == status.HTTP_201_CREATED
 
-    def test_customer_if_wrong_params_returns_400(self, authenticated_client):
-        response = authenticated_client.post(reverse('customers-list'), {
-            'phone': ''
-        })
+    @pytest.mark.parametrize('params', [
+        {
+            'phone': '',
+            'address': '',
+        },
+        {
+            'phone': 'a',
+            'address': '',
+        },
+        {
+            'phone': '',
+            'address': 'a',
+        },
+    ])
+    def test_customer_if_wrong_params_returns_400(self, authenticated_client, params):
+        response = authenticated_client.post(reverse('customers-list'), params)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST

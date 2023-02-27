@@ -11,7 +11,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Customer
-        fields = ['user_id', 'user_first_name', 'user_last_name', 'user_email', 'phone']
+        fields = ['user_id', 'user_first_name', 'user_last_name', 'user_email', 'phone', 'address']
 
     def save(self, **kwargs):
         return super().save(**kwargs)
