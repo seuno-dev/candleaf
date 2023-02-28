@@ -4,8 +4,16 @@ from . import models, serializers
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    # Only admin can create or delete products
+    class Permission(permissions.IsAuthenticated):
+        def has_permission(self, request, view):
+            if view.action in ['create', 'delete'] and not request.user.is_staff:
+                return False
+            return super().has_permission(request, view)
+
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
+    permission_classes = [Permission]
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
