@@ -91,3 +91,7 @@ class TestRetrieveProduct:
         assert product.inventory == response.data['inventory']
         assert product.collection == response.data['collection']
 
+    def test_not_exists_return_404(self, api_client, products_detail_url):
+        response = api_client.get(products_detail_url(9999))
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
