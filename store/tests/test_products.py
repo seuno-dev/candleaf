@@ -11,6 +11,14 @@ def products_list_url():
     return reverse('products-list')
 
 
+@pytest.fixture
+def products_detail_url():
+    def _method(pk):
+        return reverse('products-detail', kwargs=dict(pk=pk))
+
+    return _method
+
+
 @pytest.mark.django_db
 class TestCreateProduct:
     def test_if_admin_returns_201(self, authenticate_client, products_list_url):
@@ -66,3 +74,20 @@ class TestListProduct:
             assert product.unit_price.to_eng_string() == response_product['unit_price']
             assert product.inventory == response_product['inventory']
             assert product.collection == response_product['collection']
+
+
+@pytest.mark.django_db
+class TestRetrieveProduct:
+    def test_returns_200(self, api_client, products_detail_url):
+        product = baker.make(models.Product)
+
+        response = api_client.get(products_detail_url(product.id))
+
+        assert response.status_code == status.HTTP_200_OK
+        assert product.id == response.data['id']
+        assert product.title == response.data['title']
+        assert product.description == response.data['description']
+        assert product.unit_price.to_eng_string() == response.data['unit_price']
+        assert product.inventory == response.data['inventory']
+        assert product.collection == response.data['collection']
+
