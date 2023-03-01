@@ -95,3 +95,7 @@ class TestRetrieveProduct:
         response = api_client.get(products_detail_url(9999))
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+# @pytest.mark.django_db
+# class TestUpdateProduct:
+

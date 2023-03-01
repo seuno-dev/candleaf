@@ -4,15 +4,11 @@ from . import models, serializers
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    class Permission(permissions.IsAuthenticated):
+    class Permission(permissions.IsAdminUser):
         def has_permission(self, request, view):
             # Everyone can look at the products
             if request.method in permissions.SAFE_METHODS:
                 return True
-
-            # Only admin can create or delete products
-            if view.action in ['create', 'delete'] and not request.user.is_staff:
-                return False
 
             return super().has_permission(request, view)
 
