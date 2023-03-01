@@ -11,8 +11,9 @@ def api_client():
 
 @pytest.fixture()
 def authenticate_client(api_client):
-    def _method(is_staff=False):
-        user = baker.make(settings.AUTH_USER_MODEL, is_staff=is_staff)
+    def _method(user=None, is_staff=False):
+        if not user:
+            user = baker.make(settings.AUTH_USER_MODEL, is_staff=is_staff)
         api_client.force_authenticate(user=user)
         return api_client
 

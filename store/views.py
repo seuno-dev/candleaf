@@ -1,6 +1,23 @@
 from rest_framework import viewsets, permissions
+from rest_framework.generics import get_object_or_404
 
 from . import models, serializers
+
+
+class CartItemViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.AddCartItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_cart(self):
+        customer = get_object_or_404(models.Customer, user=self.request.user)
+        cart, _ = models.Cart.objects.get_or_create(customer=customer)
+        return cart
+
+    def get_queryset(self):
+        return models.CartItem.objects.filter(cart=self.get_cart())
+
+    def perform_create(self, serializer):
+        serializer.save(cart=self.get_cart())
 
 
 class ProductViewSet(viewsets.ModelViewSet):
