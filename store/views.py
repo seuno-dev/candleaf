@@ -5,7 +5,6 @@ from . import models, serializers
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.AddCartItemSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_cart(self):
@@ -20,6 +19,12 @@ class CartItemViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context['cart'] = self.get_cart()
         return context
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action in ['create', 'partial_update']:
+            return serializers.WriteCartItemSerializer
+        else:
+            return serializers.CartItemSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):

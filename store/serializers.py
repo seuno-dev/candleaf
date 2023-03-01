@@ -1,6 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 
-from . import models
+from . import models, exceptions
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -39,17 +39,17 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Product
+        model = models.CartItem
         fields = ['id', 'product', 'quantity', 'total_price']
 
-    product = SimpleProductSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField()
+    product = SimpleProductSerializer(read_only=True)
+    total_price = serializers.SerializerMethodField(read_only=True)
 
     def get_total_price(self, cart_item: models.CartItem):
         return cart_item.quantity * cart_item.product.unit_price
 
 
-class AddCartItemSerializer(serializers.ModelSerializer):
+class WriteCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CartItem
         fields = ['id', 'product_id', 'quantity']
@@ -61,17 +61,30 @@ class AddCartItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('No product with the given id was found')
         return product_id
 
+    def update(self, cart_item, validated_data):
+        if validated_data['quantity'] > cart_item.product.inventory:
+            raise exceptions.QuantityError()
+        return super().update(cart_item, validated_data)
+
     def save(self, **kwargs):
         cart = self.context['cart']
+
+        # Update the quantity directly instead of adding the value
+        if self.instance is not None:
+            self.update(self.instance, self.validated_data)
+            return self.instance
+
         product_id = self.validated_data['product_id']
         quantity = self.validated_data['quantity']
-
         try:
             cart_item = models.CartItem.objects.get(cart=cart, product_id=product_id)
             cart_item.quantity += quantity
-            cart_item.save()
-            self.instance = cart_item
         except models.CartItem.DoesNotExist:
-            self.instance = models.CartItem.objects.create(cart=cart, **self.validated_data)
+            cart_item = models.CartItem(cart=cart, **self.validated_data)
 
+        if cart_item.quantity > cart_item.product.inventory:
+            raise exceptions.QuantityError()
+
+        cart_item.save()
+        self.instance = cart_item
         return self.instance
