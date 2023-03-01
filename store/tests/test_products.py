@@ -96,6 +96,25 @@ class TestRetrieveProduct:
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-# @pytest.mark.django_db
-# class TestUpdateProduct:
 
+@pytest.mark.django_db
+class TestUpdateProduct:
+    def test_if_admin_returns_200(self, authenticate_client, products_detail_url):
+        collection = baker.make(models.Collection)
+        product = baker.make(models.Product, collection=None)
+
+        params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0,
+                  'collection': collection.id}
+        response = authenticate_client(is_staff=True) \
+            .patch(products_detail_url(product.id), params)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_if_not_admin_returns_403(self, authenticate_client, products_detail_url):
+        product = baker.make(models.Product, collection=None)
+
+        params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0}
+        response = authenticate_client(is_staff=False) \
+            .patch(products_detail_url(product.id), params)
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
