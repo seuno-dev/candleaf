@@ -45,3 +45,24 @@ class TestCreateProduct:
         response = authenticated_client.post(products_list_url, params)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestListProduct:
+    def test_returns_200(self, api_client, products_list_url):
+        products = baker.make(models.Product, _quantity=5)
+
+        response = api_client.get(products_list_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        for i in range(len(products)):
+            product = products[i]
+            response_product = response.data[i]
+
+            assert product.id == response_product['id']
+            assert product.title == response_product['title']
+            assert product.description == response_product['description']
+            assert product.unit_price.to_eng_string() == response_product['unit_price']
+            assert product.inventory == response_product['inventory']
+            assert product.collection == response_product['collection']

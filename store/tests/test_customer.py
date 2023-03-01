@@ -6,7 +6,7 @@ from model_bakery import baker
 from rest_framework import status
 
 from store import models, serializers
-from store.tests.conftest import get_client_from_user
+from store.tests.conftest import authenticate
 
 
 @pytest.fixture()
@@ -25,7 +25,7 @@ def customers_detail_url():
 @pytest.fixture()
 def customer_auth():
     customer = baker.make(models.Customer, user__is_staff=False)
-    return get_client_from_user(customer.user), customer
+    return authenticate(customer.user), customer
 
 
 @pytest.mark.django_db
