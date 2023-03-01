@@ -118,3 +118,28 @@ class TestUpdateProduct:
             .patch(products_detail_url(product.id), params)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestDeleteProduct:
+    def test_if_admin_returns_204(self, authenticate_client, products_detail_url):
+        product = baker.make(models.Product)
+
+        response = authenticate_client(is_staff=True) \
+            .delete(products_detail_url(product.id))
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    def test_if_not_exists_returns_404(self, authenticate_client, products_detail_url):
+        response = authenticate_client(is_staff=True) \
+            .delete(products_detail_url(9999))
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_if_not_admin_returns_403(self, authenticate_client, products_detail_url):
+        product = baker.make(models.Product)
+
+        response = authenticate_client(is_staff=False) \
+            .delete(products_detail_url(product.id))
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
