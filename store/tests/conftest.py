@@ -1,5 +1,5 @@
 import pytest
-from django.conf import settings
+from django.contrib.auth import settings
 from model_bakery import baker
 from rest_framework.test import APIClient
 
@@ -9,19 +9,11 @@ def api_client():
     return APIClient()
 
 
-def authenticate(user):
-    client = APIClient()
-    client.force_authenticate(user=user)
-    return client
-
-
 @pytest.fixture()
-def authenticated_client():
-    user = baker.make(settings.AUTH_USER_MODEL, is_staff=False)
-    return authenticate(user)
+def authenticate_client(api_client):
+    def _method(is_staff=False):
+        user = baker.make(settings.AUTH_USER_MODEL, is_staff=is_staff)
+        api_client.force_authenticate(user=user)
+        return api_client
 
-
-@pytest.fixture()
-def admin_client():
-    user = baker.make(settings.AUTH_USER_MODEL, is_staff=True)
-    return authenticate(user)
+    return _method

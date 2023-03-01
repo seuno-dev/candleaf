@@ -1,12 +1,10 @@
 import pytest
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from model_bakery import baker
 from rest_framework import status
 
 from store import models, serializers
-from store.tests.conftest import authenticate
 
 
 @pytest.fixture()
@@ -23,9 +21,10 @@ def customers_detail_url():
 
 
 @pytest.fixture()
-def customer_auth():
+def customer_auth(api_client):
     customer = baker.make(models.Customer, user__is_staff=False)
-    return authenticate(customer.user), customer
+    api_client.force_authenticate(customer.user)
+    return api_client, customer
 
 
 @pytest.mark.django_db
@@ -69,8 +68,8 @@ class TestRegisterCustomer:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_customer_if_correct_returns_201(self, authenticated_client, customers_list_url):
-        response_create = authenticated_client.post(customers_list_url, {
+    def test_customer_if_correct_returns_201(self, authenticate_client, customers_list_url):
+        response_create = authenticate_client().post(customers_list_url, {
             'phone': '907890',
             'address': 'a'
         })
@@ -91,24 +90,24 @@ class TestRegisterCustomer:
             'address': 'a',
         },
     ])
-    def test_customer_if_wrong_params_returns_400(self, authenticated_client, params, customers_list_url):
-        response = authenticated_client.post(customers_list_url, params)
+    def test_customer_if_wrong_params_returns_400(self, authenticate_client, params, customers_list_url):
+        response = authenticate_client().post(customers_list_url, params)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
 @pytest.mark.django_db
 class TestListCustomer:
-    def test_if_admin_returns_200(self, admin_client, customers_list_url):
+    def test_if_admin_returns_200(self, authenticate_client, customers_list_url):
         customers = baker.make(models.Customer, _quantity=5)
 
-        response = admin_client.get(customers_list_url)
+        response = authenticate_client(is_staff=True).get(customers_list_url)
 
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == serializers.CustomerSerializer(instance=customers, many=True).data
 
-    def test_if_not_admin_returns_403(self, authenticated_client, customers_list_url):
-        response = authenticated_client.get(customers_list_url)
+    def test_if_not_admin_returns_403(self, authenticate_client, customers_list_url):
+        response = authenticate_client().get(customers_list_url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
