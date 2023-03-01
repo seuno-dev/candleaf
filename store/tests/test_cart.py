@@ -14,13 +14,18 @@ def cart_item_list_url():
 @pytest.mark.django_db
 class TestAddCartItem:
     def test_returns_201(self, authenticate_client, cart_item_list_url):
-        product = baker.make(models.Product)
+        products = baker.make(models.Product, _quantity=3)
         customer = baker.make(models.Customer)
 
-        params = {'product': product.id, 'quantity': 1}
-        response = authenticate_client(customer.user).post(cart_item_list_url, params)
+        for product in products:
+            params = {'product': product.id, 'quantity': 1}
+            response = authenticate_client(customer.user).post(cart_item_list_url, params)
 
-        assert response.status_code == status.HTTP_201_CREATED
+            assert response.status_code == status.HTTP_201_CREATED
+
+            cart = models.Cart.objects.get(customer=customer)
+            cart_item: models.CartItem = cart.cartitem_set.filter(product=product)[0]
+            assert cart_item.quantity == params['quantity']
 
     @pytest.mark.parametrize('wrong_param', [
         {'product': 9999}, {'quantity': 0}
