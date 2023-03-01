@@ -16,8 +16,10 @@ class CartItemViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return models.CartItem.objects.filter(cart=self.get_cart())
 
-    def perform_create(self, serializer):
-        serializer.save(cart=self.get_cart())
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['cart'] = self.get_cart()
+        return context
 
 
 class ProductViewSet(viewsets.ModelViewSet):

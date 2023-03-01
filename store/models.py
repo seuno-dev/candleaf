@@ -43,6 +43,11 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['cart', 'product'], name='unique_product_in_cart')
+        ]
+
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(validators=[MinValueValidator(1)])
