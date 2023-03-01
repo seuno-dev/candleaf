@@ -139,3 +139,23 @@ class TestListCartItem:
 
             assert cart_item.quantity == response_data['quantity']
             assert cart_item.quantity * cart_item.product.unit_price == response_data['total_price']
+
+
+@pytest.mark.django_db
+class TestDeleteCartItem:
+    def test_returns_204(self, authenticate_client, cart_item_detail_url):
+        cart_item = baker.make(models.CartItem)
+
+        response = authenticate_client(cart_item.cart.customer.user) \
+            .delete(cart_item_detail_url(cart_item.id))
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+        assert models.CartItem.objects.filter(id=cart_item.id).count() == 0
+
+    def test_if_not_own_cart_returns_404(self, authenticate_client, cart_item_detail_url):
+        cart_item = baker.make(models.CartItem)
+
+        response = authenticate_client().delete(cart_item_detail_url(cart_item.id))
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
