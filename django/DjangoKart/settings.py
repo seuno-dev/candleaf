@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'djoser',
     'core',
@@ -51,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
 ]
 
 ROOT_URLCONF = 'DjangoKart.urls'
@@ -146,3 +149,7 @@ DJOSER = {
 
 if DEBUG:
     SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(days=30)
+
+    CORS_ALLOWED_ORIGINS = [
+        'http://127.0.0.1:3000',
+    ]
