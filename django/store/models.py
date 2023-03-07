@@ -51,3 +51,33 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(validators=[MinValueValidator(1)])
+
+
+class Order(models.Model):
+    PAYMENT_PENDING = 'P'
+    PAYMENT_FAILED = 'F'
+    PAYMENT_COMPLETED = 'C'
+    PAYMENT_CHOICES = [
+        (PAYMENT_PENDING, 'Pending'),
+        (PAYMENT_FAILED, 'Failed'),
+        (PAYMENT_COMPLETED, 'Completed'),
+    ]
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    order_time = models.DateTimeField(auto_now=True)
+    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING)
+
+
+class OrderItem(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['order', 'product'], name='unique_product_in_order')
+        ]
+
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.IntegerField(validators=[MinValueValidator(1)])
+    unit_price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        validators=[MinValueValidator(1)]
+    )

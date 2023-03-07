@@ -1,23 +1,58 @@
-from rest_framework import viewsets, permissions
+from django.db import transaction
+
+from rest_framework import viewsets, permissions, status
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 from . import models, serializers
+
+
+def get_cart_for_user(user):
+    customer = get_object_or_404(models.Customer, user=user)
+    cart, _ = models.Cart.objects.get_or_create(customer=customer)
+    return cart
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.OrderItemSerializer
+
+    def get_queryset(self):
+        customer = get_object_or_404(models.Customer, user=self.request.user)
+        return models.Order.objects.filter(customer=customer)
+
+    def create(self, request, *args, **kwargs):
+        cart = get_cart_for_user(self.request.user)
+        cart_items = cart.cartitem_set.all()
+
+        if cart_items.count() == 0:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():
+            order = models.Order.objects.create(customer=cart.customer)
+            order_items = []
+            for cart_item in cart_items:
+                if cart_item.quantity > cart_item.product.inventory:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                order_items.append(models.OrderItem(
+                    order=order,
+                    product=cart_item.product,
+                    unit_price=cart_item.product.unit_price,
+                    quantity=cart_item.quantity
+                ))
+            models.OrderItem.objects.bulk_create(order_items, unique_fields=['order', 'product'])
+            cart.delete()
+            return Response(status=status.HTTP_201_CREATED)
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_cart(self):
-        customer = get_object_or_404(models.Customer, user=self.request.user)
-        cart, _ = models.Cart.objects.get_or_create(customer=customer)
-        return cart
-
     def get_queryset(self):
-        return models.CartItem.objects.filter(cart=self.get_cart())
+        return models.CartItem.objects.filter(cart=get_cart_for_user(self.request.user))
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['cart'] = self.get_cart()
+        context['cart'] = get_cart_for_user(self.request.user)
         return context
 
     def get_serializer_class(self, *args, **kwargs):

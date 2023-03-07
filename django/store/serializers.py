@@ -1,4 +1,4 @@
-from rest_framework import serializers, status
+from rest_framework import serializers
 
 from . import models, exceptions
 
@@ -88,3 +88,15 @@ class WriteCartItemSerializer(serializers.ModelSerializer):
         cart_item.save()
         self.instance = cart_item
         return self.instance
+
+
+class OrderItemSerializer:
+    class Meta:
+        model = models.CartItem
+        fields = ['id', 'order_id', 'product', 'quantity', 'total_price']
+
+    product = SimpleProductSerializer()
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, order_item: models.OrderItem):
+        return order_item.unit_price * order_item.quantity
