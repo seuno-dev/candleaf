@@ -14,6 +14,14 @@ def order_list_url():
     return reverse('orders-list')
 
 
+@pytest.fixture
+def order_detail_url():
+    def _method(pk):
+        return reverse('orders-detail', kwargs=dict(pk=pk))
+
+    return _method
+
+
 @pytest.mark.django_db
 class TestCreateOrder:
     def test_returns_201(self, authenticate_client, order_list_url):
@@ -114,3 +122,40 @@ class TestListOrder:
         response = api_client.get(order_list_url)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+class TestRetrieveOrder:
+    def test_returns_200(self, authenticate_client, order_detail_url):
+        customer = baker.make(models.Customer)
+        client = authenticate_client(customer.user)
+
+        order = baker.make(models.Order, customer=customer)
+        order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(3, 5))
+
+        response = client.get(order_detail_url(order.id))
+
+        assert response.status_code == status.HTTP_200_OK
+
+        response_items = response.data['items']
+        assert len(response_items) == len(order_items)
+        for i in range(len(order_items)):
+            order_item = order_items[i]
+            response_item = response_items[i]
+
+            assert response_item['product']['title'] == order_item.product.title
+            assert response_item['quantity'] == order_item.quantity
+            assert response_item['unit_price'] == order_item.unit_price.to_eng_string()
+            assert response_item['total_price'] == order_item.quantity * order_item.unit_price
+
+    def test_if_not_own_order_returns_404(self, authenticate_client, order_detail_url):
+        customer = baker.make(models.Customer)
+        client = authenticate_client(customer.user)
+
+        # Data from another customer
+        order = baker.make(models.Order, customer=baker.make(models.Customer))
+        baker.make(models.OrderItem, _quantity=5, order=order)
+
+        response = client.get(order_detail_url(order.id))
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
