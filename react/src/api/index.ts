@@ -12,6 +12,9 @@ export const login = async (username: string, password: string) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
+  if (response.status === 401) {
+    throw new Error();
+  }
   const data = await response.json();
   const refreshToken = data.refresh;
   const accessToken = data.access;
