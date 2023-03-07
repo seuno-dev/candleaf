@@ -1,3 +1,5 @@
+from itertools import cycle
+
 import pytest
 from model_bakery import baker
 from rest_framework import status
@@ -26,7 +28,7 @@ class TestCreateOrder:
 
         assert response.status_code == status.HTTP_201_CREATED
 
-        order_items = models.Order.objects.filter(customer=customer).last().orderitem_set.all()
+        order_items = models.Order.objects.filter(customer=customer).last().items.all()
         assert len(order_items) == len(cart_items)
 
         # The cart should be deleted
@@ -60,3 +62,55 @@ class TestCreateOrder:
         assert models.Cart.objects.filter(id=cart.id).count() == 1
         for cart_item in cart_items:
             assert models.CartItem.objects.filter(id=cart_item.id).count() == 1
+
+
+@pytest.mark.django_db
+class TestListOrder:
+    def test_returns_200(self, authenticate_client, order_list_url):
+        customer = baker.make(models.Customer)
+        client = authenticate_client(customer.user)
+
+        orders = baker.make(models.Order, customer=customer, _quantity=random.randint(3, 5))
+        order_items_set = []
+        for order in orders:
+            order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(1, 10))
+            order_items_set.append(order_items)
+
+        # Data from other customers
+        baker.make(models.OrderItem, _quantity=5,
+                   order=cycle(baker.make(models.Order, customer=baker.make(models.Customer), _quantity=5)))
+
+        response = client.get(order_list_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        for i in range(len(orders)):
+            order = orders[i]
+            order_items = order_items_set[i]
+            response_order = response.data[i]
+
+            assert response_order['id'] == order.id
+
+            assert len(order_items) != 0
+            for j in range(len(order_items)):
+                order_item = order_items[j]
+                response_item = response_order['items'][j]
+
+                assert response_item['product']['title'] == order_item.product.title
+                assert response_item['unit_price'] == order_item.unit_price.to_eng_string()
+                assert response_item['quantity'] == order_item.quantity
+                assert response_item['total_price'] == order_item.unit_price * order_item.quantity
+
+    def test_empty_returns_200(self, authenticate_client, order_list_url):
+        customer = baker.make(models.Customer)
+        client = authenticate_client(customer.user)
+
+        response = client.get(order_list_url)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+    def test_not_authenticated_returns_401(self, api_client, order_list_url):
+        response = api_client.get(order_list_url)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED

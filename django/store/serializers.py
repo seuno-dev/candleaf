@@ -90,13 +90,21 @@ class WriteCartItemSerializer(serializers.ModelSerializer):
         return self.instance
 
 
-class OrderItemSerializer:
+class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.CartItem
-        fields = ['id', 'order_id', 'product', 'quantity', 'total_price']
+        model = models.OrderItem
+        fields = ['id', 'order_id', 'product', 'unit_price', 'quantity', 'total_price']
 
     product = SimpleProductSerializer()
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, order_item: models.OrderItem):
         return order_item.unit_price * order_item.quantity
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Order
+        fields = ['id', 'items', 'order_time']
+
+    items = OrderItemSerializer(many=True)

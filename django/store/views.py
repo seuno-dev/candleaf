@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, mixins
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
@@ -13,8 +13,12 @@ def get_cart_for_user(user):
     return cart
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.OrderItemSerializer
+class OrderViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet):
+    serializer_class = serializers.OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         customer = get_object_or_404(models.Customer, user=self.request.user)
