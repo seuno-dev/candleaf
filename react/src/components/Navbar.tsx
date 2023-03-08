@@ -34,14 +34,19 @@ function Navbar() {
       <div className="container mx-auto flex items-center justify-between">
         <Typography
           className="hover:cursor-pointer"
-          variant="h6"
+          variant="h4"
           onClick={() => navigate("/")}
         >
           DjangoKart
         </Typography>
+        <ul>
+          <Typography as="li">
+            <a href="#">Products</a>
+          </Typography>
+        </ul>
         <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
           <MenuHandler {...triggers}>
-            <Button variant="text" color="white">
+            <Button className="focus:border-0" variant="text" color="white">
               <Typography variant="small">
                 {firstName} {lastName}
               </Typography>
