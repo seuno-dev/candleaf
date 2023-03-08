@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 
-function Home() {
+function Index() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -18,4 +18,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Index;

@@ -12,11 +12,13 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
 
+// noinspection JSUnusedGlobalSymbols
 function Navbar() {
   const { onLogout } = useAuth();
   const { firstName, lastName } = useProfile();
 
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  // noinspection JSUnusedGlobalSymbols
   const triggers = {
     onMouseEnter: () => setOpenProfileMenu(true),
     onMouseLeave: () => setOpenProfileMenu(false),
