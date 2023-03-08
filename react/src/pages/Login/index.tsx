@@ -3,7 +3,7 @@ import { Button, Input, Typography } from "@material-tailwind/react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-function Index() {
+function Login() {
   const { onLogin } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -68,4 +68,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Login;
