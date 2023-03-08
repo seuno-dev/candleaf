@@ -96,3 +96,23 @@ export const retrieveProfile = async () => {
   const response = await instance.get<User>("/auth/users/me/");
   return response.data;
 };
+
+export type ProductImageResponse = {
+  id: number;
+  image: string;
+};
+export type ProductResponse = {
+  id: number;
+  title: string;
+  description: string;
+  unit_price: number;
+  inventory: number;
+  collection: number;
+  images: ProductImageResponse[];
+};
+export type ProductListResponse = ProductResponse[];
+export const retrieveProductsList = async () => {
+  const response = await instance.get<ProductListResponse>("/store/products/");
+  console.log(response);
+  return response.data;
+};

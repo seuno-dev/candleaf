@@ -8,7 +8,7 @@ import {
 
 type ProductCardProps = {
   title: string;
-  price: string;
+  price: number;
   imageUrl: string;
 };
 
@@ -20,7 +20,7 @@ function ProductCard({ title, price, imageUrl }: ProductCardProps) {
       </CardHeader>
       <CardBody>
         <Typography variant="h6">{title}</Typography>
-        <Typography variant="h6">{price}</Typography>
+        <Typography variant="h6">${price}</Typography>
       </CardBody>
     </Card>
   );
