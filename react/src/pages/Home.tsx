@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
-import useAuth from "./useAuth";
+import useAuth from "../useAuth";
 import { useNavigate } from "react-router-dom";
+import { User, retrieveProfile } from "../services/api";
 
 function Home() {
   const { onLogout, isAuthenticated } = useAuth();
+  const [profile, setProfile] = useState<User>({
+    username: "",
+    email: "",
+    first_name: "",
+    last_name: "",
+  });
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,11 +21,19 @@ function Home() {
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
-  }, [isAuthenticated]);
+  }, []);
+
+  useEffect(() => {
+    retrieveProfile().then((profile) => {
+      setProfile(profile);
+    });
+  }, []);
 
   return (
     <div>
-      <h1>Hello world!</h1>
+      <h1>
+        Hello {profile.first_name} {profile.last_name}!
+      </h1>
       <Button className="bg-red-800" onClick={handleLogout}>
         Logout
       </Button>
