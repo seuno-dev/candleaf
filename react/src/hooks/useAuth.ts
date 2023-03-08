@@ -1,4 +1,4 @@
-import { getAuthenticationStatus, login, logout } from "./services/api";
+import { getAuthenticationStatus, login, logout } from "../services/api";
 import { useState } from "react";
 
 const useAuth = () => {

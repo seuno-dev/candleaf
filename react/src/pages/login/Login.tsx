@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
-import useAuth from "../../useAuth";
+import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -54,7 +54,9 @@ function Login() {
           </div>
           {errorMessage && (
             <div className="mt-4 h-10 w-full bg-red-50 rounded-lg flex items-center justify-center">
-              <Typography variant="paragraph" className="text-red-900">{errorMessage}</Typography>
+              <Button>
+                <Typography variant="paragraph" className="text-red-900">{errorMessage}</Typography>
+              </Button>
             </div>
           )}
           <Button className="mt-4 w-full" onClick={handleLogin}>
