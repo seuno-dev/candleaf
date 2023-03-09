@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Products from "../Products";
 
 function Home() {
   const { isAuthenticated } = useAuth();
@@ -15,9 +14,6 @@ function Home() {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="container mx-auto">
-        <Products />
-      </div>
     </div>
   );
 }

@@ -113,6 +113,12 @@ export type ProductResponse = {
 export type ProductListResponse = ProductResponse[];
 export const retrieveProductsList = async () => {
   const response = await instance.get<ProductListResponse>("/store/products/");
-  console.log(response);
+  return response.data;
+};
+
+export const retrieveProductDetail = async (id: number) => {
+  const response = await instance.get<ProductResponse>(
+    `/store/products/${id}/`
+  );
   return response.data;
 };

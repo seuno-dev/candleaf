@@ -1,5 +1,5 @@
 import React from "react";
-import useProductsList from "./hooks";
+import { useProductsList } from "./hooks";
 import ProductCard from "../../components/ProductCard";
 
 function Products() {
