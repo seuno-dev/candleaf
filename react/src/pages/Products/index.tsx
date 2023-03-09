@@ -6,14 +6,16 @@ function Products() {
   const { productList } = useProductsList();
   return (
     <div>
-      <ul>
+      <ul className="mx-auto flex flex-row flex-wrap gap-1">
         {productList.map((product) => (
           <ProductCard
             key={product.id}
             title={product.title}
             price={product.unit_price}
             imageUrl={
-              product.images.length > 0 ? product.images[0].image : "logo512.png"
+              product.images.length > 0
+                ? product.images[0].image
+                : "logo512.png"
             }
           />
         ))}

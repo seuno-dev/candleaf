@@ -15,7 +15,9 @@ function Home() {
   return (
     <div className="w-full">
       <Navbar />
-      <Products />
+      <div className="container mx-auto">
+        <Products />
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@eslint/create-config': ^0.4.2
   '@material-tailwind/react': ^1.4.2
+  '@tailwindcss/line-clamp': ^0.4.2
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^13.4.0
   '@testing-library/user-event': ^13.5.0
@@ -29,6 +30,7 @@ specifiers:
 
 dependencies:
   '@material-tailwind/react': 1.4.2_zula6vjvt3wdocc4mwcxqa6nzi
+  '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.7
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0_@testing-library+dom@9.0.0
@@ -2325,6 +2327,14 @@ packages:
       loader-utils: 2.0.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.7:
+    resolution: {integrity: sha512-HFzAQuqYCjyy/SX9sLGB1lroPzmcnWv1FHkIpmypte10hptf4oPUfucryMKovZh2u0uiS9U5Ty3GghWfEJGwVw==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.2.7_postcss@8.4.21
     dev: false
 
   /@testing-library/dom/8.20.0:
