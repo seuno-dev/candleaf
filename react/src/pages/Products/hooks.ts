@@ -16,7 +16,7 @@ export const useProductsList = () => {
   return { productList };
 };
 
-export const useProductDetail = (id: number) => {
+export const useProductDetail = (slug: string) => {
   const [product, setProduct] = useState<ProductResponse>({
     collection: 0,
     description: "",
@@ -24,11 +24,12 @@ export const useProductDetail = (id: number) => {
     images: [],
     inventory: 0,
     title: "",
+    slug: "",
     unit_price: 0,
   });
 
   useEffect(() => {
-    retrieveProductDetail(id).then((product) => setProduct(product));
+    retrieveProductDetail(slug).then((product) => setProduct(product));
   }, []);
 
   return {

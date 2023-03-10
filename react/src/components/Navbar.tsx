@@ -8,7 +8,7 @@ import {
   Navbar as BaseNavbar,
   Typography,
 } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
 
@@ -43,7 +43,7 @@ function Navbar() {
         </Typography>
         <ul>
           <Typography as="li">
-            <a href="#">Products</a>
+            <Link to="/products/">Products</Link>
           </Typography>
         </ul>
         <Menu open={openProfileMenu} handler={setOpenProfileMenu}>

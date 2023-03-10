@@ -104,6 +104,7 @@ export type ProductImageResponse = {
 export type ProductResponse = {
   id: number;
   title: string;
+  slug: string;
   description: string;
   unit_price: number;
   inventory: number;
@@ -116,9 +117,9 @@ export const retrieveProductsList = async () => {
   return response.data;
 };
 
-export const retrieveProductDetail = async (id: number) => {
+export const retrieveProductDetail = async (slug: string) => {
   const response = await instance.get<ProductResponse>(
-    `/store/products/${id}/`
+    `/store/products/${slug}/`
   );
   return response.data;
 };
