@@ -24,11 +24,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    slug = serializers.CharField(read_only=True)
     images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Product
-        fields = ['id', 'title', 'description', 'unit_price', 'inventory', 'collection', 'images']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'collection', 'images']
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):

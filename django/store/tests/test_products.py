@@ -70,6 +70,7 @@ class TestListProduct:
 
             assert product.id == response_product['id']
             assert product.title == response_product['title']
+            assert product.slug == response_product['slug']
             assert product.description == response_product['description']
             assert product.unit_price.to_eng_string() == response_product['unit_price']
             assert product.inventory == response_product['inventory']
@@ -86,6 +87,7 @@ class TestRetrieveProduct:
         assert response.status_code == status.HTTP_200_OK
         assert product.id == response.data['id']
         assert product.title == response.data['title']
+        assert product.slug == response.data['slug']
         assert product.description == response.data['description']
         assert product.unit_price.to_eng_string() == response.data['unit_price']
         assert product.inventory == response.data['inventory']
