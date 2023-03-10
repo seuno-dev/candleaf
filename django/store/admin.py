@@ -3,6 +3,14 @@ from django.utils.html import format_html
 from . import models
 
 
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['username']
+
+    def username(self, customer):
+        return customer.user.username
+
+
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title']
