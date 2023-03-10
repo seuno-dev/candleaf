@@ -78,6 +78,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
     permission_classes = [Permission]
+    lookup_field = 'slug'
 
 
 class CustomerViewSet(viewsets.ModelViewSet):

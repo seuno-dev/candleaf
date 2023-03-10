@@ -13,8 +13,8 @@ def products_list_url():
 
 @pytest.fixture
 def products_detail_url():
-    def _method(pk):
-        return reverse('products-detail', kwargs=dict(pk=pk))
+    def _method(slug):
+        return reverse('products-detail', kwargs=dict(slug=slug))
 
     return _method
 
@@ -81,7 +81,7 @@ class TestRetrieveProduct:
     def test_returns_200(self, api_client, products_detail_url):
         product = baker.make(models.Product)
 
-        response = api_client.get(products_detail_url(product.id))
+        response = api_client.get(products_detail_url(product.slug))
 
         assert response.status_code == status.HTTP_200_OK
         assert product.id == response.data['id']
@@ -106,7 +106,7 @@ class TestUpdateProduct:
         params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0,
                   'collection': collection.id}
         response = authenticate_client(is_staff=True) \
-            .patch(products_detail_url(product.id), params)
+            .patch(products_detail_url(product.slug), params)
 
         assert response.status_code == status.HTTP_200_OK
 
@@ -115,7 +115,7 @@ class TestUpdateProduct:
 
         params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0}
         response = authenticate_client(is_staff=False) \
-            .patch(products_detail_url(product.id), params)
+            .patch(products_detail_url(product.slug), params)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
@@ -126,7 +126,7 @@ class TestDeleteProduct:
         product = baker.make(models.Product)
 
         response = authenticate_client(is_staff=True) \
-            .delete(products_detail_url(product.id))
+            .delete(products_detail_url(product.slug))
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
@@ -140,6 +140,6 @@ class TestDeleteProduct:
         product = baker.make(models.Product)
 
         response = authenticate_client(is_staff=False) \
-            .delete(products_detail_url(product.id))
+            .delete(products_detail_url(product.slug))
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
