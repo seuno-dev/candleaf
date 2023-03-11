@@ -58,6 +58,7 @@ instance.interceptors.response.use(
         localStorage.setItem(ACCESS_KEY, newToken);
         refreshQueue.forEach((request) => request.resolve());
         console.log("token refreshed!");
+        isRefreshing = false;
         return instance(originalRequest);
       } else {
         return new Promise<void>((resolve, reject) => {

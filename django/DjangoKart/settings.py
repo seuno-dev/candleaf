@@ -149,7 +149,7 @@ DJOSER = {
 }
 
 if DEBUG:
-    SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(days=30)
+    SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(seconds=30)
 
     CORS_ALLOWED_ORIGINS = [
         'http://127.0.0.1:3000',

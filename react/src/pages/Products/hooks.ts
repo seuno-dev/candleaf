@@ -33,6 +33,7 @@ export const useProductDetail = (slug: string) => {
   }, []);
 
   return {
+    id: product.id,
     title: product.title,
     description: product.description,
     images: product.images,
