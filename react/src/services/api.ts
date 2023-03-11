@@ -62,12 +62,15 @@ instance.interceptors.response.use(
       } else {
         return new Promise<void>((resolve, reject) => {
           refreshQueue.push({ resolve, reject });
-        }).then(() => {
-          return instance(originalRequest);
-        });
+        })
+          .then(() => {
+            return instance(originalRequest);
+          })
+          .catch((error) => {
+            return Promise.reject(error);
+          });
       }
     }
-
     return Promise.reject(error);
   }
 );
