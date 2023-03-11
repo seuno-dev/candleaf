@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
 import { useProductDetail } from "../Products/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 
 type ProductDetailProps = {
   addToCart: (productId: number) => Promise<boolean>;
@@ -42,7 +41,6 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
 
   return (
     <div>
-      <Navbar />
       <div className="absolute w-full">
         <Alert
           className="w-80 mx-auto"

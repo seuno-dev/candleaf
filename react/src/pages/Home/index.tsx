@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 
 function Home() {
   const { isAuthenticated } = useAuth();
@@ -11,11 +10,7 @@ function Home() {
     if (!isAuthenticated) navigate("/login");
   }, []);
 
-  return (
-    <div className="w-full">
-      <Navbar />
-    </div>
-  );
+  return <div className="w-full"></div>;
 }
 
 export default Home;
