@@ -5,6 +5,13 @@ const BASE_URL = "http://127.0.0.1:8000/";
 const REFRESH_KEY = "refresh";
 const ACCESS_KEY = "access";
 
+let isRefreshing = false;
+type refreshQueueType = {
+  resolve: () => void;
+  reject: (reason?: unknown) => void;
+};
+const refreshQueue: refreshQueueType[] = [];
+
 const instance = axios.create({
   baseURL: BASE_URL,
 });
@@ -21,20 +28,23 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    return new Promise((resolve) => {
-      const originalRequest = error.config;
-      const refreshToken = localStorage.getItem(REFRESH_KEY);
-      if (
-        error.response &&
-        error.response.status === 401 &&
-        error.config &&
-        !error.config.__isRetryRequest &&
-        refreshToken
-      ) {
-        originalRequest._retry = true;
+  async (error) => {
+    const originalRequest = error.config;
+    const refreshToken = localStorage.getItem(REFRESH_KEY);
 
-        const response = fetch(`${BASE_URL}auth/jwt/refresh/`, {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.config &&
+      !error.config.__isRetryRequest &&
+      refreshToken
+    ) {
+      originalRequest._retry = true;
+      if (!isRefreshing) {
+        console.log("refreshing token!");
+        isRefreshing = true;
+
+        const response = await fetch(`${BASE_URL}auth/jwt/refresh/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -42,17 +52,23 @@ instance.interceptors.response.use(
           body: JSON.stringify({
             refresh: refreshToken,
           }),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            localStorage.setItem(ACCESS_KEY, res.access);
-
-            return axios(originalRequest);
-          });
-        resolve(response);
+        });
+        const data = await response.json();
+        const newToken = data.access;
+        localStorage.setItem(ACCESS_KEY, newToken);
+        refreshQueue.forEach((request) => request.resolve());
+        console.log("token refreshed!");
+        return instance(originalRequest);
+      } else {
+        return new Promise<void>((resolve, reject) => {
+          refreshQueue.push({ resolve, reject });
+        }).then(() => {
+          return instance(originalRequest);
+        });
       }
-      return Promise.reject(error);
-    });
+    }
+
+    return Promise.reject(error);
   }
 );
 
@@ -122,4 +138,16 @@ export const retrieveProductDetail = async (slug: string) => {
     `/store/products/${slug}/`
   );
   return response.data;
+};
+
+export const createCartItem = async (productId: number) => {
+  try {
+    const response = await instance.post("/store/cart-items/", {
+      product_id: productId,
+      quantity: 1,
+    });
+    return response.status === 201;
+  } catch (e) {
+    return false;
+  }
 };
