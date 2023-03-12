@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Button,
   Menu,
   MenuHandler,
   MenuItem,
@@ -11,6 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
+import ShoppingCart from "../assets/images/shopping-cart.svg";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
@@ -46,20 +46,26 @@ function Navbar() {
             <Link to="/products/">Products</Link>
           </Typography>
         </ul>
-        <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
-          <MenuHandler {...triggers}>
-            <Button className="focus:border-0" variant="text" color="white">
-              <Typography variant="small">
+        <div className="flex flex-row items-center">
+          <Link className="mr-5" to="/cart">
+            <img src={ShoppingCart} alt="Icon of shopping cart" />
+          </Link>
+          <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
+            <MenuHandler {...triggers}>
+              <Typography
+                className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
+                variant="small"
+              >
                 {firstName} {lastName}
               </Typography>
-            </Button>
-          </MenuHandler>
-          <MenuList {...triggers}>
-            <MenuItem onClick={handleLogout}>
-              <Typography>Logout</Typography>
-            </MenuItem>
-          </MenuList>
-        </Menu>
+            </MenuHandler>
+            <MenuList {...triggers}>
+              <MenuItem onClick={handleLogout}>
+                <Typography>Logout</Typography>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </div>
     </BaseNavbar>
   );
