@@ -79,7 +79,7 @@ instance.interceptors.response.use(
             refresh: refreshToken,
           }),
         });
-
+        console.log("Refresh status code: ", response.status);
         if (response.status === 200) {
           const data = await response.json();
           const newToken = data.access;

@@ -60,6 +60,7 @@ type SimpleProduct = {
   id: number;
   title: string;
   unit_price: number;
+  inventory: number;
 };
 export type CartItemListResponse = {
   id: number;
@@ -72,4 +73,14 @@ export const retrieveCartItemList = async () => {
     "/store/cart-items/"
   );
   return response.data;
+};
+
+export const updateCartItemQuantity = async (
+  id: number,
+  newQuantity: number
+) => {
+  const response = await instance.patch(`/store/cart-items/${id}/`, {
+    quantity: newQuantity,
+  });
+  return response.status === 200;
 };
