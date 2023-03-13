@@ -62,14 +62,14 @@ type SimpleProduct = {
   unit_price: number;
   inventory: number;
 };
-export type CartItemListResponse = {
+export type CartItemResponse = {
   id: number;
   product: SimpleProduct;
   quantity: number;
   total_price: number;
 };
 export const retrieveCartItemList = async () => {
-  const response = await instance.get<CartItemListResponse[]>(
+  const response = await instance.get<CartItemResponse[]>(
     "/store/cart-items/"
   );
   return response.data;
@@ -83,4 +83,9 @@ export const updateCartItemQuantity = async (
     quantity: newQuantity,
   });
   return response.status === 200;
+};
+
+export const deleteCartItem = async (id: number) => {
+  const response = await instance.delete(`/store/cart-items/${id}/`);
+  return response.status === 204;
 };
