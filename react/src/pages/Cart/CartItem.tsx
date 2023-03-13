@@ -41,6 +41,8 @@ function CartItem({
                   cartItemList.map((mapItem) => {
                     if (mapItem.id == item.id) {
                       mapItem.quantity -= 1;
+                      mapItem.total_price =
+                        mapItem.quantity * mapItem.product.unit_price;
                     }
                     return mapItem;
                   })
@@ -72,6 +74,8 @@ function CartItem({
                   cartItemList.map((mapItem) => {
                     if (mapItem.id == item.id) {
                       mapItem.quantity += 1;
+                      mapItem.total_price =
+                        mapItem.quantity * mapItem.product.unit_price;
                     }
                     return mapItem;
                   })

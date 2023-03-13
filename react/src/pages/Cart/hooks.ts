@@ -8,6 +8,7 @@ import {
 
 export const useCart = () => {
   const [cartItemList, setCartItemList] = useState<CartItemResponse[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const updateItemQuantity = async (id: number, newQuantity: number) => {
     return await updateCartItemQuantity(id, newQuantity);
@@ -21,5 +22,20 @@ export const useCart = () => {
     retrieveCartItemList().then((items) => setCartItemList(items));
   }, []);
 
-  return { setCartItemList, cartItemList, updateItemQuantity, deleteItem };
+  useEffect(() => {
+    setTotalPrice(
+      cartItemList.reduce(
+        (previousItem, currentItem) => previousItem + currentItem.total_price,
+        0
+      )
+    );
+  }, [cartItemList]);
+
+  return {
+    setCartItemList,
+    cartItemList,
+    updateItemQuantity,
+    deleteItem,
+    totalPrice,
+  };
 };

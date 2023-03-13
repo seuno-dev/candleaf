@@ -4,8 +4,14 @@ import { useCart } from "./hooks";
 import CartItem from "./CartItem";
 
 function Cart() {
-  const { setCartItemList, cartItemList, updateItemQuantity, deleteItem } =
-    useCart();
+  const {
+    setCartItemList,
+    cartItemList,
+    updateItemQuantity,
+    deleteItem,
+    totalPrice,
+  } = useCart();
+
   return (
     <div>
       <div className="mt-5 flex flex-row justify-center">
@@ -24,7 +30,9 @@ function Cart() {
             ))}
           </div>
         </div>
-        <div className="w-[350px]"></div>
+        <div className="w-[350px] ml-20 mt-20">
+          <Typography variant="h5">Total: ${totalPrice}</Typography>
+        </div>
       </div>
     </div>
   );
