@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from rest_framework import viewsets, permissions, status, mixins
+from rest_framework import viewsets, permissions, status, mixins, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
@@ -79,6 +79,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProductSerializer
     permission_classes = [Permission]
     lookup_field = 'slug'
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'description']
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
