@@ -31,9 +31,14 @@ export type ProductResponse = {
   collection: number;
   images: ProductImageResponse[];
 };
-export type ProductListResponse = ProductResponse[];
-export const retrieveProductsList = async () => {
-  const response = await instance.get<ProductListResponse>("/store/products/");
+export type ProductListResponse = {
+  results: ProductResponse[];
+  total_pages: number;
+};
+export const retrieveProductsList = async (page: number) => {
+  const response = await instance.get<ProductListResponse>(
+    `/store/products/?page=${page}`
+  );
   return response.data;
 };
 
@@ -69,9 +74,7 @@ export type CartItemResponse = {
   total_price: number;
 };
 export const retrieveCartItemList = async () => {
-  const response = await instance.get<CartItemResponse[]>(
-    "/store/cart-items/"
-  );
+  const response = await instance.get<CartItemResponse[]>("/store/cart-items/");
   return response.data;
 };
 

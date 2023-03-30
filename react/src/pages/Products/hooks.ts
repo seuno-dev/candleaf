@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import {
-  ProductListResponse,
   ProductResponse,
   retrieveProductDetail,
   retrieveProductsList,
 } from "../../services/api";
 
 export const useProductsList = () => {
-  const [productList, setProductList] = useState<ProductListResponse>([]);
+  const [productList, setProductList] = useState<ProductResponse[] | null>(
+    null
+  );
+  const [pageCount, setPageCount] = useState(0);
+
+  const loadProductList = (page: number) => {
+    retrieveProductsList(page).then((response) => {
+      setProductList(response.results);
+      setPageCount(response.total_pages);
+    });
+  };
 
   useEffect(() => {
-    retrieveProductsList().then((productList) => setProductList(productList));
+    loadProductList(1);
   }, []);
 
-  return { productList };
+  return { productList, pageCount, loadProductList };
 };
 
 export const useProductDetail = (slug: string) => {
