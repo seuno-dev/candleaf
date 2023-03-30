@@ -3,9 +3,9 @@ from django.db import transaction
 from rest_framework import viewsets, permissions, status, mixins, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
 
 from . import models, serializers
+from .paginations import PageNumberPagination
 
 
 def get_cart_for_user(user):
@@ -68,9 +68,6 @@ class CartItemViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    class ProductPagination(PageNumberPagination):
-        page_size = 10
-
     class Permission(permissions.IsAdminUser):
         def has_permission(self, request, view):
             # Everyone can look at the products
@@ -85,7 +82,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'description']
-    pagination_class = ProductPagination
+    pagination_class = PageNumberPagination
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
