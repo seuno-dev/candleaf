@@ -35,10 +35,13 @@ export type ProductListResponse = {
   results: ProductResponse[];
   total_pages: number;
 };
-export const retrieveProductsList = async (page: number) => {
-  const response = await instance.get<ProductListResponse>(
-    `/store/products/?page=${page}`
-  );
+export const retrieveProductsList = async (search: string, page: number) => {
+  const response = await instance.get<ProductListResponse>("/store/products/", {
+    params: {
+      page: page,
+      search: search,
+    },
+  });
   return response.data;
 };
 

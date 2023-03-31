@@ -7,10 +7,11 @@ import {
   Navbar as BaseNavbar,
   Typography,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
 import ShoppingCart from "../assets/images/shopping-cart.svg";
+import SearchBar from "./SearchBar";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
@@ -31,6 +32,16 @@ function Navbar() {
     return navigate("/login");
   };
 
+  const onProductSearch = (search: string) => {
+    return navigate({
+      pathname: "products",
+      search: createSearchParams({
+        search: search,
+        page: "1",
+      }).toString(),
+    });
+  };
+
   return (
     <BaseNavbar fullWidth={true} color="light-green" variant="filled">
       <div className="container mx-auto flex items-center justify-between">
@@ -41,11 +52,9 @@ function Navbar() {
         >
           DjangoKart
         </Typography>
-        <ul>
-          <Typography as="li">
-            <Link to="/products/">Products</Link>
-          </Typography>
-        </ul>
+        <div className="w-[800px] mx-3">
+          <SearchBar onSearchSubmit={onProductSearch} />
+        </div>
         <div className="flex flex-row items-center">
           <Link className="mr-5" to="/cart">
             <img src={ShoppingCart} alt="Icon of shopping cart" />

@@ -11,16 +11,12 @@ export const useProductsList = () => {
   );
   const [pageCount, setPageCount] = useState(0);
 
-  const loadProductList = (page: number) => {
-    retrieveProductsList(page).then((response) => {
+  const loadProductList = (search: string, page: number) => {
+    retrieveProductsList(search, page).then((response) => {
       setProductList(response.results);
       setPageCount(response.total_pages);
     });
   };
-
-  useEffect(() => {
-    loadProductList(1);
-  }, []);
 
   return { productList, pageCount, loadProductList };
 };

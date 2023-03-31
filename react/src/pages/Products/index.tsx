@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useProductsList } from "./hooks";
 import ProductCard from "../../components/ProductCard";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 
 function Products() {
+  const [searchParams] = useSearchParams();
   const { productList, pageCount, loadProductList } = useProductsList();
 
   const handlePageClick = (e: { selected: number }) => {
-    loadProductList(e.selected + 1);
+    const search = searchParams.get("search");
+    const newPage = e.selected + 1;
+
+    loadProductList(search ? search : "", e.selected + 1);
+    const url = new URL(window.location.toString());
+    url.searchParams.set("page", newPage.toString());
+    window.history.pushState(null, "", url.toString());
   };
+
+  useEffect(() => {
+    const search = searchParams.get("search");
+    loadProductList(search ? search : "", 1);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col">
