@@ -69,6 +69,7 @@ type SimpleProduct = {
   title: string;
   unit_price: number;
   inventory: number;
+  image: string;
 };
 export type CartItemResponse = {
   id: number;

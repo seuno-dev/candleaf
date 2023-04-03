@@ -33,9 +33,17 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = models.Product
-        fields = ['id', 'title', 'unit_price', 'inventory']
+        fields = ['id', 'title', 'unit_price', 'inventory', 'image']
+
+    def get_image(self, product):
+        images = product.images.all()
+        if len(images) == 0:
+            return ''
+        return images[0].image.url
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -47,7 +55,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField(read_only=True)
 
     def get_total_price(self, cart_item: models.CartItem):
-        return cart_item.quantity * cart_item.product.unit_price
+        return cart_item.get_total_price()
 
 
 class WriteCartItemSerializer(serializers.ModelSerializer):
