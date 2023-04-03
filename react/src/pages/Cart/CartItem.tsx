@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@material-tailwind/react";
+import { Card, Typography } from "@material-tailwind/react";
 import MinusIcon from "../../assets/images/minus-circle.svg";
 import MinusDisabledIcon from "../../assets/images/minus-circle-disabled.svg";
 import PlusDisabledIcon from "../../assets/images/plus-circle-disabled.svg";
@@ -23,7 +23,7 @@ function CartItem({
   deleteItem,
 }: CartItemProps) {
   return (
-    <div key={item.id} className="flex flex-col mb-5">
+    <Card className="flex flex-col mb-5 p-5">
       <Typography className="w-[550px] line-clamp-1 break-words" variant="h6">
         {item.product.title}
       </Typography>
@@ -96,7 +96,7 @@ function CartItem({
           />
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

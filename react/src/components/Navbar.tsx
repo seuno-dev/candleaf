@@ -45,13 +45,9 @@ function Navbar() {
   return (
     <BaseNavbar fullWidth={true} color="light-green" variant="filled">
       <div className="container mx-auto flex items-center justify-between">
-        <Typography
-          className="hover:cursor-pointer"
-          variant="h4"
-          onClick={() => navigate("/")}
-        >
-          DjangoKart
-        </Typography>
+        <Link to="/">
+          <Typography variant="h4">DjangoKart</Typography>
+        </Link>
         <div className="w-[800px] mx-3">
           <SearchBar onSearchSubmit={onProductSearch} />
         </div>

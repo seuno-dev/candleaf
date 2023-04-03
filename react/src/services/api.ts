@@ -95,3 +95,11 @@ export const deleteCartItem = async (id: number) => {
   const response = await instance.delete(`/store/cart-items/${id}/`);
   return response.status === 204;
 };
+
+export type SubmitOrderResponse = {
+  stripe_checkout_url: string;
+};
+export const submitOrder = async () => {
+  const response = await instance.post<SubmitOrderResponse>("/store/orders/");
+  return response.data.stripe_checkout_url;
+};

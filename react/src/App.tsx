@@ -8,6 +8,8 @@ import Cart from "./pages/Cart";
 import useCart from "./hooks/useCart";
 import Navbar from "./components/Navbar";
 import Products from "./pages/Products";
+import Success from "./pages/Checkout/Success";
+import Fail from "./pages/Checkout/Fail";
 
 function App() {
   const { addToCart } = useCart();
@@ -31,6 +33,8 @@ function App() {
             element={<ProductDetail addToCart={addToCart} />}
           ></Route>
           <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/checkout-success" element={<Success />}></Route>
+          <Route path="/checkout-fail" element={<Fail />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

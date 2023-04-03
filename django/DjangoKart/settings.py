@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
+import stripe
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,6 +136,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 SIMPLE_JWT = {
@@ -148,8 +153,12 @@ DJOSER = {
     }
 }
 
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET')
+
 if DEBUG:
-    SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(seconds=3)
+    SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(days=30)
 
     CORS_ALLOWED_ORIGINS = [
         'http://127.0.0.1:3000',

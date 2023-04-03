@@ -1,11 +1,56 @@
+import stripe
 from django.db import transaction
 
-from rest_framework import viewsets, permissions, status, mixins, filters
+from rest_framework import viewsets, permissions, status, mixins, generics, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from DjangoKart import settings
 from . import models, serializers
 from .paginations import PageNumberPagination
+
+
+class StripeWebHook(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        payload = request.body
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+            )
+
+            # Handle the event
+            if event.type == 'payment_intent.succeeded':
+                payment_intent = event.data.object
+                if not hasattr(payment_intent, 'client_reference_id'):
+                    print('Payment success without client reference:', payment_intent)
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+                order_id = payment_intent.client_reference_id
+                qs = models.Order.objects.filter(id=order_id)
+                if qs.count() == 0:
+                    print("Payment success but order doesn't exist:", payment_intent)
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                order = qs[0]
+                order.payment_status = models.Order.PAYMENT_COMPLETED
+
+            elif event.type == 'payment_method.attached':
+                payment_method = event.data.object
+                print("--------payment_method ---------->", payment_method)
+            # ... handle other event types
+            else:
+                print('Unhandled event type {}'.format(event.type))
+
+            return Response(status=status.HTTP_200_OK)
+        except ValueError as err:
+            # Invalid payload
+            raise err
+        except stripe.error.SignatureVerificationError as err:
+            # Invalid signature
+            raise err
 
 
 def get_cart_for_user(user):
@@ -35,7 +80,9 @@ class OrderViewSet(mixins.CreateModelMixin,
         with transaction.atomic():
             order = models.Order.objects.create(customer=cart.customer)
             order_items = []
+            stripe_items = []
             for cart_item in cart_items:
+                product = cart_item.product
                 if cart_item.quantity > cart_item.product.inventory:
                     return Response(status=status.HTTP_400_BAD_REQUEST)
                 order_items.append(models.OrderItem(
@@ -44,9 +91,41 @@ class OrderViewSet(mixins.CreateModelMixin,
                     unit_price=cart_item.product.unit_price,
                     quantity=cart_item.quantity
                 ))
+                stripe_items.append({
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': int(product.unit_price * 100),
+                        "product_data": {
+                            "name": product.title,
+                        },
+                    },
+                    'quantity': cart_item.quantity
+                })
+
+                # Delete the cart item
+                cart_item.delete()
+
+                # Reduce the quantity
+                product.inventory -= cart_item.quantity
+                product.save()
+
+            # Save the order items
             models.OrderItem.objects.bulk_create(order_items, unique_fields=['order', 'product'])
             cart.delete()
-            return Response(status=status.HTTP_201_CREATED)
+
+            try:
+                stripe.api_key = settings.STRIPE_SECRET_KEY
+                checkout_session = stripe.checkout.Session.create(
+                    client_reference_id=order.id,
+                    line_items=stripe_items,
+                    mode='payment',
+                    success_url='http://127.0.0.1:3000/checkout-success',
+                    cancel_url='http://127.0.0.1:3000/checkout-fail'
+                )
+                return Response(status=status.HTTP_201_CREATED, data={"stripe_checkout_url": checkout_session.url})
+            except Exception as e:
+                print(e)
+                return e
 
 
 class CartItemViewSet(viewsets.ModelViewSet):

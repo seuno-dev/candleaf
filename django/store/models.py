@@ -52,6 +52,9 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(validators=[MinValueValidator(1)])
 
+    def get_total_price(self):
+        return self.quantity * self.product.unit_price
+
 
 class Order(models.Model):
     PAYMENT_PENDING = 'P'
@@ -65,6 +68,13 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_time = models.DateTimeField(auto_now=True)
     payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING)
+
+    def get_total_price(self):
+        items = OrderItem.objects.filter(order=self)
+        total = 0
+        for item in items:
+            total += item.get_total_price()
+        return total
 
 
 class OrderItem(models.Model):
@@ -81,3 +91,6 @@ class OrderItem(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(1)]
     )
+
+    def get_total_price(self):
+        return self.quantity * self.unit_price

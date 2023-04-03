@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@material-tailwind/react";
+import { Button, Card, Typography } from "@material-tailwind/react";
 import { useCart } from "./hooks";
 import CartItem from "./CartItem";
 
@@ -10,7 +10,13 @@ function Cart() {
     updateItemQuantity,
     deleteItem,
     totalPrice,
+    createOrder,
   } = useCart();
+
+  const handleCreateOrderClick = async () => {
+    const checkoutUrl = await createOrder();
+    window.location.href = checkoutUrl;
+  };
 
   return (
     <div>
@@ -30,9 +36,18 @@ function Cart() {
             ))}
           </div>
         </div>
-        <div className="w-[350px] ml-20 mt-20">
-          <Typography variant="h5">Total: ${totalPrice}</Typography>
-        </div>
+        <Card className="w-[300px] ml-10 flex flex-col p-5">
+          <Typography variant="h4">Summary</Typography>
+          <Typography className="mt-5" variant="h5">
+            Total: ${totalPrice}
+          </Typography>
+          <Button
+            className="mt-5 bg-light-green-500 text-white rounded-lg h-12"
+            onClick={handleCreateOrderClick}
+          >
+            Create Order
+          </Button>
+        </Card>
       </div>
     </div>
   );

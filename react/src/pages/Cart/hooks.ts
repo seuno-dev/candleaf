@@ -4,6 +4,7 @@ import {
   deleteCartItem,
   retrieveCartItemList,
   updateCartItemQuantity,
+  submitOrder,
 } from "../../services/api";
 
 export const useCart = () => {
@@ -16,6 +17,10 @@ export const useCart = () => {
 
   const deleteItem = async (id: number) => {
     return await deleteCartItem(id);
+  };
+
+  const createOrder = async () => {
+    return await submitOrder();
   };
 
   useEffect(() => {
@@ -37,5 +42,6 @@ export const useCart = () => {
     updateItemQuantity,
     deleteItem,
     totalPrice,
+    createOrder,
   };
 };
