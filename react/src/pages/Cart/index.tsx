@@ -36,7 +36,7 @@ function Cart() {
             ))}
           </div>
         </div>
-        <Card className="w-[300px] ml-10 flex flex-col p-5">
+        <Card className="w-[300px] h-[200px] ml-10 flex flex-col justify-between p-5">
           <Typography variant="h4">Summary</Typography>
           <Typography className="mt-5" variant="h5">
             Total: ${totalPrice}
