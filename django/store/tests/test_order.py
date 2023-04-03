@@ -54,6 +54,10 @@ class TestCreateOrder:
             assert order_item.unit_price == cart_item.product.unit_price
             assert order_item.quantity == cart_item.quantity
 
+            # The product inventory count should decrease
+            product = models.Product.objects.get(id=cart_item.product.id)
+            assert product.inventory == cart_item.product.inventory - cart_item.quantity
+
     def test_if_inventory_not_enough_returns_400(self, authenticate_client, order_list_url):
         customer = baker.make(models.Customer)
         client = authenticate_client(customer.user)
