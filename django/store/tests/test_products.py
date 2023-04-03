@@ -64,9 +64,10 @@ class TestListProduct:
 
         assert response.status_code == status.HTTP_200_OK
 
+        results = response.data['results']
         for i in range(len(products)):
             product = products[i]
-            response_product = response.data[i]
+            response_product = results[i]
 
             assert product.id == response_product['id']
             assert product.title == response_product['title']
