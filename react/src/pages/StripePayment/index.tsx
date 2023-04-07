@@ -25,13 +25,13 @@ export default function StripePayment() {
   }, []);
 
   return (
-    <>
+    <div className="container mx-auto mt-5">
       {options && options.clientSecret && (
         <Elements stripe={stripeTestPromise} options={options}>
           <PaymentElement />
           <PaymentForm clientSecret={options.clientSecret} />
         </Elements>
       )}
-    </>
+    </div>
   );
 }

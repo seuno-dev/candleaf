@@ -40,8 +40,8 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
   };
 
   return (
-    <div>
-      <div className="absolute w-full">
+    <div className="container mx-auto">
+      <div className="absolute">
         <Alert
           className="w-80 mx-auto"
           show={showCartSuccessAlert}
@@ -59,7 +59,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
           Failed adding to cart.
         </Alert>
       </div>
-      <div className="mt-5 mx-auto flex flex-row justify-center">
+      <div className="mt-5 flex flex-row justify-center">
         <div className="w-[350px] h-full">
           <img src={mainImage} alt={`Image of product ${title}`} />
         </div>

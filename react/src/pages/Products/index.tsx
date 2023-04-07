@@ -24,7 +24,7 @@ function Products() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col">
+    <div className="container mx-auto mt-5 flex flex-col">
       <ul className="mx-auto flex flex-row flex-wrap gap-1">
         {productList?.map((product) => (
           <Link key={product.id} to={`/products/${product.slug}`}>
@@ -40,7 +40,7 @@ function Products() {
           </Link>
         ))}
       </ul>
-      <div className="flex flex-row justify-center">
+      <div className="mt-5 flex flex-row justify-center">
         <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
       </div>
     </div>
