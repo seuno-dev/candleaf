@@ -98,9 +98,29 @@ export const deleteCartItem = async (id: number) => {
 };
 
 export type SubmitOrderResponse = {
-  stripe_checkout_url: string;
+  order_id: string;
 };
 export const submitOrder = async () => {
   const response = await instance.post<SubmitOrderResponse>("/store/orders/");
-  return response.data.stripe_checkout_url;
+  return response.data.order_id;
+};
+
+export type createPaymentResponse = {
+  client_secret: string;
+};
+export const createPayment = async (orderId: string) => {
+  const response = await instance.post<createPaymentResponse>(
+    "/store/orders/create_payment",
+    {
+      order_id: orderId,
+    }
+  );
+  return response.data.client_secret;
+};
+
+export const submitPayment = async (paymentMethodId: string) => {
+  const response = await instance.post("/store/payments/", {
+    payment_method_id: paymentMethodId,
+  });
+  return response.status === 200;
 };

@@ -1,10 +1,10 @@
+import random
 from itertools import cycle
 
 import pytest
 from model_bakery import baker
 from rest_framework import status
 from rest_framework.reverse import reverse
-import random
 
 from store import models
 

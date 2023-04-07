@@ -1,6 +1,11 @@
-from django.conf import settings
+import stripe
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.core.cache import cache
+
+from DjangoKart import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class Customer(models.Model):
@@ -57,24 +62,73 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    PAYMENT_PENDING = 'P'
+    PAYMENT_UNINITIATED = 'U'
+    PAYMENT_CREATING = 'R'
+    PAYMENT_WAITING = 'W'
     PAYMENT_FAILED = 'F'
     PAYMENT_COMPLETED = 'C'
     PAYMENT_CHOICES = [
-        (PAYMENT_PENDING, 'Pending'),
+        (PAYMENT_UNINITIATED, 'Uninitiated'),
+        (PAYMENT_CREATING, 'Creating'),
+        (PAYMENT_WAITING, 'Waiting'),
         (PAYMENT_FAILED, 'Failed'),
         (PAYMENT_COMPLETED, 'Completed'),
     ]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_time = models.DateTimeField(auto_now=True)
-    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING)
+    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_UNINITIATED)
+    payment_intent_id = models.CharField(max_length=50, blank=True, null=True)
 
-    def get_total_price(self):
+    @property
+    def total_price(self):
         items = OrderItem.objects.filter(order=self)
         total = 0
         for item in items:
-            total += item.get_total_price()
+            total += item.total_price
         return total
+
+    @property
+    def is_creating_payment(self):
+        return self.payment_status == self.PAYMENT_CREATING
+
+    @property
+    def is_waiting_payment(self):
+        return self.payment_status == self.PAYMENT_WAITING
+
+    @property
+    def is_uninitiated_payment(self):
+        return self.payment_status == self.PAYMENT_UNINITIATED
+
+    @property
+    def stripe_client_secret(self):
+        if not self.is_waiting_payment:
+            return None
+        intent = stripe.PaymentIntent.retrieve(self.payment_intent_id)
+        return intent.client_secret
+
+    def create_payment(self):
+        # Update payment status to creating
+        self.payment_status = self.PAYMENT_CREATING
+        self.save()
+
+        # Creating the Stripe PaymentIntent
+        intent = stripe.PaymentIntent.create(
+            currency='usd',
+            amount=int(self.total_price * 100),
+            setup_future_usage='off_session',
+            metadata={'order_id': self.id}
+        )
+        self.payment_intent_id = intent.id
+
+        # Update payment status to waiting
+        self.payment_status = self.PAYMENT_WAITING
+        self.save()
+
+        return intent.client_secret
+
+    def complete_payment(self):
+        self.payment_status = self.PAYMENT_COMPLETED
+        self.save()
 
 
 class OrderItem(models.Model):
@@ -92,5 +146,6 @@ class OrderItem(models.Model):
         validators=[MinValueValidator(1)]
     )
 
-    def get_total_price(self):
+    @property
+    def total_price(self):
         return self.quantity * self.unit_price

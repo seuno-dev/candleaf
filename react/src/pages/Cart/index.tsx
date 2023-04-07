@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useCart } from "./hooks";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const {
@@ -12,9 +13,11 @@ function Cart() {
     totalPrice,
     createOrder,
   } = useCart();
+  const navigate = useNavigate();
 
   const handleCreateOrderClick = async () => {
-    window.location.href = await createOrder();
+    const orderId = await createOrder();
+    navigate("/order/payment/", { state: { orderId: orderId } });
   };
 
   return (

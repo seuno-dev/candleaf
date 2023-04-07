@@ -3,6 +3,8 @@ lockfileVersion: 5.4
 specifiers:
   '@eslint/create-config': ^0.4.2
   '@material-tailwind/react': ^1.4.2
+  '@stripe/react-stripe-js': ^2.1.0
+  '@stripe/stripe-js': ^1.52.0
   '@tailwindcss/line-clamp': ^0.4.2
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^13.4.0
@@ -30,6 +32,8 @@ specifiers:
 
 dependencies:
   '@material-tailwind/react': 1.4.2_zula6vjvt3wdocc4mwcxqa6nzi
+  '@stripe/react-stripe-js': 2.1.0_wfk2ilwjwqlluiweqjchts7jtq
+  '@stripe/stripe-js': 1.52.0
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.7
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
@@ -2209,6 +2213,23 @@ packages:
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
     dependencies:
       '@sinonjs/commons': 1.8.6
+    dev: false
+
+  /@stripe/react-stripe-js/2.1.0_wfk2ilwjwqlluiweqjchts7jtq:
+    resolution: {integrity: sha512-Zb6Ycrj5QuhYkvtlvvLzo+cysUyA6wkx3zWHQ7uVnHRYRM/n1jtQD6VGBrdmptC8e8PJN6L091gBCyB5P0FqmA==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 1.52.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@stripe/stripe-js/1.52.0:
+    resolution: {integrity: sha512-Ja2VlaTf3kM5tN4Y0sC8T3ibZAnfGUU/QzMAlk/G+Adz2fF1ycTabtSkdSuVP4/adXox8NkPPV4Xndx/EP4fMg==}
     dev: false
 
   /@surma/rollup-plugin-off-main-thread/2.2.3:
