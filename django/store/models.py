@@ -63,21 +63,17 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    PAYMENT_UNINITIATED = 'U'
-    PAYMENT_CREATING = 'R'
-    PAYMENT_WAITING = 'W'
+    PAYMENT_PENDING = 'P'
     PAYMENT_FAILED = 'F'
     PAYMENT_COMPLETED = 'C'
     PAYMENT_CHOICES = [
-        (PAYMENT_UNINITIATED, 'Uninitiated'),
-        (PAYMENT_CREATING, 'Creating'),
-        (PAYMENT_WAITING, 'Waiting'),
+        (PAYMENT_PENDING, 'Pending'),
         (PAYMENT_FAILED, 'Failed'),
         (PAYMENT_COMPLETED, 'Completed'),
     ]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_time = models.DateTimeField(auto_now=True)
-    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_UNINITIATED)
+    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING)
     payment_intent_id = models.CharField(max_length=50, blank=True, null=True)
 
     @property
@@ -89,43 +85,46 @@ class Order(models.Model):
         return total
 
     @property
+    def is_payment_created(self):
+        return self.payment_intent_id is not None
+
+    @property
     def is_creating_payment(self):
-        return self.payment_status == self.PAYMENT_CREATING
+        return cache.get(self.get_lock_key())
 
     @property
-    def is_waiting_payment(self):
-        return self.payment_status == self.PAYMENT_WAITING
-
-    @property
-    def is_uninitiated_payment(self):
-        return self.payment_status == self.PAYMENT_UNINITIATED
+    def is_pending(self):
+        return self.payment_status == self.PAYMENT_PENDING
 
     @property
     def stripe_client_secret(self):
-        if not self.is_waiting_payment:
+        if not self.is_payment_created:
             return None
         intent = stripe.PaymentIntent.retrieve(self.payment_intent_id)
         return intent.client_secret
 
+    def get_lock_key(self):
+        return f"payment_lock_{self.id}"
+
     def create_payment(self):
-        # Update payment status to creating
-        self.payment_status = self.PAYMENT_CREATING
-        self.save()
+        # Lock this order from another payment creation
+        lock_key = self.get_lock_key()
+        cache.set(lock_key, True, timeout=30)
 
-        # Creating the Stripe PaymentIntent
-        intent = stripe.PaymentIntent.create(
-            currency='usd',
-            amount=int(self.total_price * 100),
-            setup_future_usage='off_session',
-            metadata={'order_id': self.id}
-        )
-        self.payment_intent_id = intent.id
-
-        # Update payment status to waiting
-        self.payment_status = self.PAYMENT_WAITING
-        self.save()
-
-        return intent.client_secret
+        try:
+            # Creating the Stripe PaymentIntent
+            intent = stripe.PaymentIntent.create(
+                currency='usd',
+                amount=int(self.total_price * 100),
+                setup_future_usage='off_session',
+                metadata={'order_id': self.id}
+            )
+            self.payment_intent_id = intent.id
+            self.save()
+            return intent.client_secret
+        finally:
+            # Release lock
+            cache.delete(lock_key)
 
     def complete_payment(self):
         self.payment_status = self.PAYMENT_COMPLETED

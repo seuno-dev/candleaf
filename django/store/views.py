@@ -20,21 +20,16 @@ class CreatePayment(generics.GenericAPIView):
         order = get_object_or_404(models.Order.objects.all(),
                                   id=order_id,
                                   customer=customer)
-        # Lock this function call for this order
-        lock_key = f"payment_lock_{order.id}"
-        if cache.get(lock_key) or order.is_creating_payment:
+
+        if order.is_creating_payment:
             return Response(data={'error': 'Payment creation is already in progress.'}, status=status.HTTP_409_CONFLICT)
 
-        if order.is_uninitiated_payment:
-            cache.set(lock_key, True, timeout=30)
-            try:
-                client_secret = order.create_payment()
-                return Response(data={'client_secret': client_secret}, status=status.HTTP_200_OK)
-            finally:
-                cache.delete(lock_key)
-
-        if order.is_waiting_payment:
+        if order.is_payment_created:
             return Response(data={'client_secret': order.stripe_client_secret}, status=status.HTTP_200_OK)
+
+        if order.is_pending:
+            client_secret = order.create_payment()
+            return Response(data={'client_secret': client_secret}, status=status.HTTP_201_CREATED)
 
         return Response(data={'error': 'Request for this order is invalid.'},
                         status=status.HTTP_409_CONFLICT)

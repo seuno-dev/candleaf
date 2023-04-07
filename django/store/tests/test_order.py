@@ -37,7 +37,7 @@ class TestCreateOrder:
         assert response.status_code == status.HTTP_201_CREATED
 
         order = models.Order.objects.filter(customer=customer).last()
-        assert order.is_uninitiated_payment
+        assert order.is_pending
 
         order_items = order.items.all()
         assert len(order_items) == len(cart_items)
