@@ -5,7 +5,6 @@ from . import views
 
 urlpatterns = [
     path('orders/stripe-webhook/', views.StripeWebHook.as_view(), name='stripe-webhook'),
-    path('orders/payment/', views.CreatePayment.as_view(), name='payment'),
     path('orders/create_payment', views.CreatePayment.as_view(), name='payment-create'),
 ]
 
