@@ -57,7 +57,8 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(validators=[MinValueValidator(1)])
 
-    def get_total_price(self):
+    @property
+    def total_price(self):
         return self.quantity * self.product.unit_price
 
 

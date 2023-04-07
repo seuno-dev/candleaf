@@ -36,7 +36,10 @@ class TestCreateOrder:
 
         assert response.status_code == status.HTTP_201_CREATED
 
-        order_items = models.Order.objects.filter(customer=customer).last().items.all()
+        order = models.Order.objects.filter(customer=customer).last()
+        assert order.is_uninitiated_payment
+
+        order_items = order.items.all()
         assert len(order_items) == len(cart_items)
 
         # The cart should be deleted
@@ -44,7 +47,7 @@ class TestCreateOrder:
 
         for i in range(len(order_items)):
             cart_item = cart_items[i]
-            order_item = order_items[i]
+            order_item: models.OrderItem = order_items[i]
 
             # The cart item should be deleted
             assert models.CartItem.objects.filter(id=cart_item.id).count() == 0
@@ -53,6 +56,7 @@ class TestCreateOrder:
             assert order_item.product == cart_item.product
             assert order_item.unit_price == cart_item.product.unit_price
             assert order_item.quantity == cart_item.quantity
+            assert order_item.total_price == cart_item.total_price
 
             # The product inventory count should decrease
             product = models.Product.objects.get(id=cart_item.product.id)
