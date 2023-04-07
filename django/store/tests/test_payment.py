@@ -16,6 +16,11 @@ def create_payment_url():
 
 
 @pytest.fixture
+def stripe_webhook_url():
+    return reverse('stripe-webhook')
+
+
+@pytest.fixture
 def uninitialized_order():
     customer = baker.make(models.Customer)
     order = baker.make(models.Order, customer=customer)
@@ -24,16 +29,35 @@ def uninitialized_order():
     return order
 
 
+@pytest.fixture
+def payment_patch():
+    create_payment_patch = mock.patch('stripe.PaymentIntent.create')
+    retrieve_payment_patch = mock.patch('stripe.PaymentIntent.retrieve')
+
+    mock_intent = mock.Mock(
+        id='pi_test',
+        client_secret='cs_test'
+    )
+
+    mock_create = create_payment_patch.start()
+    mock_create.return_value = mock_intent
+
+    mock_retrieve = retrieve_payment_patch.start()
+    mock_retrieve.return_value = mock_intent
+
+    return mock_intent
+
+
 @pytest.mark.django_db
 class TestCreatePayment:
-    def test_uninitiated_returns_201(self, authenticate_client, create_payment_url, uninitialized_order):
+    def test_uninitiated_returns_201(self, authenticate_client, create_payment_url, uninitialized_order, payment_patch):
         client = authenticate_client(user=uninitialized_order.customer.user)
 
         response = client.post(create_payment_url, {'order_id': uninitialized_order.id})
 
         assert response.status_code == status.HTTP_201_CREATED
 
-    def test_waiting_returns_200(self, authenticate_client, create_payment_url, uninitialized_order):
+    def test_waiting_returns_200(self, authenticate_client, create_payment_url, uninitialized_order, payment_patch):
         client = authenticate_client(user=uninitialized_order.customer.user)
 
         # Initiate the payment first so the status change
@@ -57,7 +81,8 @@ class TestCreatePayment:
 
 @pytest.mark.django_db
 class TestStripeWebhook:
-    def test_stripe_webhook(self, authenticate_client, create_payment_url, api_client, uninitialized_order):
+    def test_stripe_webhook(self, authenticate_client, create_payment_url, api_client, stripe_webhook_url,
+                            uninitialized_order, payment_patch):
         client = authenticate_client(user=uninitialized_order.customer.user)
 
         # Send payment creation request so payment intent is created
@@ -81,7 +106,6 @@ class TestStripeWebhook:
             )
             mock_construct_event.return_value = mock_event
 
-            url = reverse('stripe-webhook')
-            response = api_client.post(url, data={'payload': payload}, HTTP_STRIPE_SIGNATURE=sig_header)
+            response = api_client.post(stripe_webhook_url, data={'payload': payload}, HTTP_STRIPE_SIGNATURE=sig_header)
 
             assert response.status_code == 200
