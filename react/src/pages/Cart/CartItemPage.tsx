@@ -5,17 +5,18 @@ import MinusDisabledIcon from "../../assets/images/minus-circle-disabled.svg";
 import PlusDisabledIcon from "../../assets/images/plus-circle-disabled.svg";
 import PlusIcon from "../../assets/images/plus-circle.svg";
 import DeleteIcon from "../../assets/images/delete.svg";
-import { CartItemResponse } from "../../services/api";
+import { CartItem } from "../../types/store";
+import { toCurrencyString } from "../../utils/currency";
 
 type CartItemProps = {
-  item: CartItemResponse;
+  item: CartItem;
   updateItemQuantity: (id: number, newQuantity: number) => Promise<boolean>;
-  setCartItemList: React.Dispatch<React.SetStateAction<CartItemResponse[]>>;
-  cartItemList: CartItemResponse[];
+  setCartItemList: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  cartItemList: CartItem[];
   deleteItem: (id: number) => Promise<boolean>;
 };
 
-function CartItem({
+function CartItemPage({
   item,
   updateItemQuantity,
   setCartItemList,
@@ -25,7 +26,9 @@ function CartItem({
   return (
     <Card className="flex flex-row mb-5 p-5">
       <img
-        src={item.product.image.image == "" ? "logo512.png" : item.product.image.image}
+        src={
+          item.product.image.url == "" ? "logo512.png" : item.product.image.url
+        }
         className="w-28 rounded-lg"
         alt={`Image of ${item.product.title}`}
       />
@@ -34,7 +37,7 @@ function CartItem({
           {item.product.title}
         </Typography>
         <Typography variant="paragraph">
-          ${item.product.unit_price}
+          {toCurrencyString(item.product.unitPrice)}
         </Typography>
         <div className="w-full flex flex-row justify-end">
           <div className="w-32 flex flex-row justify-between">
@@ -49,8 +52,8 @@ function CartItem({
                     cartItemList.map((mapItem) => {
                       if (mapItem.id == item.id) {
                         mapItem.quantity -= 1;
-                        mapItem.total_price =
-                          mapItem.quantity * mapItem.product.unit_price;
+                        mapItem.totalPrice =
+                          mapItem.quantity * mapItem.product.unitPrice;
                       }
                       return mapItem;
                     })
@@ -82,8 +85,8 @@ function CartItem({
                     cartItemList.map((mapItem) => {
                       if (mapItem.id == item.id) {
                         mapItem.quantity += 1;
-                        mapItem.total_price =
-                          mapItem.quantity * mapItem.product.unit_price;
+                        mapItem.totalPrice =
+                          mapItem.quantity * mapItem.product.unitPrice;
                       }
                       return mapItem;
                     })
@@ -109,4 +112,4 @@ function CartItem({
   );
 }
 
-export default CartItem;
+export default CartItemPage;

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import {
-  CartItemResponse,
   deleteCartItem,
   retrieveCartItemList,
-  updateCartItemQuantity,
   submitOrder,
-} from "../../services/api";
+  updateCartItemQuantity,
+} from "../../api/api";
+import { CartItem } from "../../types/store";
 
 export const useCart = () => {
-  const [cartItemList, setCartItemList] = useState<CartItemResponse[]>([]);
+  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const updateItemQuantity = async (id: number, newQuantity: number) => {
@@ -30,7 +30,7 @@ export const useCart = () => {
   useEffect(() => {
     setTotalPrice(
       cartItemList.reduce(
-        (previousItem, currentItem) => previousItem + currentItem.total_price,
+        (previousItem, currentItem) => previousItem + currentItem.totalPrice,
         0
       )
     );

@@ -5,11 +5,10 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { toCurrencyString } from "../utils/currency";
 
 type ProductCardProps = {
   title: string;
-  price: number;
+  price: string;
   imageUrl: string;
 };
 
@@ -23,7 +22,7 @@ function ProductCard({ title, price, imageUrl }: ProductCardProps) {
         <Typography className="line-clamp-2 break-words" variant="h6">
           {title}
         </Typography>
-        <Typography variant="h6">{toCurrencyString(price)}</Typography>
+        <Typography variant="h6">{price}</Typography>
       </CardBody>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { createPayment, submitPayment } from "../../services/api";
+import { createPayment, submitPayment } from "../../api/api";
 
 export const usePayment = () => {
   const doPayment = async (paymentMethodId: string) => {

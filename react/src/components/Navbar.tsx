@@ -16,7 +16,7 @@ import SearchBar from "./SearchBar";
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
   const { onLogout } = useAuth();
-  const { firstName, lastName } = useProfile();
+  const { user } = useProfile();
 
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
   // noinspection JSUnusedGlobalSymbols
@@ -65,7 +65,7 @@ function Navbar() {
                 className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
                 variant="small"
               >
-                {firstName} {lastName}
+                {user.firstName} {user.lastName}
               </Typography>
             </MenuHandler>
             <MenuList {...triggers}>

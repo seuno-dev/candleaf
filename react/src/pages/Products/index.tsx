@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useProductsList } from "./hooks";
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "./ProductCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import { toCurrencyString } from "../../utils/currency";
 
 function Products() {
   const [searchParams] = useSearchParams();
@@ -30,10 +31,10 @@ function Products() {
           <Link key={product.id} to={`/products/${product.slug}`}>
             <ProductCard
               title={product.title}
-              price={product.unit_price}
+              price={toCurrencyString(product.unitPrice)}
               imageUrl={
                 product.images.length > 0
-                  ? product.images[0].image
+                  ? product.images[0].url
                   : "logo512.png"
               }
             />

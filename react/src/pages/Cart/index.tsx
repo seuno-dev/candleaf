@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useCart } from "./hooks";
-import CartItem from "./CartItem";
+import CartItemCard from "./CartItemPage";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
@@ -26,7 +26,7 @@ function Cart() {
         <Typography variant="h4">Cart</Typography>
         <div className="mt-10 flex flex-col">
           {cartItemList.map((item) => (
-            <CartItem
+            <CartItemCard
               key={item.id}
               item={item}
               updateItemQuantity={updateItemQuantity}

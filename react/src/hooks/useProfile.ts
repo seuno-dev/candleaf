@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { User, retrieveProfile } from "../services/api";
+import { retrieveProfile } from "../api/api";
 import useAuth from "./useAuth";
+import { User } from "../types/store";
 
 const useProfile = () => {
   const { isAuthenticated } = useAuth();
   const [user, setUser] = useState<User>({
     username: "",
     email: "",
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
   });
 
   useEffect(() => {
@@ -17,12 +18,7 @@ const useProfile = () => {
     });
   }, [isAuthenticated]);
 
-  return {
-    username: user.username,
-    email: user.email,
-    firstName: user.first_name,
-    lastName: user.last_name,
-  };
+  return { user };
 };
 
 export default useProfile;

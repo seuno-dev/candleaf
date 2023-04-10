@@ -1,4 +1,4 @@
-import { createCartItem } from "../services/api";
+import { createCartItem } from "../api/api";
 
 const useCart = () => {
   const addToCart = async (productId: number) => {

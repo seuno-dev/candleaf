@@ -6,12 +6,12 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { OrderResponse } from "../../services/api";
 import { toCurrencyString } from "../../utils/currency";
+import { Order } from "../../types/store";
 
 type OrderItemProps = {
-  order: OrderResponse;
-  handleClickDetail: (order: OrderResponse) => void;
+  order: Order;
+  handleClickDetail: (order: Order) => void;
 };
 
 function OrderCard({ order, handleClickDetail }: OrderItemProps) {
@@ -21,18 +21,18 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
   return (
     <Card className="border-[0.5px] border-gray-200" shadow={false}>
       <CardHeader className="mx-6" floated={false} shadow={false}>
-        {order.order_time.split("T")[0]}
+        {order.orderTime.split("T")[0]}
       </CardHeader>
       <CardBody className="flex flex-row">
         <img
-          src={firstItem.product.image.image}
+          src={firstItem.product.image.url}
           alt={`Image of ${firstItem.product.title}`}
           className="w-20 h-20 rounded-lg"
         />
         <div className="flex flex-col ml-4 w-[950px]">
           <Typography variant="h6">{firstItem.product.title}</Typography>
           <Typography variant="paragraph">
-            {firstItem.quantity} x {toCurrencyString(firstItem.unit_price)}
+            {firstItem.quantity} x {toCurrencyString(firstItem.unitPrice)}
           </Typography>
           {items.length > 1 && (
             <Typography variant="paragraph" className="mt-2">
@@ -43,7 +43,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
         <div className="flex flex-col">
           <Typography variant="paragraph">Total price</Typography>
           <Typography variant="h6">
-            {toCurrencyString(order.total_price)}
+            {toCurrencyString(order.totalPrice)}
           </Typography>
           <Button
             className="mt-5"

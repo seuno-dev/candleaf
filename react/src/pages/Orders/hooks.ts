@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { OrderResponse, retrieveOrderList } from "../../services/api";
+import { retrieveOrderList } from "../../api/api";
+import { Order } from "../../types/store";
 
 export const useOrders = () => {
-  const [orders, setOrders] = useState<OrderResponse[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    retrieveOrderList().then((orders) => {
-      setOrders(orders);
+    retrieveOrderList().then((orderList) => {
+      setOrders(orderList.data);
+      setTotalPages(orderList.totalPages);
     });
   }, []);
 
-  return { orders };
+  return { orders, totalPages };
 };

@@ -19,8 +19,9 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
     return <></>;
   }
 
-  const { id, title, description, price, images } = useProductDetail(slug);
-  const mainImage = images.length > 0 ? images[0].image : "logo512.png";
+  const { product } = useProductDetail(slug);
+  const mainImage =
+    product.images.length > 0 ? product.images[0].url : "logo512.png";
 
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
@@ -31,7 +32,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
   };
 
   const onAddToCart = () => {
-    addToCart(id).then((isSuccess) => {
+    addToCart(product.id).then((isSuccess) => {
       if (isSuccess) {
         showAlertTemporarily(setShowCartSuccessAlert);
       } else {
@@ -62,17 +63,17 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
       </div>
       <div className="mt-5 flex flex-row justify-center">
         <div className="w-[350px] h-full">
-          <img src={mainImage} alt={`Image of product ${title}`} />
+          <img src={mainImage} alt={`Image of product ${product.title}`} />
         </div>
         <div className="w-[480px] ml-4 flex flex-col">
           <Typography variant="h4" className="break-words">
-            {title}
+            {product.title}
           </Typography>
           <Typography variant="h2" className="mt-6">
-            {toCurrencyString(price)}
+            {toCurrencyString(product.unitPrice)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
-            <Typography variant="paragraph">{description}</Typography>
+            <Typography variant="paragraph">{product.description}</Typography>
           </div>
         </div>
         <div className="w-[270px] ml-4">

@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { useOrders } from "./hooks";
 import OrderCard from "./OrderCard";
 import { Dialog, DialogBody } from "@material-tailwind/react";
-import { OrderResponse } from "../../services/api";
 import OrderItemCard from "./OrderItemCard";
+import { Order } from "../../types/store";
 
 function Orders() {
   const { orders } = useOrders();
-  const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(
     null
   );
   const [openDetailDialog, setOpenDetailDialog] = useState(true);
   const handleOpenDetailDialog = () => setOpenDetailDialog(!open);
 
-  const handleClickDetail = (order: OrderResponse) => {
+  const handleClickDetail = (order: Order) => {
     setSelectedOrder(order);
     setOpenDetailDialog(true);
   };
