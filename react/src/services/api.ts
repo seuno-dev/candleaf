@@ -1,4 +1,4 @@
-import { login, logout, instance, REFRESH_KEY } from "./client";
+import { instance, login, logout, REFRESH_KEY } from "./client";
 
 export { login, logout };
 
@@ -125,7 +125,7 @@ export const submitPayment = async (paymentMethodId: string) => {
   return response.status === 200;
 };
 
-type OrderItemResponse = {
+export type OrderItemResponse = {
   id: string;
   order_id: string;
   product: SimpleProduct;
