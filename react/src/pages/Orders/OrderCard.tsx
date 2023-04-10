@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { OrderResponse } from "../../services/api";
+import { toCurrencyString } from "../../utils/currency";
 
 type OrderItemProps = {
   order: OrderResponse;
@@ -29,21 +30,18 @@ function OrderCard({ order }: OrderItemProps) {
         <div className="flex flex-col ml-4 w-[950px]">
           <Typography variant="h6">{firstItem.product.title}</Typography>
           <Typography variant="paragraph">
-            {firstItem.quantity} x ${firstItem.unit_price}
+            {firstItem.quantity} x {toCurrencyString(firstItem.unit_price)}
           </Typography>
           {items.length > 1 && (
             <Typography variant="paragraph" className="mt-2">
-              + {items.length - 1} other items
+              + {items.length - 1} other item(s)
             </Typography>
           )}
         </div>
         <div className="flex flex-col">
           <Typography variant="paragraph">Total price</Typography>
           <Typography variant="h6">
-            {order.total_price.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}
+            {toCurrencyString(order.total_price)}
           </Typography>
         </div>
       </CardBody>

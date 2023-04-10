@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
 import { useProductDetail } from "../Products/hooks";
 import { useNavigate, useParams } from "react-router-dom";
+import { toCurrencyString } from "../../utils/currency";
 
 type ProductDetailProps = {
   addToCart: (productId: number) => Promise<boolean>;
@@ -68,7 +69,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
             {title}
           </Typography>
           <Typography variant="h2" className="mt-6">
-            ${price}
+            {toCurrencyString(price)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
             <Typography variant="paragraph">{description}</Typography>
