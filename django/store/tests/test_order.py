@@ -100,10 +100,11 @@ class TestListOrder:
 
         assert response.status_code == status.HTTP_200_OK
 
+        response_data = response.data['results']
         for i in range(len(orders)):
             order = orders[i]
             order_items = order_items_set[i]
-            response_order = response.data[i]
+            response_order = response_data[i]
 
             assert response_order['id'] == order.id
 
@@ -124,7 +125,7 @@ class TestListOrder:
         response = client.get(order_list_url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 0
+        assert len(response.data['results']) == 0
 
     def test_not_authenticated_returns_401(self, api_client, order_list_url):
         response = api_client.get(order_list_url)
