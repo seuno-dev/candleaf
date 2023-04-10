@@ -33,17 +33,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField(read_only=True)
+    image = ProductImageSerializer(read_only=True)
 
     class Meta:
         model = models.Product
         fields = ['id', 'title', 'unit_price', 'inventory', 'image']
-
-    def get_image(self, product):
-        images = product.images.all()
-        if len(images) == 0:
-            return ''
-        return images[0].image.url
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -102,9 +96,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     product = SimpleProductSerializer()
 
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
-        fields = ['id', 'items', 'order_time']
+        fields = ['id', 'items', 'order_time', 'total_price']
 
     items = OrderItemSerializer(many=True)

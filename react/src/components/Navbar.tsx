@@ -32,6 +32,10 @@ function Navbar() {
     return navigate("/login");
   };
 
+  const handleOrders = () => {
+    return navigate("/orders");
+  };
+
   const onProductSearch = (search: string) => {
     return navigate({
       pathname: "products",
@@ -65,6 +69,9 @@ function Navbar() {
               </Typography>
             </MenuHandler>
             <MenuList {...triggers}>
+              <MenuItem onClick={handleOrders}>
+                <Typography>Orders</Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <Typography>Logout</Typography>
               </MenuItem>

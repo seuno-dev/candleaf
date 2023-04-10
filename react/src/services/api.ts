@@ -69,7 +69,7 @@ type SimpleProduct = {
   title: string;
   unit_price: number;
   inventory: number;
-  image: string;
+  image: ProductImageResponse;
 };
 export type CartItemResponse = {
   id: number;
@@ -123,4 +123,28 @@ export const submitPayment = async (paymentMethodId: string) => {
     payment_method_id: paymentMethodId,
   });
   return response.status === 200;
+};
+
+type OrderItemResponse = {
+  id: string;
+  order_id: string;
+  product: SimpleProduct;
+  unit_price: number;
+  quantity: number;
+  total_price: number;
+};
+
+export type OrderResponse = {
+  id: string;
+  items: OrderItemResponse[];
+  total_price: number;
+  order_time: string;
+};
+type OrderListResponse = {
+  results: OrderResponse[];
+  total_pages: number;
+};
+export const retrieveOrderList = async () => {
+  const response = await instance.get<OrderListResponse>("/store/orders/");
+  return response.data.results;
 };
