@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -10,15 +11,16 @@ import { toCurrencyString } from "../../utils/currency";
 
 type OrderItemProps = {
   order: OrderResponse;
+  handleClickDetail: (order: OrderResponse) => void;
 };
 
-function OrderCard({ order }: OrderItemProps) {
+function OrderCard({ order, handleClickDetail }: OrderItemProps) {
   const items = order.items;
   const firstItem = items[0];
 
   return (
-    <Card className="px-2 border-[0.5px] border-gray-200" shadow={false}>
-      <CardHeader floated={false} shadow={false}>
+    <Card className="border-[0.5px] border-gray-200" shadow={false}>
+      <CardHeader className="mx-6" floated={false} shadow={false}>
         {order.order_time.split("T")[0]}
       </CardHeader>
       <CardBody className="flex flex-row">
@@ -43,6 +45,13 @@ function OrderCard({ order }: OrderItemProps) {
           <Typography variant="h6">
             {toCurrencyString(order.total_price)}
           </Typography>
+          <Button
+            className="mt-5"
+            color="light-green"
+            onClick={() => handleClickDetail(order)}
+          >
+            See details
+          </Button>
         </div>
       </CardBody>
     </Card>
