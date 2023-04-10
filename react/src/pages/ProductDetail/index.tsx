@@ -41,9 +41,9 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
 
   return (
     <div className="container mx-auto">
-      <div className="absolute">
+      <div className="absolute container flex justify-center">
         <Alert
-          className="w-80 mx-auto"
+          className="w-80"
           show={showCartSuccessAlert}
           color="green"
           dismissible={{ onClose: () => setShowCartSuccessAlert(false) }}
@@ -51,7 +51,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
           Added to cart successfully.
         </Alert>
         <Alert
-          className="w-80 mx-auto"
+          className="w-80"
           show={showCartFailedAlert}
           color="red"
           dismissible={{ onClose: () => setShowCartFailedAlert(false) }}
