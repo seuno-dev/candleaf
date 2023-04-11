@@ -18,6 +18,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    slug = serializers.CharField(read_only=True)
+
     class Meta:
         model = models.Category
         fields = ['id', 'title', 'slug']
