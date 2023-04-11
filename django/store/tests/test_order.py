@@ -114,7 +114,7 @@ class TestListOrder:
                 response_item = response_order['items'][j]
 
                 assert response_item['product']['title'] == order_item.product.title
-                assert response_item['unit_price'] == order_item.unit_price.to_eng_string()
+                assert response_item['unit_price'] == order_item.unit_price
                 assert response_item['quantity'] == order_item.quantity
                 assert response_item['total_price'] == order_item.unit_price * order_item.quantity
 
@@ -154,7 +154,7 @@ class TestRetrieveOrder:
 
             assert response_item['product']['title'] == order_item.product.title
             assert response_item['quantity'] == order_item.quantity
-            assert response_item['unit_price'] == order_item.unit_price.to_eng_string()
+            assert response_item['unit_price'] == order_item.unit_price
             assert response_item['total_price'] == order_item.quantity * order_item.unit_price
 
     def test_if_not_own_order_returns_404(self, authenticate_client, order_detail_url):

@@ -14,8 +14,9 @@ class Customer(models.Model):
     address = models.TextField()
 
 
-class Collection(models.Model):
+class Category(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField()
 
     def __str__(self):
         return self.title
@@ -32,7 +33,7 @@ class Product(models.Model):
     )
     inventory = models.IntegerField(blank=True, default=0)
     last_update = models.DateTimeField(auto_now=True)
-    collection = models.ForeignKey(Collection, null=True, blank=True, on_delete=models.SET_NULL)
+    collection = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title

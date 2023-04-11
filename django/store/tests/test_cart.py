@@ -135,7 +135,7 @@ class TestListCartItem:
 
             assert cart_item.product.id == response_data['product']['id']
             assert cart_item.product.title == response_data['product']['title']
-            assert str(cart_item.product.unit_price) == response_data['product']['unit_price']
+            assert cart_item.product.unit_price == response_data['product']['unit_price']
 
             assert cart_item.quantity == response_data['quantity']
             assert cart_item.quantity * cart_item.product.unit_price == response_data['total_price']

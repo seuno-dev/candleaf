@@ -22,7 +22,7 @@ def products_detail_url():
 @pytest.mark.django_db
 class TestCreateProduct:
     def test_if_admin_returns_201(self, authenticate_client, products_list_url):
-        collection = baker.make(models.Collection)
+        collection = baker.make(models.Category)
 
         params = {'title': 'wKUXxTIp', 'description': '', 'unit_price': '490.53', 'inventory': 0,
                   'collection': collection.id}
@@ -73,7 +73,7 @@ class TestListProduct:
             assert product.title == response_product['title']
             assert product.slug == response_product['slug']
             assert product.description == response_product['description']
-            assert product.unit_price.to_eng_string() == response_product['unit_price']
+            assert product.unit_price == response_product['unit_price']
             assert product.inventory == response_product['inventory']
             assert product.collection == response_product['collection']
 
@@ -90,7 +90,7 @@ class TestRetrieveProduct:
         assert product.title == response.data['title']
         assert product.slug == response.data['slug']
         assert product.description == response.data['description']
-        assert product.unit_price.to_eng_string() == response.data['unit_price']
+        assert product.unit_price == response.data['unit_price']
         assert product.inventory == response.data['inventory']
         assert product.collection == response.data['collection']
 
@@ -103,7 +103,7 @@ class TestRetrieveProduct:
 @pytest.mark.django_db
 class TestUpdateProduct:
     def test_if_admin_returns_200(self, authenticate_client, products_detail_url):
-        collection = baker.make(models.Collection)
+        collection = baker.make(models.Category)
         product = baker.make(models.Product, collection=None)
 
         params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0,

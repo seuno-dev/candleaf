@@ -16,7 +16,7 @@ class CustomerAdmin(admin.ModelAdmin):
         return customer.user.username
 
 
-@admin.register(models.Collection)
+@admin.register(models.Category)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title']
     search_fields = ['title']

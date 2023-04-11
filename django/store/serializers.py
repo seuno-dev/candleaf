@@ -17,6 +17,12 @@ class CustomerSerializer(serializers.ModelSerializer):
         return super().save(**kwargs)
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Category
+        fields = ['id', 'title', 'slug']
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProductImage
