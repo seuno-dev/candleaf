@@ -32,7 +32,7 @@ function Products() {
 
   return (
     <div className="container mx-auto mt-5 flex flex-col">
-      <ul className="mx-auto flex flex-row flex-wrap gap-1">
+      <ul className="flex flex-row flex-wrap gap-1">
         {productList?.map((product) => (
           <Link key={product.id} to={`/products/${product.slug}`}>
             <ProductCard
