@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toCurrencyString } from "../../utils/currency";
 import { useProductDetail } from "./hooks";
 
@@ -63,7 +63,9 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
         <div className="w-[350px] h-full">
           <img
             src={
-              product.images.length > 0 ? product.images[0].image : "logo512.png"
+              product.images.length > 0
+                ? product.images[0].image
+                : "logo512.png"
             }
             alt={`Image of product ${product.title}`}
           />
@@ -76,7 +78,10 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
             {toCurrencyString(product.unitPrice)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
-            <Typography variant="paragraph">{product.description}</Typography>
+            <Typography>Category:<a>{product.c}</a></Typography>
+            <Typography className="mt-5" variant="paragraph">
+              {product.description}
+            </Typography>
           </div>
         </div>
         <div className="w-[270px] ml-4">

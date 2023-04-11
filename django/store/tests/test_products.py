@@ -26,7 +26,7 @@ class TestCreateProduct:
 
         params = {'title': 'wKUXxTIp', 'description': '', 'unit_price': '490.53', 'inventory': 0,
                   'category': category.id}
-        response = authenticate_client(is_staff=True).post(products_list_url, params)
+        response = authenticate_client(is_staff=True).post(products_list_url, params, format='json')
 
         assert response.status_code == status.HTTP_201_CREATED
         product = models.Product.objects.filter(title='wKUXxTIp')[0]
@@ -58,24 +58,30 @@ class TestCreateProduct:
 @pytest.mark.django_db
 class TestListProduct:
     def test_returns_200(self, api_client, products_list_url):
-        products = baker.make(models.Product, _quantity=5)
+        category = baker.make(models.Category)
+        products_with_category = baker.make(models.Product, category=category, _quantity=5)
+        products_without_category = baker.make(models.Product, _quantity=5)
 
         response = api_client.get(products_list_url)
 
         assert response.status_code == status.HTTP_200_OK
 
         results = response.data['results']
-        for i in range(len(products)):
-            product = products[i]
-            response_product = results[i]
 
+        for product, response_product in zip(products_with_category + products_without_category, results):
             assert product.id == response_product['id']
             assert product.title == response_product['title']
             assert product.slug == response_product['slug']
             assert product.description == response_product['description']
             assert product.unit_price == response_product['unit_price']
             assert product.inventory == response_product['inventory']
-            assert product.category == response_product['category']
+
+            if product.category:
+                assert product.category.id == response_product['category']['id']
+                assert product.category.title == response_product['category']['title']
+                assert product.category.slug == response_product['category']['slug']
+            else:
+                assert response_product['category'] is None
 
 
 @pytest.mark.django_db

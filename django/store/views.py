@@ -168,13 +168,18 @@ class ProductViewSet(viewsets.ModelViewSet):
             return super().has_permission(request, view)
 
     queryset = models.Product.objects.all()
-    serializer_class = serializers.ProductSerializer
     permission_classes = [Permission]
     lookup_field = 'slug'
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['title', 'description']
     filterset_fields = ['category']
     pagination_class = PageNumberPagination
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'partial_update']:
+            return serializers.CreateProductSerializer
+        else:
+            return serializers.ProductSerializer
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
