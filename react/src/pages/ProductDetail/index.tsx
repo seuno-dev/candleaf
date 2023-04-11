@@ -20,8 +20,6 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
   }
 
   const { product } = useProductDetail(slug);
-  const mainImage =
-    product.images.length > 0 ? product.images[0].url : "logo512.png";
 
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
@@ -63,7 +61,12 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
       </div>
       <div className="mt-5 flex flex-row justify-center">
         <div className="w-[350px] h-full">
-          <img src={mainImage} alt={`Image of product ${product.title}`} />
+          <img
+            src={
+              product.images.length > 0 ? product.images[0].image : "logo512.png"
+            }
+            alt={`Image of product ${product.title}`}
+          />
         </div>
         <div className="w-[480px] ml-4 flex flex-col">
           <Typography variant="h4" className="break-words">

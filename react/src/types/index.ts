@@ -1,6 +1,6 @@
 export type ProductImage = {
   id: number;
-  url: string;
+  image: string;
 };
 
 export type SimpleProduct = {

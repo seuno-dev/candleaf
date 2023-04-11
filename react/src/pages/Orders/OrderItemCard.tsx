@@ -12,7 +12,7 @@ function OrderItemCard({ item }: OrderItemCardProps) {
     <Card shadow={false}>
       <CardBody className="flex flex-row">
         <img
-          src={item.product.image.url}
+          src={item.product.image.image}
           alt={`Image of ${item.product.title}`}
           className="w-12 rounded-lg"
         />

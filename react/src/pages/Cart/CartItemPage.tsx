@@ -27,7 +27,7 @@ function CartItemPage({
     <Card className="flex flex-row mb-5 p-5">
       <img
         src={
-          item.product.image.url == "" ? "logo512.png" : item.product.image.url
+          item.product.image.image == "" ? "logo512.png" : item.product.image.image
         }
         className="w-28 rounded-lg"
         alt={`Image of ${item.product.title}`}

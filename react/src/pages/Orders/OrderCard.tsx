@@ -25,7 +25,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
       </CardHeader>
       <CardBody className="flex flex-row">
         <img
-          src={firstItem.product.image.url}
+          src={firstItem.product.image.image}
           alt={`Image of ${firstItem.product.title}`}
           className="w-20 h-20 rounded-lg"
         />
