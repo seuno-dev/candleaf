@@ -10,5 +10,5 @@ class ProductFilter(django_filters.FilterSet):
 
     title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
     category = django_filters.NumberFilter(field_name='category')
-    unit_price__gt = django_filters.NumberFilter(field_name='unit_price', lookup_expr='gt')
-    unit_price__lt = django_filters.NumberFilter(field_name='unit_price', lookup_expr='lt')
+    unit_price_gt = django_filters.NumberFilter(field_name='unit_price', lookup_expr='gt')
+    unit_price_lt = django_filters.NumberFilter(field_name='unit_price', lookup_expr='lt')

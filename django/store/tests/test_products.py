@@ -140,7 +140,7 @@ class TestListProduct:
         # Only this product should be returned by the API
         products = baker.make(models.Product, unit_price=random.randint(10, 19), _quantity=10)
 
-        url = f"{products_list_url}?unit_price__gt=10&unit_price__lt=20"
+        url = f"{products_list_url}?unit_price_gt=10&unit_price_lt=20"
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
