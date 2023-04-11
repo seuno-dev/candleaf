@@ -1,6 +1,7 @@
 import stripe
 from django.core.cache import cache
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import viewsets, permissions, status, mixins, generics, filters
 from rest_framework.generics import get_object_or_404
@@ -170,8 +171,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProductSerializer
     permission_classes = [Permission]
     lookup_field = 'slug'
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['title', 'description']
+    filterset_fields = ['category']
     pagination_class = PageNumberPagination
 
 

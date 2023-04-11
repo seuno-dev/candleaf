@@ -15,6 +15,9 @@ class Customer(models.Model):
 
 
 class Category(models.Model):
+    class Meta:
+        verbose_name_plural = "categories"
+
     title = models.CharField(max_length=255)
     slug = models.SlugField()
 
@@ -33,7 +36,7 @@ class Product(models.Model):
     )
     inventory = models.IntegerField(blank=True, default=0)
     last_update = models.DateTimeField(auto_now=True)
-    collection = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title

@@ -22,10 +22,10 @@ def products_detail_url():
 @pytest.mark.django_db
 class TestCreateProduct:
     def test_if_admin_returns_201(self, authenticate_client, products_list_url):
-        collection = baker.make(models.Category)
+        category = baker.make(models.Category)
 
         params = {'title': 'wKUXxTIp', 'description': '', 'unit_price': '490.53', 'inventory': 0,
-                  'collection': collection.id}
+                  'category': category.id}
         response = authenticate_client(is_staff=True).post(products_list_url, params)
 
         assert response.status_code == status.HTTP_201_CREATED
@@ -34,7 +34,7 @@ class TestCreateProduct:
         assert product.description == params['description']
         assert product.unit_price.to_eng_string() == params['unit_price']
         assert product.inventory == params['inventory']
-        assert product.collection.id == params['collection']
+        assert product.category.id == params['category']
 
     @pytest.mark.parametrize('wrong_params', [
         {'title': ''},
@@ -75,7 +75,7 @@ class TestListProduct:
             assert product.description == response_product['description']
             assert product.unit_price == response_product['unit_price']
             assert product.inventory == response_product['inventory']
-            assert product.collection == response_product['collection']
+            assert product.category == response_product['category']
 
 
 @pytest.mark.django_db
@@ -92,7 +92,7 @@ class TestRetrieveProduct:
         assert product.description == response.data['description']
         assert product.unit_price == response.data['unit_price']
         assert product.inventory == response.data['inventory']
-        assert product.collection == response.data['collection']
+        assert product.category == response.data['category']
 
     def test_not_exists_return_404(self, api_client, products_detail_url):
         response = api_client.get(products_detail_url(9999))
@@ -103,18 +103,18 @@ class TestRetrieveProduct:
 @pytest.mark.django_db
 class TestUpdateProduct:
     def test_if_admin_returns_200(self, authenticate_client, products_detail_url):
-        collection = baker.make(models.Category)
-        product = baker.make(models.Product, collection=None)
+        category = baker.make(models.Category)
+        product = baker.make(models.Product, category=None)
 
         params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0,
-                  'collection': collection.id}
+                  'category': category.id}
         response = authenticate_client(is_staff=True) \
             .patch(products_detail_url(product.slug), params)
 
         assert response.status_code == status.HTTP_200_OK
 
     def test_if_not_admin_returns_403(self, authenticate_client, products_detail_url):
-        product = baker.make(models.Product, collection=None)
+        product = baker.make(models.Product, category=None)
 
         params = {'title': 'wKUXxTIp', 'description': 'a', 'unit_price': '490.53', 'inventory': 0}
         response = authenticate_client(is_staff=False) \

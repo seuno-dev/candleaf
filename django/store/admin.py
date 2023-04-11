@@ -19,6 +19,7 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(models.Category)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title']
+    prepopulated_fields = {'slug': ['title']}
     search_fields = ['title']
 
 
@@ -36,4 +37,4 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['title']}
     list_display = ['title', 'unit_price', 'inventory']
-    autocomplete_fields = ['collection']
+    autocomplete_fields = ['category']
