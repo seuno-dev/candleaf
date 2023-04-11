@@ -4,7 +4,7 @@ import { retrieveProductDetail } from "../../api/api";
 
 export const useProductDetail = (slug: string) => {
   const [product, setProduct] = useState<Product>({
-    collection: 0,
+    category: null,
     description: "",
     id: 0,
     images: [],

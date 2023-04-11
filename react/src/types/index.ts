@@ -1,3 +1,9 @@
+export type Category = {
+  id: number;
+  title: string;
+  slug: string;
+};
+
 export type ProductImage = {
   id: number;
   image: string;
@@ -18,14 +24,8 @@ export type Product = {
   description: string;
   unitPrice: number;
   inventory: number;
-  collection: number;
+  category: Category | null;
   images: ProductImage[];
-};
-
-export type Category = {
-  id: number;
-  title: string;
-  slug: string;
 };
 
 export type ProductList = {

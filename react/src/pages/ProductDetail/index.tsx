@@ -78,7 +78,17 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
             {toCurrencyString(product.unitPrice)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
-            <Typography>Category:<a>{product.c}</a></Typography>
+            {product.category && (
+              <Typography>
+                Category:{" "}
+                <Link
+                  className="text-light-green-700 font-bold"
+                  to={`/products/?category=${product.category.id}`}
+                >
+                  {product.category.title}
+                </Link>
+              </Typography>
+            )}
             <Typography className="mt-5" variant="paragraph">
               {product.description}
             </Typography>
