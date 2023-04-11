@@ -1,4 +1,5 @@
 import axios from "axios";
+import { camelizeKeys } from "humps";
 
 export const REFRESH_KEY = "refresh";
 const ACCESS_KEY = "access";
@@ -52,6 +53,9 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
+    if (response.data) {
+      response.data = camelizeKeys(response.data);
+    }
     return response;
   },
   async (error) => {

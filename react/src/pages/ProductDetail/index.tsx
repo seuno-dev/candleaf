@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
-import { useProductDetail } from "../Products/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { toCurrencyString } from "../../utils/currency";
+import { useProductDetail } from "./hooks";
 
 type ProductDetailProps = {
   addToCart: (productId: number) => Promise<boolean>;

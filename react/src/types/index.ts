@@ -23,7 +23,7 @@ export type Product = {
 };
 
 export type ProductList = {
-  data: Product[];
+  results: Product[];
   totalPages: number;
 };
 
@@ -51,7 +51,7 @@ export type Order = {
 };
 
 export type OrderList = {
-  data: Order[];
+  results: Order[];
   totalPages: number;
 };
 

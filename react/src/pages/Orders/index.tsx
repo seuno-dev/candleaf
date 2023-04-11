@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useOrders } from "./hooks";
+import { useOrderList } from "./hooks";
 import OrderCard from "./OrderCard";
 import { Dialog, DialogBody } from "@material-tailwind/react";
 import OrderItemCard from "./OrderItemCard";
-import { Order } from "../../types/store";
+import { Order } from "../../types";
 
 function Orders() {
-  const { orders } = useOrders();
+  const { orders } = useOrderList();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(
     null
   );

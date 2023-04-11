@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { toCurrencyString } from "../../utils/currency";
-import { Order } from "../../types/store";
+import { Order } from "../../types";
 
 type OrderItemProps = {
   order: Order;

@@ -5,7 +5,7 @@ import MinusDisabledIcon from "../../assets/images/minus-circle-disabled.svg";
 import PlusDisabledIcon from "../../assets/images/plus-circle-disabled.svg";
 import PlusIcon from "../../assets/images/plus-circle.svg";
 import DeleteIcon from "../../assets/images/delete.svg";
-import { CartItem } from "../../types/store";
+import { CartItem } from "../../types";
 import { toCurrencyString } from "../../utils/currency";
 
 type CartItemProps = {

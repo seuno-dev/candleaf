@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { retrieveProfile } from "../api/api";
 import useAuth from "./useAuth";
-import { User } from "../types/store";
+import { User } from "../types";
 
 const useProfile = () => {
   const { isAuthenticated } = useAuth();

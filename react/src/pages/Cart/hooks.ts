@@ -5,7 +5,7 @@ import {
   submitOrder,
   updateCartItemQuantity,
 } from "../../api/api";
-import { CartItem } from "../../types/store";
+import { CartItem } from "../../types";
 
 export const useCart = () => {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);

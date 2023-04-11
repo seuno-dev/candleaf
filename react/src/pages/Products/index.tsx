@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useProductsList } from "./hooks";
+import { useProductList } from "./hooks";
 import ProductCard from "./ProductCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
@@ -7,7 +7,7 @@ import { toCurrencyString } from "../../utils/currency";
 
 function Products() {
   const [searchParams] = useSearchParams();
-  const { productList, pageCount, loadProductList } = useProductsList();
+  const { productList, pageCount, loadProductList } = useProductList();
 
   const handlePageClick = (e: { selected: number }) => {
     const search = searchParams.get("search");

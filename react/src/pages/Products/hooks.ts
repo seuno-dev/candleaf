@@ -1,36 +1,19 @@
-import { useEffect, useState } from "react";
-import { retrieveProductDetail, retrieveProductList } from "../../api/api";
-import { Product } from "../../types/store";
+import { useState } from "react";
+import { retrieveProductList } from "../../api/api";
+import { Product } from "../../types";
 
-export const useProductsList = () => {
-  const [productList, setProductList] = useState<Product[] | null>(null);
+export const useProductList = () => {
+  const [products, setProductList] = useState<Product[] | null>(null);
   const [pageCount, setPageCount] = useState(0);
 
   const loadProductList = (search: string, page: number) => {
-    retrieveProductList(search, page).then((response) => {
-      setProductList(response.data);
-      setPageCount(response.totalPages);
+    retrieveProductList(search, page).then((_productList) => {
+      setProductList(_productList.results);
+      setPageCount(_productList.totalPages);
     });
   };
 
-  return { productList, pageCount, loadProductList };
+  return { productList: products, pageCount, loadProductList };
 };
 
-export const useProductDetail = (slug: string) => {
-  const [product, setProduct] = useState<Product>({
-    collection: 0,
-    description: "",
-    id: 0,
-    images: [],
-    inventory: 0,
-    title: "",
-    slug: "",
-    unitPrice: 0,
-  });
 
-  useEffect(() => {
-    retrieveProductDetail(slug).then((product) => setProduct(product));
-  }, []);
-
-  return { product };
-};

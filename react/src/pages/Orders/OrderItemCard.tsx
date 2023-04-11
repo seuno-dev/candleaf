@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { toCurrencyString } from "../../utils/currency";
-import { OrderItem } from "../../types/store";
+import { OrderItem } from "../../types";
 
 type OrderItemCardProps = {
   item: OrderItem;

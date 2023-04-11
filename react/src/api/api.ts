@@ -1,21 +1,13 @@
-import { instance, login, logout, REFRESH_KEY } from "./client";
-import {
-  CartItemResponse,
-  CreatePaymentResponse,
-  OrderListResponse,
-  ProductListResponse,
-  ProductResponse,
-  SubmitOrderResponse,
-  UserResponse,
-} from "./types";
+import { instance, login, logout, REFRESH_KEY } from "./axios";
 import {
   CartItem,
+  CreatePayment,
   OrderList,
   Product,
-  ProductImage,
   ProductList,
+  SubmitOrder,
   User,
-} from "../types/store";
+} from "../types";
 
 export { login, logout };
 
@@ -24,66 +16,26 @@ export const getAuthenticationStatus = () => {
 };
 
 export const retrieveProfile = async (): Promise<User> => {
-  const response = await instance.get<UserResponse>("/auth/users/me/");
-  return {
-    username: response.data.username,
-    firstName: response.data.first_name,
-    lastName: response.data.last_name,
-    email: response.data.email,
-  };
+  const response = await instance.get<User>("/auth/users/me/");
+  return response.data;
 };
 
 export const retrieveProductList = async (
   search: string,
   page: number
 ): Promise<ProductList> => {
-  const response = await instance.get<ProductListResponse>("/store/products/", {
+  const response = await instance.get<ProductList>("/store/products/", {
     params: {
       page: page,
       search: search,
     },
   });
-  const productList: Product[] = response.data.results.map(
-    (productResponse) => {
-      const images: ProductImage[] = productResponse.images.map((image) => ({
-        id: image.id,
-        url: image.image,
-      }));
-      return {
-        id: productResponse.id,
-        title: productResponse.title,
-        slug: productResponse.slug,
-        description: productResponse.description,
-        unitPrice: productResponse.unit_price,
-        inventory: productResponse.inventory,
-        collection: productResponse.collection,
-        images: images,
-      };
-    }
-  );
-  return {
-    data: productList,
-    totalPages: response.data.total_pages,
-  };
+  return response.data;
 };
 
 export const retrieveProductDetail = async (slug: string): Promise<Product> => {
-  const response = await instance.get<ProductResponse>(
-    `/store/products/${slug}/`
-  );
-  return {
-    id: response.data.id,
-    title: response.data.title,
-    slug: response.data.slug,
-    description: response.data.description,
-    unitPrice: response.data.unit_price,
-    inventory: response.data.inventory,
-    collection: response.data.collection,
-    images: response.data.images.map((image) => ({
-      id: image.id,
-      url: image.image,
-    })),
-  };
+  const response = await instance.get<Product>(`/store/products/${slug}/`);
+  return response.data;
 };
 
 export const createCartItem = async (productId: number) => {
@@ -99,22 +51,8 @@ export const createCartItem = async (productId: number) => {
 };
 
 export const retrieveCartItemList = async (): Promise<CartItem[]> => {
-  const response = await instance.get<CartItemResponse[]>("/store/cart-items/");
-  return response.data.map((cartItemResponse) => ({
-    id: cartItemResponse.id,
-    product: {
-      id: cartItemResponse.product.id,
-      title: cartItemResponse.product.title,
-      unitPrice: cartItemResponse.product.unit_price,
-      inventory: cartItemResponse.product.inventory,
-      image: {
-        id: cartItemResponse.product.image.id,
-        url: cartItemResponse.product.image.image,
-      },
-    },
-    quantity: cartItemResponse.quantity,
-    totalPrice: cartItemResponse.total_price,
-  }));
+  const response = await instance.get<CartItem[]>("/store/cart-items/");
+  return response.data;
 };
 
 export const updateCartItemQuantity = async (
@@ -133,18 +71,18 @@ export const deleteCartItem = async (id: number) => {
 };
 
 export const submitOrder = async () => {
-  const response = await instance.post<SubmitOrderResponse>("/store/orders/");
-  return response.data.order_id;
+  const response = await instance.post<SubmitOrder>("/store/orders/");
+  return response.data.orderId;
 };
 
 export const createPayment = async (orderId: string) => {
-  const response = await instance.post<CreatePaymentResponse>(
+  const response = await instance.post<CreatePayment>(
     "/store/orders/create_payment",
     {
       order_id: orderId,
     }
   );
-  return response.data.client_secret;
+  return response.data.clientSecret;
 };
 
 export const submitPayment = async (paymentMethodId: string) => {
@@ -155,30 +93,6 @@ export const submitPayment = async (paymentMethodId: string) => {
 };
 
 export const retrieveOrderList = async (): Promise<OrderList> => {
-  const response = await instance.get<OrderListResponse>("/store/orders/");
-  return {
-    data: response.data.results.map((orderResponse) => ({
-      id: orderResponse.id,
-      totalPrice: orderResponse.total_price,
-      orderTime: orderResponse.order_time,
-      items: orderResponse.items.map((itemResponse) => ({
-        id: itemResponse.id,
-        orderId: itemResponse.order_id,
-        unitPrice: itemResponse.unit_price,
-        quantity: itemResponse.quantity,
-        totalPrice: itemResponse.total_price,
-        product: {
-          id: itemResponse.product.id,
-          title: itemResponse.product.title,
-          unitPrice: itemResponse.product.unit_price,
-          inventory: itemResponse.product.inventory,
-          image: {
-            id: itemResponse.product.image.id,
-            url: itemResponse.product.image.image,
-          },
-        },
-      })),
-    })),
-    totalPages: response.data.total_pages,
-  };
+  const response = await instance.get<OrderList>("/store/orders/");
+  return response.data;
 };
