@@ -9,25 +9,25 @@ function Products() {
   const [searchParams] = useSearchParams();
   const { productList, pageCount, loadProductList } = useProductList();
 
-  const handlePageClick = (e: { selected: number }) => {
-    const search = searchParams.get("search");
+  const loadPage = (page: number) => {
+    const title = searchParams.get("title");
     const category = searchParams.get("category");
-    const newPage = e.selected + 1;
+    const unitPriceLt = searchParams.get("unit_price_lt");
+    const unitPriceGt = searchParams.get("unit_price_gt");
 
-    loadProductList(
-      search ? search : "",
-      category ? category : "",
-      e.selected + 1
-    );
+    loadProductList({ page, title, category, unitPriceLt, unitPriceGt });
+  };
+
+  const handlePageClick = (e: { selected: number }) => {
+    const newPage = e.selected + 1;
+    loadPage(newPage);
     const url = new URL(window.location.toString());
     url.searchParams.set("page", newPage.toString());
     window.history.pushState(null, "", url.toString());
   };
 
   useEffect(() => {
-    const search = searchParams.get("search");
-    const category = searchParams.get("category");
-    loadProductList(search ? search : "", category ? category : "", 1);
+    loadPage(1);
   }, [searchParams]);
 
   return (

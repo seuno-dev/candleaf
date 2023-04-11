@@ -1,3 +1,4 @@
+import { decamelizeKeys } from "humps";
 import { instance, login, logout, REFRESH_KEY } from "./axios";
 import {
   CartItem,
@@ -5,6 +6,7 @@ import {
   CreatePayment,
   OrderList,
   Product,
+  ProductFilterParams,
   ProductList,
   SubmitOrder,
   User,
@@ -22,16 +24,10 @@ export const retrieveProfile = async (): Promise<User> => {
 };
 
 export const retrieveProductList = async (
-  search: string,
-  categoryId: string,
-  page: number
+  params: ProductFilterParams
 ): Promise<ProductList> => {
   const response = await instance.get<ProductList>("/store/products/", {
-    params: {
-      page: page,
-      search: search,
-      category: categoryId,
-    },
+    params: decamelizeKeys(params),
   });
   return response.data;
 };

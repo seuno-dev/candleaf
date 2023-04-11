@@ -33,6 +33,14 @@ export type ProductList = {
   totalPages: number;
 };
 
+export type ProductFilterParams = {
+  page: number;
+  title: string | null;
+  category: string | null;
+  unitPriceLt: string | null;
+  unitPriceGt: string | null;
+};
+
 export type User = {
   username: string;
   firstName: string;
