@@ -45,10 +45,7 @@ class TestCreateOrder:
         # The cart should be deleted
         assert models.Cart.objects.filter(id=cart.id).count() == 0
 
-        for i in range(len(order_items)):
-            cart_item = cart_items[i]
-            order_item: models.OrderItem = order_items[i]
-
+        for order_item, cart_item in zip(order_items, cart_items):
             # The cart item should be deleted
             assert models.CartItem.objects.filter(id=cart_item.id).count() == 0
 
@@ -100,23 +97,16 @@ class TestListOrder:
 
         assert response.status_code == status.HTTP_200_OK
 
-        response_data = response.data['results']
-        for i in range(len(orders)):
-            order = orders[i]
-            order_items = order_items_set[i]
-            response_order = response_data[i]
-
-            assert response_order['id'] == order.id
-
+        results = response.data['results']
+        for order_response, order, order_items in zip(results, orders, order_items_set):
+            assert order_response['id'] == order.id
             assert len(order_items) != 0
-            for j in range(len(order_items)):
-                order_item = order_items[j]
-                response_item = response_order['items'][j]
 
-                assert response_item['product']['title'] == order_item.product.title
-                assert response_item['unit_price'] == order_item.unit_price
-                assert response_item['quantity'] == order_item.quantity
-                assert response_item['total_price'] == order_item.unit_price * order_item.quantity
+            for item_response, order_item in zip(order_response['items'], order_items):
+                assert item_response['product']['title'] == order_item.product.title
+                assert item_response['unit_price'] == order_item.unit_price
+                assert item_response['quantity'] == order_item.quantity
+                assert item_response['total_price'] == order_item.unit_price * order_item.quantity
 
     def test_empty_returns_200(self, authenticate_client, order_list_url):
         customer = baker.make(models.Customer)
@@ -148,14 +138,11 @@ class TestRetrieveOrder:
 
         response_items = response.data['items']
         assert len(response_items) == len(order_items)
-        for i in range(len(order_items)):
-            order_item = order_items[i]
-            response_item = response_items[i]
-
-            assert response_item['product']['title'] == order_item.product.title
-            assert response_item['quantity'] == order_item.quantity
-            assert response_item['unit_price'] == order_item.unit_price
-            assert response_item['total_price'] == order_item.quantity * order_item.unit_price
+        for item_response, order_item in zip(response_items, order_items):
+            assert item_response['product']['title'] == order_item.product.title
+            assert item_response['quantity'] == order_item.quantity
+            assert item_response['unit_price'] == order_item.unit_price
+            assert item_response['total_price'] == order_item.quantity * order_item.unit_price
 
     def test_if_not_own_order_returns_404(self, authenticate_client, order_detail_url):
         customer = baker.make(models.Customer)

@@ -52,10 +52,10 @@ class TestListCategory:
 
         assert response.status_code == status.HTTP_200_OK
 
-        for category, cat_response in zip(categories, response.data):
-            assert category.id == cat_response['id']
-            assert category.title == cat_response['title']
-            assert category.slug == cat_response['slug']
+        for cat_response, category in zip(response.data, categories):
+            assert cat_response['id'] == category.id
+            assert cat_response['title'] == category.title
+            assert cat_response['slug'] == category.slug
 
 
 @pytest.mark.django_db
@@ -66,9 +66,9 @@ class TestRetrieveCategory:
         response = api_client.get(category_detail_url(category.slug))
 
         assert response.status_code == status.HTTP_200_OK
-        assert category.id == response.data['id']
-        assert category.title == response.data['title']
-        assert category.slug == response.data['slug']
+        assert response.data['id'] == category.id
+        assert response.data['title'] == category.title
+        assert response.data['slug'] == category.slug
 
     def test_not_exists_return_404(self, api_client, category_detail_url):
         response = api_client.get(category_detail_url("asscqaws"))

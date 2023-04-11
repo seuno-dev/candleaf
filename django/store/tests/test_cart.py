@@ -1,6 +1,6 @@
-from django.urls import reverse
 import pytest
-from model_bakery import baker, seq
+from django.urls import reverse
+from model_bakery import baker
 from rest_framework import status
 
 from store import models
@@ -130,15 +130,13 @@ class TestListCartItem:
 
         assert response.status_code == status.HTTP_200_OK
 
-        for i, cart_item in enumerate(cart_items):
-            response_data = response.data[i]
+        for item_response, cart_item in zip(response.data, cart_items):
+            assert item_response['product']['id'] == cart_item.product.id
+            assert item_response['product']['title'] == cart_item.product.title
+            assert item_response['product']['unit_price'] == cart_item.product.unit_price
 
-            assert cart_item.product.id == response_data['product']['id']
-            assert cart_item.product.title == response_data['product']['title']
-            assert cart_item.product.unit_price == response_data['product']['unit_price']
-
-            assert cart_item.quantity == response_data['quantity']
-            assert cart_item.quantity * cart_item.product.unit_price == response_data['total_price']
+            assert item_response['quantity'] == cart_item.quantity
+            assert item_response['total_price'] == cart_item.quantity * cart_item.product.unit_price
 
 
 @pytest.mark.django_db

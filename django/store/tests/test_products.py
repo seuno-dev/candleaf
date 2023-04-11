@@ -29,6 +29,7 @@ class TestCreateProduct:
         response = authenticate_client(is_staff=True).post(products_list_url, params, format='json')
 
         assert response.status_code == status.HTTP_201_CREATED
+
         product = models.Product.objects.filter(title='wKUXxTIp')[0]
         assert product.title == params['title']
         assert product.description == params['description']
@@ -55,6 +56,7 @@ class TestCreateProduct:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
+# noinspection DuplicatedCode
 @pytest.mark.django_db
 class TestListProduct:
     def test_returns_200(self, api_client, products_list_url):
@@ -69,20 +71,20 @@ class TestListProduct:
         results = response.data['results']
         assert len(results) == len(products_with_category + products_without_category)
 
-        for product, response_product in zip(products_with_category + products_without_category, results):
-            assert product.id == response_product['id']
-            assert product.title == response_product['title']
-            assert product.slug == response_product['slug']
-            assert product.description == response_product['description']
-            assert product.unit_price == response_product['unit_price']
-            assert product.inventory == response_product['inventory']
+        for product_response, product in zip(results, products_with_category + products_without_category):
+            assert product_response['id'] == product.id
+            assert product_response['title'] == product.title
+            assert product_response['slug'] == product.slug
+            assert product_response['description'] == product.description
+            assert product_response['unit_price'] == product.unit_price
+            assert product_response['inventory'] == product.inventory
 
             if product.category:
-                assert product.category.id == response_product['category']['id']
-                assert product.category.title == response_product['category']['title']
-                assert product.category.slug == response_product['category']['slug']
+                assert product_response['category']['id'] == product.category.id
+                assert product_response['category']['title'] == product.category.title
+                assert product_response['category']['slug'] == product.category.slug
             else:
-                assert response_product['category'] is None
+                assert product_response['category'] is None
 
     def test_category_filter_returns_200(self, api_client, products_list_url):
         category = baker.make(models.Category)
@@ -98,12 +100,12 @@ class TestListProduct:
         assert len(results) == len(products_with_category)
 
         for product_response, product in zip(results, products_with_category):
-            assert product.id == product_response['id']
-            assert product.title == product_response['title']
-            assert product.slug == product_response['slug']
-            assert product.description == product_response['description']
-            assert product.unit_price == product_response['unit_price']
-            assert product.inventory == product_response['inventory']
+            assert product_response['id'] == product.id
+            assert product_response['title'] == product.title
+            assert product_response['slug'] == product.slug
+            assert product_response['description'] == product.description
+            assert product_response['unit_price'] == product.unit_price
+            assert product_response['inventory'] == product.inventory
 
 
 @pytest.mark.django_db
@@ -114,13 +116,13 @@ class TestRetrieveProduct:
         response = api_client.get(products_detail_url(product.slug))
 
         assert response.status_code == status.HTTP_200_OK
-        assert product.id == response.data['id']
-        assert product.title == response.data['title']
-        assert product.slug == response.data['slug']
-        assert product.description == response.data['description']
-        assert product.unit_price == response.data['unit_price']
-        assert product.inventory == response.data['inventory']
-        assert product.category == response.data['category']
+        assert response.data['id'] == product.id
+        assert response.data['title'] == product.title
+        assert response.data['slug'] == product.slug
+        assert response.data['description'] == product.description
+        assert response.data['unit_price'] == product.unit_price
+        assert response.data['inventory'] == product.inventory
+        assert response.data['category'] == product.category
 
     def test_not_exists_return_404(self, api_client, products_detail_url):
         response = api_client.get(products_detail_url(9999))
@@ -129,8 +131,6 @@ class TestRetrieveProduct:
 
 
 @pytest.mark.django_db
-
-
 class TestUpdateProduct:
     def test_if_admin_returns_200(self, authenticate_client, products_detail_url):
         category = baker.make(models.Category)
