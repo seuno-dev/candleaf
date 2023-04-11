@@ -1,3 +1,6 @@
+import itertools
+import random
+
 import pytest
 from django.urls import reverse
 from model_bakery import baker
@@ -86,6 +89,29 @@ class TestListProduct:
             else:
                 assert product_response['category'] is None
 
+    def test_title_filter_returns_200(self, api_client, products_list_url):
+        baker.make(models.Product, _quantity=10)
+
+        # Only this product should be returned by the API
+        titles = ['new macbook 2012', 'macbook m1', 'used macbook 2018']
+        products = baker.make(models.Product, title=itertools.cycle(titles), _quantity=3)
+
+        url = f"{products_list_url}?title=mac"
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data['results']
+        assert len(results) == len(products)
+
+        for product_response, product in zip(results, products):
+            assert product_response['id'] == product.id
+            assert product_response['title'] == product.title
+            assert product_response['slug'] == product.slug
+            assert product_response['description'] == product.description
+            assert product_response['unit_price'] == product.unit_price
+            assert product_response['inventory'] == product.inventory
+
     def test_category_filter_returns_200(self, api_client, products_list_url):
         category = baker.make(models.Category)
         products_with_category = baker.make(models.Product, category=category, _quantity=5)
@@ -100,6 +126,29 @@ class TestListProduct:
         assert len(results) == len(products_with_category)
 
         for product_response, product in zip(results, products_with_category):
+            assert product_response['id'] == product.id
+            assert product_response['title'] == product.title
+            assert product_response['slug'] == product.slug
+            assert product_response['description'] == product.description
+            assert product_response['unit_price'] == product.unit_price
+            assert product_response['inventory'] == product.inventory
+
+    def test_price_filter_returns_200(self, api_client, products_list_url):
+        baker.make(models.Product, unit_price=random.randint(1, 9), _quantity=5)
+        baker.make(models.Product, unit_price=random.randint(21, 30), _quantity=5)
+
+        # Only this product should be returned by the API
+        products = baker.make(models.Product, unit_price=random.randint(10, 19), _quantity=10)
+
+        url = f"{products_list_url}?unit_price__gt=10&unit_price__lt=20"
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data['results']
+        assert len(results) == len(products)
+
+        for product_response, product in zip(results, products):
             assert product_response['id'] == product.id
             assert product_response['title'] == product.title
             assert product_response['slug'] == product.slug
