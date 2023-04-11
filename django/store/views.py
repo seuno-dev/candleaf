@@ -1,14 +1,12 @@
 import stripe
-from django.core.cache import cache
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
-
-from rest_framework import viewsets, permissions, status, mixins, generics, filters
+from rest_framework import viewsets, permissions, status, mixins, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from DjangoKart import settings
-from . import models, serializers
+from . import models, serializers, filters
 from .paginations import PageNumberPagination
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -43,6 +41,7 @@ class StripeWebHook(generics.GenericAPIView):
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
+        # noinspection PyUnresolvedReferences
         try:
             event = stripe.Webhook.construct_event(
                 payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
@@ -170,9 +169,9 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.all()
     permission_classes = [Permission]
     lookup_field = 'slug'
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend]
     search_fields = ['title', 'description']
-    filterset_fields = ['category']
+    filterset_class = filters.ProductFilter
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
