@@ -22,6 +22,12 @@ export type Product = {
   images: ProductImage[];
 };
 
+export type Category = {
+  id: number;
+  title: string;
+  slug: string;
+};
+
 export type ProductList = {
   results: Product[];
   totalPages: number;

@@ -1,6 +1,7 @@
 import { instance, login, logout, REFRESH_KEY } from "./axios";
 import {
   CartItem,
+  Category,
   CreatePayment,
   OrderList,
   Product,
@@ -22,12 +23,14 @@ export const retrieveProfile = async (): Promise<User> => {
 
 export const retrieveProductList = async (
   search: string,
+  categoryId: string,
   page: number
 ): Promise<ProductList> => {
   const response = await instance.get<ProductList>("/store/products/", {
     params: {
       page: page,
       search: search,
+      category: categoryId,
     },
   });
   return response.data;
@@ -48,6 +51,11 @@ export const createCartItem = async (productId: number) => {
   } catch (e) {
     return false;
   }
+};
+
+export const retrieveCategoryList = async (): Promise<Category[]> => {
+  const response = await instance.get<Category[]>("/store/categories/");
+  return response.data;
 };
 
 export const retrieveCartItemList = async (): Promise<CartItem[]> => {

@@ -12,17 +12,25 @@ import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
 import ShoppingCart from "../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
+import { useCategoryList } from "../hooks/useCategoryList";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
   const { onLogout } = useAuth();
   const { user } = useProfile();
+  const { categories } = useCategoryList();
 
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  const [openCategoryMenu, setOpenCategoryMenu] = useState(false);
   // noinspection JSUnusedGlobalSymbols
-  const triggers = {
+  const profileTriggers = {
     onMouseEnter: () => setOpenProfileMenu(true),
     onMouseLeave: () => setOpenProfileMenu(false),
+  };
+  // noinspection JSUnusedGlobalSymbols
+  const categoryTriggers = {
+    onMouseEnter: () => setOpenCategoryMenu(true),
+    onMouseLeave: () => setOpenCategoryMenu(false),
   };
 
   const navigate = useNavigate();
@@ -34,6 +42,16 @@ function Navbar() {
 
   const handleOrders = () => {
     return navigate("/orders");
+  };
+
+  const handleCategoryClick = (categoryId: string) => {
+    return navigate({
+      pathname: "products",
+      search: createSearchParams({
+        category: categoryId,
+        page: "1",
+      }).toString(),
+    });
   };
 
   const onProductSearch = (search: string) => {
@@ -52,15 +70,37 @@ function Navbar() {
         <Link to="/">
           <Typography variant="h4">DjangoKart</Typography>
         </Link>
-        <div className="w-[800px] mx-3">
+        <div className="px-5">
+          <Menu open={openCategoryMenu} handler={setOpenCategoryMenu}>
+            <MenuHandler {...categoryTriggers}>
+              <Typography
+                className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
+                variant="small"
+              >
+                Category
+              </Typography>
+            </MenuHandler>
+            <MenuList {...categoryTriggers}>
+              {categories.map((category) => (
+                <MenuItem
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id.toString())}
+                >
+                  <Typography>{category.title}</Typography>
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+        </div>
+        <div className="w-full">
           <SearchBar onSearchSubmit={onProductSearch} />
         </div>
         <div className="flex flex-row items-center">
-          <Link className="mr-5" to="/cart">
+          <Link className="mx-5" to="/cart">
             <img src={ShoppingCart} alt="Icon of shopping cart" />
           </Link>
           <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
-            <MenuHandler {...triggers}>
+            <MenuHandler {...profileTriggers}>
               <Typography
                 className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
                 variant="small"
@@ -68,7 +108,7 @@ function Navbar() {
                 {user.firstName} {user.lastName}
               </Typography>
             </MenuHandler>
-            <MenuList {...triggers}>
+            <MenuList {...profileTriggers}>
               <MenuItem onClick={handleOrders}>
                 <Typography>Orders</Typography>
               </MenuItem>

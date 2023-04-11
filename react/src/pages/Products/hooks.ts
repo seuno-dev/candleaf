@@ -3,11 +3,15 @@ import { retrieveProductList } from "../../api/api";
 import { Product } from "../../types";
 
 export const useProductList = () => {
-  const [products, setProductList] = useState<Product[] | null>(null);
+  const [products, setProductList] = useState<Product[]>([]);
   const [pageCount, setPageCount] = useState(0);
 
-  const loadProductList = (search: string, page: number) => {
-    retrieveProductList(search, page).then((_productList) => {
+  const loadProductList = (
+    search: string,
+    categoryId: string,
+    page: number
+  ) => {
+    retrieveProductList(search, categoryId, page).then((_productList) => {
       setProductList(_productList.results);
       setPageCount(_productList.totalPages);
     });
@@ -15,5 +19,3 @@ export const useProductList = () => {
 
   return { productList: products, pageCount, loadProductList };
 };
-
-

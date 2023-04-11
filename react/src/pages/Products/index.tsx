@@ -11,9 +11,14 @@ function Products() {
 
   const handlePageClick = (e: { selected: number }) => {
     const search = searchParams.get("search");
+    const category = searchParams.get("category");
     const newPage = e.selected + 1;
 
-    loadProductList(search ? search : "", e.selected + 1);
+    loadProductList(
+      search ? search : "",
+      category ? category : "",
+      e.selected + 1
+    );
     const url = new URL(window.location.toString());
     url.searchParams.set("page", newPage.toString());
     window.history.pushState(null, "", url.toString());
@@ -21,7 +26,8 @@ function Products() {
 
   useEffect(() => {
     const search = searchParams.get("search");
-    loadProductList(search ? search : "", 1);
+    const category = searchParams.get("category");
+    loadProductList(search ? search : "", category ? category : "", 1);
   }, [searchParams]);
 
   return (
