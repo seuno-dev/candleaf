@@ -67,6 +67,7 @@ class TestListProduct:
         assert response.status_code == status.HTTP_200_OK
 
         results = response.data['results']
+        assert len(results) == len(products_with_category + products_without_category)
 
         for product, response_product in zip(products_with_category + products_without_category, results):
             assert product.id == response_product['id']
@@ -82,6 +83,27 @@ class TestListProduct:
                 assert product.category.slug == response_product['category']['slug']
             else:
                 assert response_product['category'] is None
+
+    def test_category_filter_returns_200(self, api_client, products_list_url):
+        category = baker.make(models.Category)
+        products_with_category = baker.make(models.Product, category=category, _quantity=5)
+        baker.make(models.Product, _quantity=5)
+
+        url = f"{products_list_url}?category={category.id}"
+        response = api_client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data['results']
+        assert len(results) == len(products_with_category)
+
+        for product_response, product in zip(results, products_with_category):
+            assert product.id == product_response['id']
+            assert product.title == product_response['title']
+            assert product.slug == product_response['slug']
+            assert product.description == product_response['description']
+            assert product.unit_price == product_response['unit_price']
+            assert product.inventory == product_response['inventory']
 
 
 @pytest.mark.django_db
@@ -107,6 +129,8 @@ class TestRetrieveProduct:
 
 
 @pytest.mark.django_db
+
+
 class TestUpdateProduct:
     def test_if_admin_returns_200(self, authenticate_client, products_detail_url):
         category = baker.make(models.Category)
