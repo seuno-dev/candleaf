@@ -1,11 +1,12 @@
-import { Outlet, useRoutes } from "react-router-dom";
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthRoutes from "../features/Auth/routes";
 import ProductRoutes from "../features/Products/routes";
 import React from "react";
 import CartRoutes from "../features/Cart/routes";
 import OrderRoutes from "../features/Order/routes";
-import StripePaymentRoutes from "../features/StripePayment/routes";
 import Navbar from "../components/Elements/Navbar";
+import useAuth from "../hooks/useAuth";
+import StripePayment from "../features/StripePayment/routes/StripePayment";
 
 const App = () => {
   return (
@@ -15,6 +16,12 @@ const App = () => {
     </>
   );
 };
+
+const requireAuthenticated = (Component: React.FC) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Component /> : <Navigate to="/auth/login" />;
+};
+
 export const AppRoutes = () => {
   return useRoutes([
     {
@@ -26,9 +33,9 @@ export const AppRoutes = () => {
       element: <App />,
       children: [
         { path: "/products/*", element: <ProductRoutes /> },
-        { path: "/cart/*", element: <CartRoutes /> },
-        { path: "/orders/*", element: <OrderRoutes /> },
-        { path: "/payment/*", element: <StripePaymentRoutes /> },
+        { path: "/cart/*", element: requireAuthenticated(CartRoutes) },
+        { path: "/orders/*", element: requireAuthenticated(OrderRoutes) },
+        { path: "/payment/*", element: requireAuthenticated(StripePayment) },
       ],
     },
   ]);
