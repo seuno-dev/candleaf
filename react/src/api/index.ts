@@ -1,11 +1,5 @@
 import { client, login, logout, REFRESH_KEY } from "./axios";
-import {
-  Category,
-  CreatePayment,
-  OrderList,
-  SubmitOrder,
-  User,
-} from "../types";
+import { Category, CreatePayment, User } from "../types";
 
 export { client, login, logout };
 
@@ -23,10 +17,7 @@ export const retrieveCategoryList = async (): Promise<Category[]> => {
   return response.data;
 };
 
-export const submitOrder = async () => {
-  const response = await client.post<SubmitOrder>("/store/orders/");
-  return response.data.orderId;
-};
+
 
 export const createPayment = async (orderId: string) => {
   const response = await client.post<CreatePayment>(
@@ -45,7 +36,3 @@ export const submitPayment = async (paymentMethodId: string) => {
   return response.status === 200;
 };
 
-export const retrieveOrderList = async (): Promise<OrderList> => {
-  const response = await client.get<OrderList>("/store/orders/");
-  return response.data;
-};

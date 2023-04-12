@@ -6,8 +6,8 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { toCurrencyString } from "../../utils/currency";
-import { Order } from "../../types";
+import { formatCurrency } from "../../../utils/currency";
+import { Order } from "../types";
 
 type OrderItemProps = {
   order: Order;
@@ -32,7 +32,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
         <div className="flex flex-col ml-4 w-[950px]">
           <Typography variant="h6">{firstItem.product.title}</Typography>
           <Typography variant="paragraph">
-            {firstItem.quantity} x {toCurrencyString(firstItem.unitPrice)}
+            {firstItem.quantity} x {formatCurrency(firstItem.unitPrice)}
           </Typography>
           {items.length > 1 && (
             <Typography variant="paragraph" className="mt-2">
@@ -43,7 +43,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
         <div className="flex flex-col">
           <Typography variant="paragraph">Total price</Typography>
           <Typography variant="h6">
-            {toCurrencyString(order.totalPrice)}
+            {formatCurrency(order.totalPrice)}
           </Typography>
           <Button
             className="mt-5"

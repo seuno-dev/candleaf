@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { CartItem } from "../../../types";
+import { useNavigate } from "react-router-dom";
+import CartItemCard from "../components/CartItemCard";
 import {
   deleteCartItem,
   retrieveCartItemList,
-  submitOrder,
   updateCartItemQuantity,
-} from "../../../api";
-import { useNavigate } from "react-router-dom";
-import CartItemCard from "../components/CartItemCard";
+} from "../api";
+import { submitOrder } from "../../Order/api";
+import { CartItem } from "../types";
 
 function Cart() {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);

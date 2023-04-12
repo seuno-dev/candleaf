@@ -1,16 +1,21 @@
-import React, { useState } from "react";
-import { useOrderList } from "./hooks";
-import OrderCard from "./OrderCard";
+import React, { useEffect, useState } from "react";
+import OrderCard from "../components/OrderCard";
 import { Dialog, DialogBody } from "@material-tailwind/react";
-import OrderItemCard from "./OrderItemCard";
-import { Order } from "../../types";
+import OrderItemCard from "../components/OrderItemCard";
+import { Order } from "../types";
+import { retrieveOrderList } from "../api";
 
-function Orders() {
-  const { orders } = useOrderList();
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(
-    null
-  );
+function OrderList() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [openDetailDialog, setOpenDetailDialog] = useState(true);
+
+  useEffect(() => {
+    retrieveOrderList().then((orderList) => {
+      setOrders(orderList.results);
+    });
+  }, []);
+
   const handleOpenDetailDialog = () => setOpenDetailDialog(!open);
 
   const handleClickDetail = (order: Order) => {
@@ -51,4 +56,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default OrderList;

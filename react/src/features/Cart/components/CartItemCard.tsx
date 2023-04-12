@@ -5,8 +5,8 @@ import MinusDisabledIcon from "../../../assets/images/minus-circle-disabled.svg"
 import PlusDisabledIcon from "../../../assets/images/plus-circle-disabled.svg";
 import PlusIcon from "../../../assets/images/plus-circle.svg";
 import DeleteIcon from "../../../assets/images/delete.svg";
-import { CartItem } from "../../../types";
-import { toCurrencyString } from "../../../utils/currency";
+import { formatCurrency } from "../../../utils/currency";
+import { CartItem } from "../types";
 
 type CartItemProps = {
   item: CartItem;
@@ -27,7 +27,9 @@ function CartItemCard({
     <Card className="flex flex-row mb-5 p-5">
       <img
         src={
-          item.product.image.image == "" ? "logo512.png" : item.product.image.image
+          item.product.image.image == ""
+            ? "logo512.png"
+            : item.product.image.image
         }
         className="w-28 rounded-lg"
         alt={`Image of ${item.product.title}`}
@@ -37,7 +39,7 @@ function CartItemCard({
           {item.product.title}
         </Typography>
         <Typography variant="paragraph">
-          {toCurrencyString(item.product.unitPrice)}
+          {formatCurrency(item.product.unitPrice)}
         </Typography>
         <div className="w-full flex flex-row justify-end">
           <div className="w-32 flex flex-row justify-between">

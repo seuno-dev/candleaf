@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toCurrencyString } from "../../../utils/currency";
+import { formatCurrency } from "../../../utils/currency";
 import { createCartItem, retrieveProductDetail } from "../api";
 import { Product } from "../types";
 
@@ -85,7 +85,7 @@ function ProductDetail() {
             {product.title}
           </Typography>
           <Typography variant="h2" className="mt-6">
-            {toCurrencyString(product.unitPrice)}
+            {formatCurrency(product.unitPrice)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
             {product.category && (

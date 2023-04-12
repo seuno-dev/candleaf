@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
-import { toCurrencyString } from "../../utils/currency";
-import { OrderItem } from "../../types";
+import { formatCurrency } from "../../../utils/currency";
+import { OrderItem } from "../types";
 
 type OrderItemCardProps = {
   item: OrderItem;
@@ -19,13 +19,13 @@ function OrderItemCard({ item }: OrderItemCardProps) {
         <div className="w-[350px] ml-2 flex flex-col">
           <Typography variant="h6">{item.product.title}</Typography>
           <Typography variant="paragraph">
-            {item.quantity} x {toCurrencyString(item.unitPrice)}
+            {item.quantity} x {formatCurrency(item.unitPrice)}
           </Typography>
         </div>
         <div className="flex flex-col">
           <Typography variant="paragraph">Total price:</Typography>
           <Typography variant="h6">
-            {toCurrencyString(item.totalPrice)}
+            {formatCurrency(item.totalPrice)}
           </Typography>
         </div>
       </CardBody>

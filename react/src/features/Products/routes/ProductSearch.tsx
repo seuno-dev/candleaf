@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../../../components/Pagination";
-import { toCurrencyString } from "../../../utils/currency";
+import { formatCurrency } from "../../../utils/currency";
 import { retrieveProductList } from "../api";
 import { Product } from "../types";
 
@@ -48,7 +48,7 @@ function ProductSearch() {
           <Link key={product.id} to={`/products/${product.slug}`}>
             <ProductCard
               title={product.title}
-              price={toCurrencyString(product.unitPrice)}
+              price={formatCurrency(product.unitPrice)}
               imageUrl={
                 product.images.length > 0
                   ? product.images[0].image

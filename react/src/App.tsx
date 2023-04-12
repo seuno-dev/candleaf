@@ -24,7 +24,7 @@ function App() {
       {/*      element={<ProductDetail addToCart={addToCart} />}*/}
       {/*    ></Route>*/}
       {/*    <Route path="/cart" element={<Cart />}></Route>*/}
-      {/*    <Route path="/orders" element={<Orders />}></Route>*/}
+      {/*    <Route path="/orders" element={<Order />}></Route>*/}
       {/*    <Route path="/order/payment" element={<StripePayment />}></Route>*/}
       {/*    <Route path="/checkout-success" element={<Success />}></Route>*/}
       {/*    <Route path="/checkout-fail" element={<Fail />}></Route>*/}
