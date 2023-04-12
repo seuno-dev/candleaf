@@ -16,7 +16,7 @@ import { useCategoryList } from "../../hooks/useCategoryList";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
-  const { onLogout } = useAuth();
+  const { isAuthenticated, onLogout } = useAuth();
   const { user } = useProfile();
   const { categories } = useCategoryList();
 
@@ -95,28 +95,44 @@ function Navbar() {
         <div className="w-full">
           <SearchBar onSearchSubmit={onProductSearch} />
         </div>
-        <div className="flex flex-row items-center">
-          <Link className="mx-5" to="/cart">
+        <div className="ml-8 flex flex-row items-center">
+          <Link className="w-12" to="/cart">
             <img src={ShoppingCart} alt="Icon of shopping cart" />
           </Link>
-          <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
-            <MenuHandler {...profileTriggers}>
-              <Typography
-                className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
-                variant="small"
-              >
-                {user.firstName} {user.lastName}
-              </Typography>
-            </MenuHandler>
-            <MenuList {...profileTriggers}>
-              <MenuItem onClick={handleOrders}>
-                <Typography>Orders</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <Typography>Logout</Typography>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          {isAuthenticated && (
+            <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
+              <MenuHandler {...profileTriggers}>
+                <Typography
+                  className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
+                  variant="small"
+                >
+                  {user.firstName} {user.lastName}
+                </Typography>
+              </MenuHandler>
+              <MenuList {...profileTriggers}>
+                <MenuItem onClick={handleOrders}>
+                  <Typography>Orders</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Typography>Logout</Typography>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+          {!isAuthenticated && (
+            <Menu>
+              <MenuHandler {...profileTriggers}>
+                <Typography
+                  className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
+                  variant="small"
+                >
+                  <Link to="/auth/login">
+                    Login
+                  </Link>
+                </Typography>
+              </MenuHandler>
+            </Menu>
+          )}
         </div>
       </div>
     </BaseNavbar>
