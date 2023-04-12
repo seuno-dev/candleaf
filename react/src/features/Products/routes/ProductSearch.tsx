@@ -5,7 +5,7 @@ import Pagination from "../../../components/Elements/Pagination";
 import { formatCurrency } from "../../../utils/currency";
 import { retrieveProductList } from "../api";
 import { Product } from "../types";
-import FilterSideBar from "../components/FilterSideBar";
+import FilterSideBar from "../components/filter";
 
 function ProductSearch() {
   const [searchParams] = useSearchParams();
