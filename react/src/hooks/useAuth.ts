@@ -1,5 +1,5 @@
-import { getAuthenticationStatus, login, logout } from "../api";
 import { useState } from "react";
+import { getAuthenticationStatus, login, logout } from "../features/Auth/api";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(

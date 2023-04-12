@@ -8,11 +8,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import useProfile from "../hooks/useProfile";
-import ShoppingCart from "../assets/images/shopping-cart.svg";
+import useAuth from "../../hooks/useAuth";
+import useProfile from "../../hooks/useProfile";
+import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
-import { useCategoryList } from "../hooks/useCategoryList";
+import { useCategoryList } from "../../hooks/useCategoryList";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
@@ -37,7 +37,7 @@ function Navbar() {
 
   const handleLogout = () => {
     onLogout();
-    return navigate("/login");
+    return navigate("/auth/login");
   };
 
   const handleOrders = () => {

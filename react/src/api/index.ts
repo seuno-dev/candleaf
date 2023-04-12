@@ -1,11 +1,7 @@
-import { client, login, logout, REFRESH_KEY } from "./axios";
+import { client, login, logout } from "./axios";
 import { Category, User } from "../types";
 
 export { client, login, logout };
-
-export const getAuthenticationStatus = () => {
-  return localStorage.getItem(REFRESH_KEY) !== null;
-};
 
 export const retrieveProfile = async (): Promise<User> => {
   const response = await client.get<User>("/auth/users/me/");

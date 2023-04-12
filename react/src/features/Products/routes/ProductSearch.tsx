@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { Link, useSearchParams } from "react-router-dom";
-import Pagination from "../../../components/Pagination";
+import Pagination from "../../../components/Elements/Pagination";
 import { formatCurrency } from "../../../utils/currency";
 import { retrieveProductList } from "../api";
 import { Product } from "../types";

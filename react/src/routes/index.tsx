@@ -2,10 +2,10 @@ import { Outlet, useRoutes } from "react-router-dom";
 import AuthRoutes from "../features/Auth/routes";
 import ProductRoutes from "../features/Products/routes";
 import React from "react";
-import Navbar from "../components/Navbar";
 import CartRoutes from "../features/Cart/routes";
 import OrderRoutes from "../features/Order/routes";
 import StripePaymentRoutes from "../features/StripePayment/routes";
+import Navbar from "../components/Elements/Navbar";
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
 export const AppRoutes = () => {
   return useRoutes([
     {
-      path: "/auth",
+      path: "/auth/*",
       element: <AuthRoutes />,
     },
     {
