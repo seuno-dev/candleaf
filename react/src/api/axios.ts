@@ -13,7 +13,7 @@ const refreshQueue: refreshQueueType[] = [];
 
 export const BASE_URL = "http://127.0.0.1:8000/";
 
-export const instance = axios.create({
+export const client = axios.create({
   baseURL: BASE_URL,
 });
 
@@ -43,7 +43,7 @@ export const logout = () => {
   localStorage.removeItem(ACCESS_KEY);
 };
 
-instance.interceptors.request.use((config) => {
+client.interceptors.request.use((config) => {
   const token = localStorage.getItem(ACCESS_KEY);
   if (token) {
     config.headers["Authorization"] = `JWT ${token}`;
@@ -51,7 +51,7 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-instance.interceptors.response.use(
+client.interceptors.response.use(
   (response) => {
     if (response.data) {
       response.data = camelizeKeys(response.data);
@@ -91,7 +91,7 @@ instance.interceptors.response.use(
           refreshQueue.forEach((request) => request.resolve());
           console.log("token refreshed!");
           isRefreshing = false;
-          return instance(originalRequest);
+          return client(originalRequest);
         } else if (response.status === 401) {
           logout();
         }
@@ -100,7 +100,7 @@ instance.interceptors.response.use(
           refreshQueue.push({ resolve, reject });
         })
           .then(() => {
-            return instance(originalRequest);
+            return client(originalRequest);
           })
           .catch((error) => {
             return Promise.reject(error);

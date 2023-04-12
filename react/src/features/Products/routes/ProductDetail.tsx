@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toCurrencyString } from "../../utils/currency";
-import { useProductDetail } from "./hooks";
+import { toCurrencyString } from "../../../utils/currency";
+import { createCartItem, retrieveProductDetail } from "../api";
+import { Product } from "../types";
 
-type ProductDetailProps = {
-  addToCart: (productId: number) => Promise<boolean>;
-};
+function ProductDetail() {
+  const [product, setProduct] = useState<Product>({
+    category: null,
+    description: "",
+    id: 0,
+    images: [],
+    inventory: 0,
+    title: "",
+    slug: "",
+    unitPrice: 0,
+  });
 
-function ProductDetail({ addToCart }: ProductDetailProps) {
   const { slug } = useParams();
   const [showCartSuccessAlert, setShowCartSuccessAlert] = useState(false);
   const [showCartFailedAlert, setShowCartFailedAlert] = useState(false);
@@ -19,7 +27,9 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
     return <></>;
   }
 
-  const { product } = useProductDetail(slug);
+  useEffect(() => {
+    retrieveProductDetail(slug).then((product) => setProduct(product));
+  }, []);
 
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
@@ -30,7 +40,7 @@ function ProductDetail({ addToCart }: ProductDetailProps) {
   };
 
   const onAddToCart = () => {
-    addToCart(product.id).then((isSuccess) => {
+    createCartItem(product.id).then((isSuccess) => {
       if (isSuccess) {
         showAlertTemporarily(setShowCartSuccessAlert);
       } else {

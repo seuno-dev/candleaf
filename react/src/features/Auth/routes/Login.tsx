@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {

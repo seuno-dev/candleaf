@@ -4,7 +4,7 @@ import {
   retrieveCartItemList,
   submitOrder,
   updateCartItemQuantity,
-} from "../../api/api";
+} from "../../api";
 import { CartItem } from "../../types";
 
 export const useCart = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { retrieveOrderList } from "../../api/api";
+import { retrieveOrderList } from "../../api";
 import { Order } from "../../types";
 
 export const useOrderList = () => {

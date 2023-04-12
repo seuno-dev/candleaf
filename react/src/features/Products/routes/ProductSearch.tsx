@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
-import { useProductList } from "./hooks";
-import ProductCard from "./ProductCard";
+import React, { useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
 import { Link, useSearchParams } from "react-router-dom";
-import Pagination from "../../components/Pagination";
-import { toCurrencyString } from "../../utils/currency";
+import Pagination from "../../../components/Pagination";
+import { toCurrencyString } from "../../../utils/currency";
+import { retrieveProductList } from "../api";
+import { Product } from "../types";
 
-function Products() {
+function ProductSearch() {
   const [searchParams] = useSearchParams();
-  const { productList, pageCount, loadProductList } = useProductList();
+  const [products, setProductList] = useState<Product[]>([]);
+  const [pageCount, setPageCount] = useState(0);
 
   const loadPage = (page: number) => {
     const title = searchParams.get("title");
@@ -15,7 +17,16 @@ function Products() {
     const unitPriceLt = searchParams.get("unit_price_lt");
     const unitPriceGt = searchParams.get("unit_price_gt");
 
-    loadProductList({ page, title, category, unitPriceLt, unitPriceGt });
+    retrieveProductList({
+      page,
+      title,
+      category,
+      unitPriceLt,
+      unitPriceGt,
+    }).then((productList) => {
+      setProductList(productList.results);
+      setPageCount(productList.totalPages);
+    });
   };
 
   const handlePageClick = (e: { selected: number }) => {
@@ -33,7 +44,7 @@ function Products() {
   return (
     <div className="container mx-auto mt-5 flex flex-col">
       <ul className="flex flex-row flex-wrap gap-1">
-        {productList?.map((product) => (
+        {products.map((product) => (
           <Link key={product.id} to={`/products/${product.slug}`}>
             <ProductCard
               title={product.title}
@@ -54,4 +65,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default ProductSearch;
