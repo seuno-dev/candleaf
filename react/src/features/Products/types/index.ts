@@ -5,7 +5,13 @@ export type ProductImage = {
   image: string;
 };
 
-
+export type SimpleProduct = {
+  id: number;
+  title: string;
+  unitPrice: number;
+  inventory: number;
+  image: ProductImage;
+};
 
 export type Product = {
   id: number;

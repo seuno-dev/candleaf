@@ -1,6 +1,5 @@
 import { client, login, logout, REFRESH_KEY } from "./axios";
 import {
-  CartItem,
   Category,
   CreatePayment,
   OrderList,
@@ -22,26 +21,6 @@ export const retrieveProfile = async (): Promise<User> => {
 export const retrieveCategoryList = async (): Promise<Category[]> => {
   const response = await client.get<Category[]>("/store/categories/");
   return response.data;
-};
-
-export const retrieveCartItemList = async (): Promise<CartItem[]> => {
-  const response = await client.get<CartItem[]>("/store/cart-items/");
-  return response.data;
-};
-
-export const updateCartItemQuantity = async (
-  id: number,
-  newQuantity: number
-) => {
-  const response = await client.patch(`/store/cart-items/${id}/`, {
-    quantity: newQuantity,
-  });
-  return response.status === 200;
-};
-
-export const deleteCartItem = async (id: number) => {
-  const response = await client.delete(`/store/cart-items/${id}/`);
-  return response.status === 204;
 };
 
 export const submitOrder = async () => {
