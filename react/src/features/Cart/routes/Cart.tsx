@@ -1,19 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { useCart } from "./hooks";
-import CartItemCard from "./CartItemPage";
+import { CartItem } from "../../../types";
+import {
+  deleteCartItem,
+  retrieveCartItemList,
+  submitOrder,
+  updateCartItemQuantity,
+} from "../../../api";
 import { useNavigate } from "react-router-dom";
+import CartItemCard from "../components/CartItemCard";
 
 function Cart() {
-  const {
-    setCartItemList,
-    cartItemList,
-    updateItemQuantity,
-    deleteItem,
-    totalPrice,
-    createOrder,
-  } = useCart();
+  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
+
+  const handleUpdateQty = async (id: number, newQuantity: number) => {
+    return await updateCartItemQuantity(id, newQuantity);
+  };
+
+  const handleDeleteItem = async (id: number) => {
+    return await deleteCartItem(id);
+  };
+
+  const createOrder = async () => {
+    return await submitOrder();
+  };
+
+  useEffect(() => {
+    retrieveCartItemList().then((items) => setCartItemList(items));
+  }, []);
+
+  useEffect(() => {
+    setTotalPrice(
+      cartItemList.reduce(
+        (previousItem, currentItem) => previousItem + currentItem.totalPrice,
+        0
+      )
+    );
+  }, [cartItemList]);
 
   const handleCreateOrderClick = async () => {
     const orderId = await createOrder();
@@ -29,10 +54,10 @@ function Cart() {
             <CartItemCard
               key={item.id}
               item={item}
-              updateItemQuantity={updateItemQuantity}
+              updateItemQuantity={handleUpdateQty}
               setCartItemList={setCartItemList}
               cartItemList={cartItemList}
-              deleteItem={deleteItem}
+              deleteItem={handleDeleteItem}
             />
           ))}
         </div>

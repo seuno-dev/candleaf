@@ -1,12 +1,12 @@
 import React from "react";
 import { Card, Typography } from "@material-tailwind/react";
-import MinusIcon from "../../assets/images/minus-circle.svg";
-import MinusDisabledIcon from "../../assets/images/minus-circle-disabled.svg";
-import PlusDisabledIcon from "../../assets/images/plus-circle-disabled.svg";
-import PlusIcon from "../../assets/images/plus-circle.svg";
-import DeleteIcon from "../../assets/images/delete.svg";
-import { CartItem } from "../../types";
-import { toCurrencyString } from "../../utils/currency";
+import MinusIcon from "../../../assets/images/minus-circle.svg";
+import MinusDisabledIcon from "../../../assets/images/minus-circle-disabled.svg";
+import PlusDisabledIcon from "../../../assets/images/plus-circle-disabled.svg";
+import PlusIcon from "../../../assets/images/plus-circle.svg";
+import DeleteIcon from "../../../assets/images/delete.svg";
+import { CartItem } from "../../../types";
+import { toCurrencyString } from "../../../utils/currency";
 
 type CartItemProps = {
   item: CartItem;
@@ -16,7 +16,7 @@ type CartItemProps = {
   deleteItem: (id: number) => Promise<boolean>;
 };
 
-function CartItemPage({
+function CartItemCard({
   item,
   updateItemQuantity,
   setCartItemList,
@@ -112,4 +112,4 @@ function CartItemPage({
   );
 }
 
-export default CartItemPage;
+export default CartItemCard;

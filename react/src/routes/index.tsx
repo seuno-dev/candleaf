@@ -3,6 +3,7 @@ import AuthRoutes from "../features/Auth/routes";
 import ProductRoutes from "../features/Products/routes";
 import React from "react";
 import Navbar from "../components/Navbar";
+import CartRoutes from "../features/Cart/routes";
 
 const App = () => {
   return (
@@ -21,7 +22,10 @@ export const AppRoutes = () => {
     {
       path: "/",
       element: <App />,
-      children: [{ path: "/products/*", element: <ProductRoutes /> }],
+      children: [
+        { path: "/products/*", element: <ProductRoutes /> },
+        { path: "/cart/*", element: <CartRoutes /> },
+      ],
     },
   ]);
 };
