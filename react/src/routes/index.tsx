@@ -5,6 +5,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import CartRoutes from "../features/Cart/routes";
 import OrderRoutes from "../features/Order/routes";
+import StripePaymentRoutes from "../features/StripePayment/routes";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
         { path: "/products/*", element: <ProductRoutes /> },
         { path: "/cart/*", element: <CartRoutes /> },
         { path: "/orders/*", element: <OrderRoutes /> },
+        { path: "/payment/*", element: <StripePaymentRoutes /> },
       ],
     },
   ]);

@@ -10,7 +10,3 @@ export type User = {
   lastName: string;
   email: string;
 };
-
-export type CreatePayment = {
-  clientSecret: string;
-};

@@ -25,7 +25,7 @@ function PaymentForm({ clientSecret }: PaymentFormProps) {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: "http://127.0.0.1:3000/checkout-success",
+        return_url: "http://127.0.0.1:3000/payment/success",
       },
     });
 

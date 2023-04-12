@@ -42,7 +42,7 @@ function Cart() {
 
   const handleCreateOrderClick = async () => {
     const orderId = await createOrder();
-    navigate("/order/payment/", { state: { orderId: orderId } });
+    navigate("/payment/", { state: { orderId: orderId } });
   };
 
   return (
