@@ -1,5 +1,3 @@
-import { SimpleProduct } from "../features/Products/types";
-
 export type Category = {
   id: number;
   title: string;
@@ -13,9 +11,6 @@ export type User = {
   email: string;
 };
 
-
-
 export type CreatePayment = {
   clientSecret: string;
 };
-
