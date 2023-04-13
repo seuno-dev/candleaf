@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Button, Typography } from "@material-tailwind/react";
 import FilterPriceInput from "./FilterPriceInput";
 
-function FilterPrice() {
+interface Props {
+  onPriceFilter: (minPrice: number | null, maxPrice: number | null) => void;
+}
+
+function FilterPrice({ onPriceFilter }: Props) {
   const [minPrice, setMinPrice] = useState<number | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   return (
@@ -19,7 +23,11 @@ function FilterPrice() {
           placeholder="Maximum price"
           onChange={(value) => setMaxPrice(value)}
         />
-        <Button fullWidth={true} color="light-green">
+        <Button
+          fullWidth={true}
+          color="light-green"
+          onClick={() => onPriceFilter(minPrice, maxPrice)}
+        >
           Apply
         </Button>
       </div>

@@ -47,6 +47,18 @@ function ProductSearch() {
     });
   };
 
+  const handlePriceFilter = (
+    minPrice: number | null,
+    maxPrice: number | null
+  ) => {
+    searchParams.set("price_min", minPrice ? minPrice.toString() : "");
+    searchParams.set("price_max", maxPrice ? maxPrice.toString() : "");
+    navigate({
+      pathname: "/products",
+      search: searchParams.toString(),
+    });
+  };
+
   useEffect(() => {
     loadPage(1);
   }, [searchParams]);
@@ -54,7 +66,10 @@ function ProductSearch() {
   return (
     <div className="container mx-auto mt-5 flex flex-row">
       <div className="w-[480px]">
-        <FilterSideBar onCategorySelect={handleCategorySelect} />
+        <FilterSideBar
+          onCategorySelect={handleCategorySelect}
+          onPriceFilter={handlePriceFilter}
+        />
       </div>
       <div className="ml-5">
         <ul className="flex flex-row flex-wrap gap-1">

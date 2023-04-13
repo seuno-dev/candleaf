@@ -4,9 +4,10 @@ import FilterPrice from "./FilterPrice";
 
 interface Props {
   onCategorySelect: (id: number | null) => void;
+  onPriceFilter: (minPrice: number | null, maxPrice: number | null) => void;
 }
 
-function FilterSideBar({ onCategorySelect }: Props) {
+function FilterSideBar({ onCategorySelect, onPriceFilter }: Props) {
   const handleCategoryClick = (id: number | null) => {
     onCategorySelect(id);
   };
@@ -17,7 +18,7 @@ function FilterSideBar({ onCategorySelect }: Props) {
         <FilterCategory onCategoryClick={handleCategoryClick} />
       </div>
       <div className="p-3 border-t-2 border-gray-200">
-        <FilterPrice />
+        <FilterPrice onPriceFilter={onPriceFilter} />
       </div>
     </div>
   );
