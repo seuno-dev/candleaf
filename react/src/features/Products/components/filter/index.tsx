@@ -2,9 +2,13 @@ import React from "react";
 import FilterCategory from "./FilterCategory";
 import FilterPrice from "./FilterPrice";
 
-function FilterSideBar() {
-  const handleCategoryClick = (id: number) => {
-    console.log(id);
+interface Props {
+  onCategorySelect: (id: number | null) => void;
+}
+
+function FilterSideBar({ onCategorySelect }: Props) {
+  const handleCategoryClick = (id: number | null) => {
+    onCategorySelect(id);
   };
 
   return (

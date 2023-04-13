@@ -33,6 +33,6 @@ export type ProductFilterParams = {
   page: number;
   title: string | null;
   category: string | null;
-  unitPriceLt: string | null;
-  unitPriceGt: string | null;
+  priceMin: string | null;
+  priceMax: string | null;
 };

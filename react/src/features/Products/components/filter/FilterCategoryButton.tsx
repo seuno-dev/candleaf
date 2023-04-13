@@ -3,18 +3,17 @@ import React from "react";
 
 interface Props {
   text: string;
-  isSelected: boolean;
+  selected: boolean;
   onClick: () => void;
 }
 
-function FilterCategoryButton({ text, isSelected, onClick }: Props) {
-  return isSelected ? (
+function FilterCategoryButton({ text, selected, onClick }: Props) {
+  return selected ? (
     <Button
       variant="text"
       color="gray"
       fullWidth={true}
       className="text-left"
-      disabled={true}
       ripple={false}
       onClick={onClick}
     >

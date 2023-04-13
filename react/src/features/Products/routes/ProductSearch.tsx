@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Pagination from "../../../components/Elements/Pagination";
 import { formatCurrency } from "../../../utils/currency";
 import { retrieveProductList } from "../api";
@@ -11,19 +16,20 @@ function ProductSearch() {
   const [searchParams] = useSearchParams();
   const [products, setProductList] = useState<Product[]>([]);
   const [pageCount, setPageCount] = useState(0);
+  const navigate = useNavigate();
 
   const loadPage = (page: number) => {
     const title = searchParams.get("title");
     const category = searchParams.get("category");
-    const unitPriceLt = searchParams.get("unit_price_lt");
-    const unitPriceGt = searchParams.get("unit_price_gt");
+    const priceMin = searchParams.get("price_min");
+    const priceMax = searchParams.get("price_max");
 
     retrieveProductList({
       page,
       title,
       category,
-      unitPriceLt,
-      unitPriceGt,
+      priceMin,
+      priceMax,
     }).then((productList) => {
       setProductList(productList.results);
       setPageCount(productList.totalPages);
@@ -38,6 +44,14 @@ function ProductSearch() {
     window.history.pushState(null, "", url.toString());
   };
 
+  const handleCategorySelect = (id: number | null) => {
+    searchParams.set("category", id ? id.toString() : "");
+    navigate({
+      pathname: "/products",
+      search: searchParams.toString(),
+    });
+  };
+
   useEffect(() => {
     loadPage(1);
   }, [searchParams]);
@@ -45,7 +59,7 @@ function ProductSearch() {
   return (
     <div className="container mx-auto mt-5 flex flex-row">
       <div className="w-[480px]">
-        <FilterSideBar />
+        <FilterSideBar onCategorySelect={handleCategorySelect} />
       </div>
       <div className="ml-5">
         <ul className="flex flex-row flex-wrap gap-1">
