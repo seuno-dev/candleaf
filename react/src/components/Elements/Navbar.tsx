@@ -126,9 +126,7 @@ function Navbar() {
                   className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
                   variant="small"
                 >
-                  <Link to="/auth/login">
-                    Login
-                  </Link>
+                  <Link to="/auth/login">Login</Link>
                 </Typography>
               </MenuHandler>
             </Menu>

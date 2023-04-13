@@ -11,6 +11,9 @@ function ProductSearch() {
   const [searchParams] = useSearchParams();
   const [products, setProductList] = useState<Product[]>([]);
   const [pageCount, setPageCount] = useState(0);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const loadPage = (page: number) => {
@@ -61,14 +64,20 @@ function ProductSearch() {
 
   useEffect(() => {
     loadPage(1);
+    setSelectedCategory(searchParams.get("category"));
+    setMinPrice(searchParams.get("price_min") || "");
+    setMaxPrice(searchParams.get("price_max") || "");
   }, [searchParams]);
 
   return (
     <div className="container mx-auto mt-5 flex flex-row">
       <div className="w-[480px]">
         <FilterSideBar
+          minPrice={minPrice}
+          maxPrice={maxPrice}
           onCategorySelect={handleCategorySelect}
           onPriceFilter={handlePriceFilter}
+          selectedCategory={selectedCategory}
         />
       </div>
       <div className="ml-5">

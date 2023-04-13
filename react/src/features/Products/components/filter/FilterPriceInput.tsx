@@ -1,16 +1,16 @@
 import { Input } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   placeholder: string;
+  value: string | null;
   onChange: (value: number | null) => void;
 }
 
-function FilterPriceInput({ placeholder, onChange }: Props) {
+function FilterPriceInput({ value: _value, placeholder, onChange }: Props) {
   const [value, setValue] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
+  const handleChange = (rawValue: string) => {
     const value = parseInt(rawValue);
     if (!isNaN(value)) {
       setValue(value.toString());
@@ -20,6 +20,10 @@ function FilterPriceInput({ placeholder, onChange }: Props) {
       onChange(null);
     }
   };
+
+  useEffect(() => {
+    if (_value) handleChange(_value);
+  }, [_value]);
 
   return (
     <div className="w-full max-w-[16rem] flex flex-row items-center">
@@ -38,7 +42,7 @@ function FilterPriceInput({ placeholder, onChange }: Props) {
         containerProps={{
           className: "h-10",
         }}
-        onChange={handleChange}
+        onChange={(e) => handleChange(e.target.value)}
         value={value}
       />
     </div>
