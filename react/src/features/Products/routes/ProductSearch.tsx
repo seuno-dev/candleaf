@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import {
-  createSearchParams,
-  Link,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../../components/Elements/Pagination";
 import { formatCurrency } from "../../../utils/currency";
 import { retrieveProductList } from "../api";
