@@ -96,7 +96,7 @@ class TestListProduct:
         titles = ['new macbook 2012', 'macbook m1', 'used macbook 2018']
         products = baker.make(models.Product, title=itertools.cycle(titles), _quantity=3)
 
-        url = f"{products_list_url}?title=mac"
+        url = f"{products_list_url}?title=macbook"
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK

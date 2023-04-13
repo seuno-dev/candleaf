@@ -100,6 +100,7 @@ class TestListOrder:
         results = response.data['results']
         for order_response, order, order_items in zip(results, orders, order_items_set):
             assert order_response['id'] == order.id
+            assert order_response['payment_status'] == order.payment_status
             assert len(order_items) != 0
 
             for item_response, order_item in zip(order_response['items'], order_items):
@@ -135,6 +136,8 @@ class TestRetrieveOrder:
         response = client.get(order_detail_url(order.id))
 
         assert response.status_code == status.HTTP_200_OK
+
+        assert response.data['payment_status'] == order.payment_status
 
         response_items = response.data['items']
         assert len(response_items) == len(order_items)
