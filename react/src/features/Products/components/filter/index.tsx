@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, CardBody } from "@material-tailwind/react";
 import FilterCategory from "./FilterCategory";
+import FilterPrice from "./FilterPrice";
 
 function FilterSideBar() {
   const handleCategoryClick = (id: number) => {
@@ -8,11 +8,14 @@ function FilterSideBar() {
   };
 
   return (
-    <Card className="w-full border-[0.5px] border-gray-200" shadow={false}>
-      <CardBody>
+    <div className="w-[16rem] border-2 border-gray-200 rounded-lg">
+      <div className="p-3">
         <FilterCategory onCategoryClick={handleCategoryClick} />
-      </CardBody>
-    </Card>
+      </div>
+      <div className="p-3 border-t-2 border-gray-200">
+        <FilterPrice />
+      </div>
+    </div>
   );
 }
 
