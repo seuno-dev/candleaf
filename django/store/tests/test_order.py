@@ -84,6 +84,7 @@ class TestListOrder:
         client = authenticate_client(customer.user)
 
         orders = baker.make(models.Order, customer=customer, _quantity=random.randint(3, 5))
+        orders.reverse()
         order_items_set = []
         for order in orders:
             order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(1, 10))

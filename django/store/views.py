@@ -87,7 +87,7 @@ class OrderViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         customer = get_object_or_404(models.Customer, user=self.request.user)
-        return models.Order.objects.filter(customer=customer)
+        return models.Order.objects.filter(customer=customer).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         cart = get_cart_for_user(self.request.user)
