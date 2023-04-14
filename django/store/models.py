@@ -2,6 +2,7 @@ import stripe
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.core.cache import cache
+from django_fsm import FSMField, transition
 
 from DjangoKart import settings
 
@@ -74,17 +75,21 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    PAYMENT_PENDING = 'P'
-    PAYMENT_FAILED = 'F'
-    PAYMENT_COMPLETED = 'C'
-    PAYMENT_CHOICES = [
-        (PAYMENT_PENDING, 'Pending'),
-        (PAYMENT_FAILED, 'Failed'),
-        (PAYMENT_COMPLETED, 'Completed'),
+    STATUS_AWAITING_PAYMENT = 'a'
+    STATUS_PROCESSED = 'b'
+    STATUS_SHIPPED = 'c'
+    STATUS_COMPLETED = 'd'
+    STATUS_CANCELLED = 'p'
+    STATUS_CHOICES = [
+        (STATUS_AWAITING_PAYMENT, 'Awaiting payment'),
+        (STATUS_PROCESSED, 'Processed'),
+        (STATUS_SHIPPED, 'Shipped'),
+        (STATUS_COMPLETED, 'Completed'),
+        (STATUS_CANCELLED, 'Cancelled'),
     ]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_time = models.DateTimeField(auto_now=True)
-    payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING)
+    status = FSMField(max_length=1, choices=STATUS_CHOICES, default=STATUS_AWAITING_PAYMENT, protected=True)
     payment_intent_id = models.CharField(max_length=50, blank=True, null=True)
 
     @property
@@ -105,7 +110,7 @@ class Order(models.Model):
 
     @property
     def is_pending(self):
-        return self.payment_status == self.PAYMENT_PENDING
+        return self.status == self.STATUS_AWAITING_PAYMENT
 
     @property
     def stripe_client_secret(self):
@@ -113,6 +118,22 @@ class Order(models.Model):
             return None
         intent = stripe.PaymentIntent.retrieve(self.payment_intent_id)
         return intent.client_secret
+
+    @transition(field=status, source=STATUS_AWAITING_PAYMENT, target=STATUS_PROCESSED)
+    def complete_payment(self):
+        pass
+
+    @transition(field=status, source=STATUS_PROCESSED, target=STATUS_SHIPPED)
+    def ship(self):
+        pass
+
+    @transition(field=status, source=STATUS_SHIPPED, target=STATUS_COMPLETED)
+    def complete(self):
+        pass
+
+    @transition(field=status, source=[STATUS_AWAITING_PAYMENT, STATUS_PROCESSED], target=STATUS_CANCELLED)
+    def cancel(self):
+        pass
 
     def get_lock_key(self):
         return f"payment_lock_{self.id}"
@@ -136,10 +157,6 @@ class Order(models.Model):
         finally:
             # Release lock
             cache.delete(lock_key)
-
-    def complete_payment(self):
-        self.payment_status = self.PAYMENT_COMPLETED
-        self.save()
 
 
 class OrderItem(models.Model):

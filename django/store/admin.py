@@ -5,7 +5,7 @@ from . import models
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'payment_status']
+    list_display = ['id', 'status']
 
 
 @admin.register(models.Customer)

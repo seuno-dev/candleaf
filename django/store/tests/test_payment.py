@@ -87,7 +87,7 @@ class TestStripeWebhook:
 
         # Send payment creation request so payment intent is created
         client.post(create_payment_url, {'order_id': uninitialized_order.id})
-        uninitialized_order.refresh_from_db()
+        order = models.Order.objects.get(id=uninitialized_order.id)
 
         payload = "payload"
         sig_header = "signature"
@@ -97,9 +97,9 @@ class TestStripeWebhook:
                 type='payment_intent.succeeded',
                 data=mock.Mock(
                     object=mock.Mock(
-                        id=uninitialized_order.payment_intent_id,
+                        id=order.payment_intent_id,
                         metadata=mock.Mock(
-                            order_id=uninitialized_order.id
+                            order_id=order.id
                         )
                     )
                 )

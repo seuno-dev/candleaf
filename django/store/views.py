@@ -61,6 +61,7 @@ class StripeWebHook(generics.GenericAPIView):
                     return Response(status=status.HTTP_404_NOT_FOUND)
                 order = qs[0]
                 order.complete_payment()
+                order.save()
 
             return Response(status=status.HTTP_200_OK)
         except ValueError as err:

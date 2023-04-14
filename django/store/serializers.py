@@ -115,6 +115,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
-        fields = ['id', 'items', 'order_time', 'total_price', 'payment_status']
+        fields = ['id', 'items', 'order_time', 'total_price', 'status']
 
     items = OrderItemSerializer(many=True)
