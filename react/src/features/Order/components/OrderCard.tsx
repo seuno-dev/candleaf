@@ -9,6 +9,38 @@ import {
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 
+interface PaymentStatusLabelProp {
+  paymentStatusKey: string;
+}
+
+function PaymentStatusLabel({ paymentStatusKey }: PaymentStatusLabelProp) {
+  if (paymentStatusKey === "P") {
+    return (
+      <div className="bg-orange-200 px-2 py-1 rounded-md">
+        <Typography variant="small">Pending</Typography>
+      </div>
+    );
+  } else if (paymentStatusKey === "C") {
+    return (
+      <div className="bg-light-green-500 px-2 py-1 rounded-md">
+        <Typography variant="small" className="text-white">
+          Completed
+        </Typography>
+      </div>
+    );
+  } else if (paymentStatusKey === "F") {
+    return (
+      <div className="bg-red-900 px-2 py-1 rounded-md">
+        <Typography variant="small" className="text-white">
+          Failed
+        </Typography>
+      </div>
+    );
+  } else {
+    return <></>;
+  }
+}
+
 type OrderItemProps = {
   order: Order;
   handleClickDetail: (order: Order) => void;
@@ -20,8 +52,15 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
 
   return (
     <Card className="border-[0.5px] border-gray-200" shadow={false}>
-      <CardHeader className="mx-6" floated={false} shadow={false}>
-        {order.orderTime.split("T")[0]}
+      <CardHeader
+        className="mx-6 flex flex-row items-center"
+        floated={false}
+        shadow={false}
+      >
+        <Typography>{order.orderTime.split("T")[0]}</Typography>
+        <div className="ml-5">
+          <PaymentStatusLabel paymentStatusKey={order.paymentStatus} />
+        </div>
       </CardHeader>
       <CardBody className="flex flex-row">
         <img

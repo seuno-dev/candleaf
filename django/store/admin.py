@@ -1,11 +1,14 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from fsm_admin.mixins import FSMTransitionMixin
+
 from . import models
 
 
 @admin.register(models.Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(FSMTransitionMixin, admin.ModelAdmin):
     list_display = ['id', 'status']
+    fsm_field = ['status']
 
 
 @admin.register(models.Customer)

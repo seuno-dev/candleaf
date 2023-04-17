@@ -89,8 +89,9 @@ class Order(models.Model):
     ]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_time = models.DateTimeField(auto_now=True)
-    status = FSMField(max_length=1, choices=STATUS_CHOICES, default=STATUS_AWAITING_PAYMENT, protected=True)
+    status = FSMField(max_length=1, choices=STATUS_CHOICES, default=STATUS_AWAITING_PAYMENT)
     payment_intent_id = models.CharField(max_length=50, blank=True, null=True)
+    shipping_reference = models.CharField(max_length=50, blank=True, null=True)
 
     @property
     def total_price(self):
@@ -124,8 +125,8 @@ class Order(models.Model):
         pass
 
     @transition(field=status, source=STATUS_PROCESSED, target=STATUS_SHIPPED)
-    def ship(self):
-        pass
+    def ship(self, shipping_reference):
+        self.shipping_reference = shipping_reference
 
     @transition(field=status, source=STATUS_SHIPPED, target=STATUS_COMPLETED)
     def complete(self):
