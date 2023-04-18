@@ -5,10 +5,16 @@ from fsm_admin.mixins import FSMTransitionMixin
 from . import models
 
 
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem
+    readonly_fields = ['product', 'quantity', 'unit_price']
+
+
 @admin.register(models.Order)
 class OrderAdmin(FSMTransitionMixin, admin.ModelAdmin):
     list_display = ['id', 'status']
     fsm_field = ['status']
+    inlines = [OrderItemInline]
 
 
 @admin.register(models.Customer)
