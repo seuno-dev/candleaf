@@ -125,7 +125,7 @@ class Order(models.Model):
         pass
 
     @transition(field=status, source=STATUS_PROCESSED, target=STATUS_SHIPPED)
-    def ship(self, shipping_reference):
+    def ship(self, shipping_reference=''):
         self.shipping_reference = shipping_reference
 
     @transition(field=status, source=STATUS_SHIPPED, target=STATUS_COMPLETED)

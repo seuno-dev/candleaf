@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 from fsm_admin.mixins import FSMTransitionMixin
@@ -8,6 +9,10 @@ from . import models
 class OrderItemInline(admin.TabularInline):
     model = models.OrderItem
     readonly_fields = ['product', 'quantity', 'unit_price']
+
+
+class ShipOrderForm(forms.Form):
+    shipment_reference = forms.CharField()
 
 
 @admin.register(models.Order)
