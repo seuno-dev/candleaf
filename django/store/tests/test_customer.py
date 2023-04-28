@@ -191,3 +191,30 @@ class TestDeleteCustomer:
         response = customer_client.delete(customers_detail_url(pk=another_customer.user.id))
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestCustomerMe:
+    @pytest.fixture()
+    def customers_me_url(self):
+        return reverse('customers-me')
+
+    def test_returns_200(self, customer_auth, customers_me_url):
+        customer_client, customer = customer_auth
+
+        response = customer_client.get(customers_me_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_if_unauthenticated_returns_401(self, api_client, customers_me_url):
+        response = api_client.get(customers_me_url)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_if_customer_not_created_returns_404(self, api_client, customers_me_url):
+        user = baker.make(get_user_model())
+        api_client.force_authenticate(user)
+
+        response = api_client.get(customers_me_url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND

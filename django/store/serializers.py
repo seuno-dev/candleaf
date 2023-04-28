@@ -4,17 +4,9 @@ from . import models, exceptions
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(read_only=True)
-    user_first_name = serializers.StringRelatedField(read_only=True)
-    user_last_name = serializers.StringRelatedField(read_only=True)
-    user_email = serializers.StringRelatedField(read_only=True)
-
     class Meta:
         model = models.Customer
-        fields = ['user_id', 'user_first_name', 'user_last_name', 'user_email', 'phone', 'address']
-
-    def save(self, **kwargs):
-        return super().save(**kwargs)
+        fields = ['id', 'name', 'email', 'phone', 'address']
 
 
 class CategorySerializer(serializers.ModelSerializer):

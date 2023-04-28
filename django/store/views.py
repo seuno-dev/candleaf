@@ -1,7 +1,9 @@
 import stripe
+from django.contrib.auth.models import AnonymousUser
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status, mixins, generics
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
@@ -188,7 +190,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
             # Only allow creation of customer object if the user is authenticated
             # and the object hasn't been created before
             if view.action == 'create' and request.user \
-                    and models.Customer.objects.filter(user=request.user).count() == 0:
+                    and models.Customer.objects.filter(user=request.user.id).count() == 0:
                 return True
 
             # Use implementation IsAdminUser if the action is `list`
@@ -208,6 +210,12 @@ class CustomerViewSet(viewsets.ModelViewSet):
     queryset = models.Customer.objects.all()
     serializer_class = serializers.CustomerSerializer
     permission_classes = [Permission]
+
+    @action(detail=False, methods=["GET"], permission_classes=[permissions.IsAuthenticated])
+    def me(self, request):
+        customer = get_object_or_404(models.Customer, user_id=request.user.id)
+        serializer = serializers.CustomerSerializer(customer)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
