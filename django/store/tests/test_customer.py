@@ -223,19 +223,6 @@ class TestRetrieveCustomerMe:
 
 @pytest.mark.django_db
 class TestUpdateCustomerMe:
-    @pytest.mark.parametrize('params', [
-        {'first_name': 'dsaf'},
-        {'last_name': 'aesdf'},
-        {'email': 'asdf@gmail.com'},
-        {'phone': '472134'},
-        {'address': 'asdfdasf st. 231'},
-    ])
-    def test_patch_returns_200(self, customer_auth, customers_me_url, params):
-        client, customer = customer_auth
-        response = client.patch(customers_me_url, params)
-
-        assert response.status_code == status.HTTP_200_OK
-
     def test_put_returns_200(self, customer_auth, customers_me_url):
         client, customer = customer_auth
 
@@ -250,6 +237,13 @@ class TestUpdateCustomerMe:
 
         assert response.status_code == status.HTTP_200_OK
 
+        customer.refresh_from_db()
+        assert customer.user.first_name == params['first_name']
+        assert customer.user.last_name == params['last_name']
+        assert customer.user.email == params['email']
+        assert customer.phone == params['phone']
+        assert customer.address == params['address']
+
     def test_if_unauthenticated_returns_401(self, api_client, customers_me_url):
         params = {
             'first_name': 'dsaf',
@@ -258,7 +252,7 @@ class TestUpdateCustomerMe:
             'phone': '472134',
             'address': 'asdfdasf st. 231'
         }
-        response = api_client.patch(customers_me_url, params)
+        response = api_client.put(customers_me_url, params)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -273,6 +267,6 @@ class TestUpdateCustomerMe:
             'phone': '472134',
             'address': 'asdfdasf st. 231'
         }
-        response = api_client.patch(customers_me_url, params)
+        response = api_client.put(customers_me_url, params)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND

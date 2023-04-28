@@ -14,6 +14,7 @@ class Customer(models.Model):
     phone = models.CharField(max_length=255)
     address = models.TextField()
 
+
 class Category(models.Model):
     class Meta:
         verbose_name_plural = "categories"
