@@ -1,6 +1,7 @@
 import React from "react";
 import useProfile from "../hooks/useProfile";
 import { Typography } from "@material-tailwind/react";
+import ProfileItemValue from "../components/ProfileItemValue";
 
 const Profile = () => {
   const { data: profile, error } = useProfile();
@@ -10,17 +11,17 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <div className="mt-5 mx-auto w-[500px] grid grid-cols-2 gap-4">
+    <div className="mt-5 mx-auto w-[450px] grid grid-cols-2 gap-4">
       <Typography>First name</Typography>
-      <Typography>{profile.firstName}</Typography>
+      <ProfileItemValue value={profile.firstName} />
       <Typography>Last name</Typography>
-      <Typography>{profile.lastName}</Typography>
+      <ProfileItemValue value={profile.lastName} />
       <Typography>Email</Typography>
-      <Typography>{profile.email}</Typography>
+      <ProfileItemValue value={profile.email} />
       <Typography>Phone number</Typography>
-      <Typography>{profile.phone}</Typography>
+      <ProfileItemValue value={profile.phone} />
       <Typography>Address</Typography>
-      <Typography>{profile.address}</Typography>
+      <ProfileItemValue value={profile.address} />
     </div>
   );
 };
