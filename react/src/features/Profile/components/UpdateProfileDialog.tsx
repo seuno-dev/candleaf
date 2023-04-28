@@ -12,7 +12,7 @@ import useUpdateProfile from "../hooks/useUpdateProfile";
 
 interface Props {
   open: boolean;
-  handler: () => void;
+  handler: (open: boolean | undefined) => void;
   title: string;
   fieldName: ProfileFieldName | undefined;
   profile: Profile;
@@ -35,7 +35,7 @@ const UpdateProfileDialog = ({
   }, [fieldName]);
 
   useEffect(() => {
-    if (isSuccess) handler();
+    if (isSuccess) handler(false);
   }, [isSuccess]);
 
   const onUpdate = () => {

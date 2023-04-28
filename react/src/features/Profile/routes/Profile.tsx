@@ -10,7 +10,10 @@ const Profile = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [titleDialog, setTitleDialog] = useState("");
   const [fieldNameDialog, setFieldNameDialog] = useState<ProfileFieldName>();
-  const handleOpen = () => setOpenDialog(!openDialog);
+  const handleOpen = (open: boolean | undefined) => {
+    if (open == undefined) setOpenDialog(!openDialog);
+    else setOpenDialog(open);
+  };
 
   if (error) throw error;
 
@@ -28,37 +31,27 @@ const Profile = () => {
         <Typography>First name</Typography>
         <ProfileItemValue
           value={profile.firstName}
-          onUpdateClick={() =>
-            handleUpdateClick("First name", "firstName")
-          }
+          onUpdateClick={() => handleUpdateClick("First name", "firstName")}
         />
         <Typography>Last name</Typography>
         <ProfileItemValue
           value={profile.lastName}
-          onUpdateClick={() =>
-            handleUpdateClick("Last name", "lastName")
-          }
+          onUpdateClick={() => handleUpdateClick("Last name", "lastName")}
         />
         <Typography>Email</Typography>
         <ProfileItemValue
           value={profile.email}
-          onUpdateClick={() =>
-            handleUpdateClick("Email", "email")
-          }
+          onUpdateClick={() => handleUpdateClick("Email", "email")}
         />
         <Typography>Phone number</Typography>
         <ProfileItemValue
           value={profile.phone}
-          onUpdateClick={() =>
-            handleUpdateClick("Phone number", "phone")
-          }
+          onUpdateClick={() => handleUpdateClick("Phone number", "phone")}
         />
         <Typography>Address</Typography>
         <ProfileItemValue
           value={profile.address}
-          onUpdateClick={() =>
-            handleUpdateClick("Address", "address")
-          }
+          onUpdateClick={() => handleUpdateClick("Address", "address")}
         />
       </div>
       <UpdateProfileDialog
