@@ -1,5 +1,4 @@
 import stripe
-from django.contrib.auth.models import AnonymousUser
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status, mixins, generics
