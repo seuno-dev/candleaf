@@ -6,3 +6,10 @@ export interface Profile {
   phone: string;
   address: string;
 }
+
+export type ProfileFieldName =
+  | "firstName"
+  | "lastName"
+  | "email"
+  | "phone"
+  | "address";
