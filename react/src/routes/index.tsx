@@ -25,18 +25,18 @@ const requireAuthenticated = (Component: React.FC) => {
 export const AppRoutes = () => {
   return useRoutes([
     {
-      path: "/auth/*",
+      path: "/auth/",
       element: <AuthRoutes />,
     },
     {
       path: "/",
       element: <App />,
       children: [
-        { path: "products/*", element: <ProductRoutes /> },
-        { path: "cart/*", element: requireAuthenticated(CartRoutes) },
-        { path: "orders/*", element: requireAuthenticated(OrderRoutes) },
+        { path: "products/", element: <ProductRoutes /> },
+        { path: "cart/", element: requireAuthenticated(CartRoutes) },
+        { path: "orders/", element: requireAuthenticated(OrderRoutes) },
         {
-          path: "payment/*",
+          path: "payment/",
           element: requireAuthenticated(StripePaymentRoutes),
         },
       ],
