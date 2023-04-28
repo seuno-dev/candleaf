@@ -21,6 +21,11 @@ def customers_detail_url():
 
 
 @pytest.fixture()
+def customers_me_url():
+    return reverse('customers-me')
+
+
+@pytest.fixture()
 def customer_auth(api_client):
     customer = baker.make(models.Customer, user__is_staff=False)
     api_client.force_authenticate(customer.user)
@@ -194,11 +199,7 @@ class TestDeleteCustomer:
 
 
 @pytest.mark.django_db
-class TestCustomerMe:
-    @pytest.fixture()
-    def customers_me_url(self):
-        return reverse('customers-me')
-
+class TestRetrieveCustomerMe:
     def test_returns_200(self, customer_auth, customers_me_url):
         customer_client, customer = customer_auth
 
@@ -216,5 +217,49 @@ class TestCustomerMe:
         api_client.force_authenticate(user)
 
         response = api_client.get(customers_me_url)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+class TestUpdateCustomerMe:
+    def test_returns_200(self, customer_auth, customers_me_url):
+        client, customer = customer_auth
+
+        params = {
+            'first_name': 'dsaf',
+            'last_name': 'aesdf',
+            'email': 'asdf@gmail.com',
+            'phone': '472134',
+            'address': 'asdfdasf st. 231'
+        }
+        response = client.put(customers_me_url, params)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_if_unauthenticated_returns_401(self, api_client, customers_me_url):
+        params = {
+            'first_name': 'dsaf',
+            'last_name': 'aesdf',
+            'email': 'asdf@gmail.com',
+            'phone': '472134',
+            'address': 'asdfdasf st. 231'
+        }
+        response = api_client.put(customers_me_url, params)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_if_customer_not_created_returns_404(self, api_client, customers_me_url):
+        user = baker.make(get_user_model())
+        api_client.force_authenticate(user)
+
+        params = {
+            'first_name': 'dsaf',
+            'last_name': 'aesdf',
+            'email': 'asdf@gmail.com',
+            'phone': '472134',
+            'address': 'asdfdasf st. 231'
+        }
+        response = api_client.put(customers_me_url, params)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND

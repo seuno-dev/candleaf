@@ -13,6 +13,16 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'address']
 
 
+class UpdateCustomerSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.CharField()
+
+    class Meta:
+        model = models.Customer
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'address']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     slug = serializers.CharField(read_only=True)
 
