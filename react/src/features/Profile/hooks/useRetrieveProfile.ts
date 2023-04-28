@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { retrieveProfile } from "../api";
 
-const useProfile = () =>
+const useRetrieveProfile = () =>
   useQuery({
     queryKey: ["profile"],
     queryFn: retrieveProfile,
   });
 
-export default useProfile;
+export default useRetrieveProfile;
