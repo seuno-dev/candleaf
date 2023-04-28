@@ -54,7 +54,9 @@ function Login() {
           </div>
           {errorMessage && (
             <div className="mt-4 h-10 w-full bg-red-50 rounded-lg flex items-center justify-center">
-              <Typography variant="paragraph" className="text-red-900">{errorMessage}</Typography>
+              <Typography variant="paragraph" className="text-red-900">
+                {errorMessage}
+              </Typography>
             </div>
           )}
           <Button className="mt-4 w-full" onClick={handleLogin}>

@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Navbar as BaseNavbar,
-  Typography,
-} from "@material-tailwind/react";
+import { Menu, MenuHandler, MenuItem, MenuList, Navbar as BaseNavbar, Typography, } from "@material-tailwind/react";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useProfile from "../../hooks/useProfile";
