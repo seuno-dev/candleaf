@@ -230,9 +230,23 @@ class TestUpdateCustomerMe:
         {'phone': '472134'},
         {'address': 'asdfdasf st. 231'},
     ])
-    def test_returns_200(self, customer_auth, customers_me_url, params):
+    def test_patch_returns_200(self, customer_auth, customers_me_url, params):
         client, customer = customer_auth
         response = client.patch(customers_me_url, params)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_put_returns_200(self, customer_auth, customers_me_url):
+        client, customer = customer_auth
+
+        params = {
+            'first_name': 'dsaf',
+            'last_name': 'aesdf',
+            'email': 'asdf@gmail.com',
+            'phone': '472134',
+            'address': 'asdfdasf st. 231'
+        }
+        response = client.put(customers_me_url, params)
 
         assert response.status_code == status.HTTP_200_OK
 
