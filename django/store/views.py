@@ -210,7 +210,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CustomerSerializer
     permission_classes = [Permission]
 
-    @action(detail=False, methods=["GET", "PUT"], permission_classes=[permissions.IsAuthenticated])
+    @action(detail=False, methods=["GET", "PATCH"], permission_classes=[permissions.IsAuthenticated])
     def me(self, request):
         user = request.user
         customer = get_object_or_404(models.Customer, user_id=user.id)
@@ -219,14 +219,17 @@ class CustomerViewSet(viewsets.ModelViewSet):
             serializer = serializers.CustomerSerializer(customer)
             return Response(serializer.data)
 
-        if request.method == 'PUT':
-            serializer = serializers.UpdateCustomerSerializer(customer, data=request.data)
+        if request.method == 'PATCH':
+            serializer = serializers.UpdateCustomerSerializer(customer, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
+
             user.first_name = serializer.validated_data.get('first_name', user.first_name)
             user.last_name = serializer.validated_data.get('last_name', user.last_name)
+
             user.save()
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(request.data, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
