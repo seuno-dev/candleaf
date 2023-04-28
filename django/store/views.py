@@ -186,8 +186,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CustomerViewSet(viewsets.ModelViewSet):
     class Permission(permissions.IsAdminUser):
         def has_permission(self, request, view):
-            # Only allow creation of customer object if the user is authenticated
-            # and the object hasn't been created before
+            # Give non-admin permission to create customer object if the user is authenticated
+            # and the object hasn't been created before.
             if view.action == 'create' and request.user \
                     and models.Customer.objects.filter(user=request.user.id).count() == 0:
                 return True
