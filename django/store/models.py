@@ -14,21 +14,6 @@ class Customer(models.Model):
     phone = models.CharField(max_length=255)
     address = models.TextField()
 
-    # noinspection PyUnresolvedReferences
-    @property
-    def name(self):
-        user = self.user
-        name = user.first_name
-        if user.last_name:
-            name += f' {user.last_name}'
-        return name
-
-    # noinspection PyUnresolvedReferences
-    @property
-    def email(self):
-        return self.user.email
-
-
 class Category(models.Model):
     class Meta:
         verbose_name_plural = "categories"

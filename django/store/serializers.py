@@ -4,9 +4,13 @@ from . import models, exceptions
 
 
 class CustomerSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
+
     class Meta:
         model = models.Customer
-        fields = ['id', 'name', 'email', 'phone', 'address']
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'address']
 
 
 class CategorySerializer(serializers.ModelSerializer):
