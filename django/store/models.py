@@ -1,9 +1,8 @@
 import stripe
+from django.core.cache import cache
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.core.cache import cache
 from django_fsm import FSMField, transition
-from functools import reduce
 
 from DjangoKart import settings
 
@@ -14,6 +13,10 @@ class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone = models.CharField(max_length=255)
     address = models.TextField()
+
+    # noinspection PyUnresolvedReferences
+    def __str__(self):
+        return self.user.username
 
 
 class Category(models.Model):

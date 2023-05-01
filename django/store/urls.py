@@ -14,5 +14,6 @@ router.register('categories', views.CategoryViewSet, basename='categories')
 router.register('customers', views.CustomerViewSet, basename='customers')
 router.register('cart-items', views.CartItemViewSet, basename='cart-items')
 router.register('orders', views.OrderViewSet, basename='orders')
+router.register('reviews', views.ReviewViewSet, basename='reviews')
 
 urlpatterns += router.urls

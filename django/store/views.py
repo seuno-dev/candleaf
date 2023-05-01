@@ -240,3 +240,10 @@ class CustomerViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, customer):
         super().perform_destroy(customer)
         customer.user.delete()
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ReviewSerializer
+
+    def get_queryset(self):
+        return models.Review.objects.filter(order_item__order__customer__user=self.request.user)
