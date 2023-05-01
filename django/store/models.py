@@ -188,7 +188,7 @@ class Review(models.Model):
         (4, '4 stars'),
         (5, '5 stars'),
     )
-    order = models.ForeignKey(Order, null=True, on_delete=models.SET_NULL)
+    order_item = models.ForeignKey(OrderItem, null=True, on_delete=models.SET_NULL)
     rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
