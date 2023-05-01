@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.core.cache import cache
 from django_fsm import FSMField, transition
+from functools import reduce
 
 from DjangoKart import settings
 
@@ -48,6 +49,19 @@ class Product(models.Model):
         if images.count() == 0:
             return None
         return images.first()
+
+    @property
+    def average_rating(self):
+        reviews = Review.objects.filter(order_item__product=self)
+
+        if len(reviews) == 0:
+            return None
+
+        total = 0
+        for review in reviews:
+            total += review.rating
+
+        return total / len(reviews)
 
 
 class ProductImage(models.Model):
