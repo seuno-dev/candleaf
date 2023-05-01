@@ -15,20 +15,6 @@ class Customer(models.Model):
     address = models.TextField()
 
 
-class Review(models.Model):
-    RATING_CHOICES = (
-        (1, '1 star'),
-        (2, '2 stars'),
-        (3, '3 stars'),
-        (4, '4 stars'),
-        (5, '5 stars'),
-    )
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
-    rating = models.IntegerField(choices=RATING_CHOICES)
-    comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Category(models.Model):
     class Meta:
         verbose_name_plural = "categories"
@@ -192,3 +178,17 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.quantity * self.unit_price
+
+
+class Review(models.Model):
+    RATING_CHOICES = (
+        (1, '1 star'),
+        (2, '2 stars'),
+        (3, '3 stars'),
+        (4, '4 stars'),
+        (5, '5 stars'),
+    )
+    order = models.ForeignKey(Order, null=True, on_delete=models.SET_NULL)
+    rating = models.IntegerField(choices=RATING_CHOICES)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
