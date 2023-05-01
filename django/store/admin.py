@@ -15,6 +15,19 @@ class ShipOrderForm(forms.Form):
     shipment_reference = forms.CharField()
 
 
+@admin.register(models.Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'created_at', 'get_username', 'get_product', 'rating']
+
+    @admin.display(ordering='order_item__order__customer__user__username', description="Username")
+    def get_username(self, review):
+        return review.order_item.order.customer.user.username
+
+    @admin.display(ordering='order_item__product__title', description="Product")
+    def get_product(self, review):
+        return review.order_item.product.title
+
+
 @admin.register(models.Order)
 class OrderAdmin(FSMTransitionMixin, admin.ModelAdmin):
     list_display = ['id', 'status']
