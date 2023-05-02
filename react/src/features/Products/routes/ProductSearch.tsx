@@ -3,40 +3,30 @@ import ProductCard from "../components/ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../../components/Elements/Pagination";
 import { formatCurrency } from "../../../utils/currency";
-import { retrieveProductList } from "../api";
-import { Product } from "../types";
 import FilterSideBar from "../components/filter";
+import useProducts from "../hooks/useProducts";
 
 function ProductSearch() {
   const [searchParams] = useSearchParams();
-  const [products, setProductList] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [category, setCategory] = useState<string>();
+  const { data } = useProducts({
+    page,
+    title,
+    category,
+    priceMax,
+    priceMin,
+  });
   const navigate = useNavigate();
-
-  const loadPage = (page: number) => {
-    const title = searchParams.get("title");
-    const category = searchParams.get("category");
-    const priceMin = searchParams.get("price_min");
-    const priceMax = searchParams.get("price_max");
-
-    retrieveProductList({
-      page,
-      title,
-      category,
-      priceMin,
-      priceMax,
-    }).then((productList) => {
-      setProductList(productList.results);
-      setPageCount(productList.totalPages);
-    });
-  };
 
   const handlePageClick = (e: { selected: number }) => {
     const newPage = e.selected + 1;
-    loadPage(newPage);
+    setPage(newPage);
+
     const url = new URL(window.location.toString());
     url.searchParams.set("page", newPage.toString());
     window.history.pushState(null, "", url.toString());
@@ -63,26 +53,31 @@ function ProductSearch() {
   };
 
   useEffect(() => {
-    loadPage(1);
-    setSelectedCategory(searchParams.get("category"));
-    setMinPrice(searchParams.get("price_min") || "");
-    setMaxPrice(searchParams.get("price_max") || "");
+    setTitle(searchParams.get("search") || "");
+    setPage(parseInt(searchParams.get("page") || "1"));
+    setCategory(searchParams.get("category") || "");
+    setPriceMin(searchParams.get("price_min") || "");
+    setPriceMax(searchParams.get("price_max") || "");
   }, [searchParams]);
+
+  useEffect(() => {
+    setPageCount(data?.totalPages || 0);
+  }, [data]);
 
   return (
     <div className="container mx-auto mt-5 flex flex-row">
       <div className="w-[480px]">
         <FilterSideBar
-          minPrice={minPrice}
-          maxPrice={maxPrice}
+          minPrice={priceMin}
+          maxPrice={priceMax}
           onCategorySelect={handleCategorySelect}
           onPriceFilter={handlePriceFilter}
-          selectedCategory={selectedCategory}
+          selectedCategory={category}
         />
       </div>
       <div className="ml-5">
         <ul className="flex flex-row flex-wrap gap-1">
-          {products.map((product) => (
+          {data?.results.map((product) => (
             <Link key={product.id} to={`/products/${product.slug}`}>
               <ProductCard
                 title={product.title}
@@ -97,7 +92,11 @@ function ProductSearch() {
           ))}
         </ul>
         <div className="mt-5 flex flex-row justify-center">
-          <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
+          <Pagination
+            onPageChange={handlePageClick}
+            pageCount={pageCount}
+            initialPage={page}
+          />
         </div>
       </div>
     </div>

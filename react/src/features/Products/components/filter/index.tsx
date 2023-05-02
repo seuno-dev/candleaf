@@ -5,7 +5,7 @@ import FilterPrice from "./FilterPrice";
 interface Props {
   minPrice: string | null;
   maxPrice: string | null;
-  selectedCategory: number | string | null;
+  selectedCategory: number | string | undefined;
   onCategorySelect: (id: number | null) => void;
   onPriceFilter: (minPrice: number | null, maxPrice: number | null) => void;
 }

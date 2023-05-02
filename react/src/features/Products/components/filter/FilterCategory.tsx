@@ -4,7 +4,7 @@ import { Typography } from "@material-tailwind/react";
 import FilterCategoryButton from "./FilterCategoryButton";
 
 interface Props {
-  selectedCategory: number | string | null;
+  selectedCategory: number | string | undefined;
   onCategoryClick: (id: number | null) => void;
 }
 
@@ -14,7 +14,7 @@ function FilterCategory({
 }: Props) {
   const { categories } = useCategoryList();
   const [selectedCategory, setSelectedCategory] = useState<
-    number | string | null
+    number | string | undefined
   >(_selectedCategory);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function FilterCategory({
 
   const handleCategoryClick = (selectedBefore: boolean, id: number) => {
     if (selectedBefore) {
-      setSelectedCategory(null);
+      setSelectedCategory(undefined);
       onCategoryClick(null);
     } else {
       setSelectedCategory(id);

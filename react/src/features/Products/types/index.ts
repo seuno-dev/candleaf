@@ -33,8 +33,8 @@ export type ProductList = {
 
 export type ProductFilterParams = {
   page: number;
-  title: string | null;
-  category: string | null;
-  priceMin: string | null;
-  priceMax: string | null;
+  title: string | undefined;
+  category: string | undefined;
+  priceMin: string | undefined;
+  priceMax: string | undefined;
 };
