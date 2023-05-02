@@ -33,6 +33,7 @@ export const AppRoutes = () => {
       path: "/",
       element: <App />,
       children: [
+        { index: true, element: <ProductRoutes /> },
         { path: "profile/", children: ProfileRoutes },
         { path: "products/", element: <ProductRoutes /> },
         { path: "cart/", element: requireAuthenticated(CartRoutes) },

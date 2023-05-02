@@ -22,6 +22,8 @@ export type Product = {
   inventory: number;
   category: Category | null;
   images: ProductImage[];
+  averageRating: number | null;
+  ratingCount: number;
 };
 
 export type ProductList = {

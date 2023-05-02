@@ -15,6 +15,8 @@ function ProductDetail() {
     title: "",
     slug: "",
     unitPrice: 0,
+    averageRating: null,
+    ratingCount: 0,
   });
 
   const { slug } = useParams();
