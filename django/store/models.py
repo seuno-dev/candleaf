@@ -66,6 +66,10 @@ class Product(models.Model):
 
         return total / len(reviews)
 
+    @property
+    def rating_count(self):
+        return Review.objects.filter(order_item__product=self).count()
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
