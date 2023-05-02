@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
 import { createCartItem, retrieveProductDetail } from "../api";
 import { Product } from "../types";
+import ProductRating from "../components/ProductRating";
 
 function ProductDetail() {
   const [product, setProduct] = useState<Product>({
@@ -86,6 +87,7 @@ function ProductDetail() {
           <Typography variant="h4" className="break-words">
             {product.title}
           </Typography>
+          {product.averageRating && <ProductRating product={product} />}
           <Typography variant="h2" className="mt-6">
             {formatCurrency(product.unitPrice)}
           </Typography>
