@@ -125,3 +125,22 @@ class TestUpdateReview:
         response = client.patch(review_detail_url(review.id), params)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+class TestListReview:
+    def test_returns_200(self, authenticate_client, review_list_url):
+        customer = baker.make(models.Customer)
+        reviews = baker.make(models.Review, order_item__order__customer=customer, _quantity=5)
+        baker.make(models.Review, _quantity=5)
+
+        client = authenticate_client(customer.user)
+
+        response = client.get(review_list_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        for review_response, review in zip(response.data, reviews):
+            assert review_response['order_item']['id'] == review.order_item.id
+            assert review_response['rating'] == review.rating
+            assert review_response['comment'] == review.comment
