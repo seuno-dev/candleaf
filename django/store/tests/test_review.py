@@ -144,3 +144,26 @@ class TestListReview:
             assert review_response['order_item']['id'] == review.order_item.id
             assert review_response['rating'] == review.rating
             assert review_response['comment'] == review.comment
+
+
+@pytest.mark.django_db
+class TestDetailReview:
+    def test_returns_200(self, authenticate_client, review_detail_url):
+        customer = baker.make(models.Customer)
+        review = baker.make(models.Review, order_item__order__customer=customer)
+
+        client = authenticate_client(customer.user)
+
+        response = client.get(review_detail_url(review.id))
+
+        assert response.data['order_item']['id'] == review.order_item.id
+        assert response.data['rating'] == review.rating
+        assert response.data['comment'] == review.comment
+
+    def test_not_own_review_returns_404(self, authenticate_client, review_detail_url):
+        review = baker.make(models.Review)
+        client = authenticate_client()
+
+        response = client.get(review_detail_url(review.id))
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
