@@ -243,7 +243,24 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ReviewSerializer
+    class IsPurchasedItemOwner(permissions.BasePermission):
+        def has_permission(self, request, view):
+            data = request.data
+            if view.action == "create" and "order_item" in data:
+                order_item = get_object_or_404(models.OrderItem, id=data['order_item'])
+                return order_item.order.customer.user == request.user
+            return super().has_permission(request, view)
+
+        def has_object_permission(self, request, view, review):
+            return review.order_item.customer.user == request.user
+
+    permission_classes = [IsPurchasedItemOwner]
 
     def get_queryset(self):
         return models.Review.objects.filter(order_item__order__customer__user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update"]:
+            return serializers.CreateReviewSerializer
+        else:
+            return serializers.ReviewSerializer

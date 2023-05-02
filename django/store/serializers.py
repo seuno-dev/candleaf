@@ -131,3 +131,13 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Review
         fields = ['order_item', 'rating', 'comment']
+
+    order_item = OrderItemSerializer()
+
+
+class CreateReviewSerializer(serializers.ModelSerializer):
+    order_item = serializers.PrimaryKeyRelatedField(required=True, queryset=models.OrderItem.objects.all())
+
+    class Meta:
+        model = models.Review
+        fields = ['order_item', 'rating', 'comment']
