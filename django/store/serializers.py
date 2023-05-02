@@ -57,7 +57,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Review
-        fields = ['order_item', 'rating', 'comment']
+        fields = ['id', 'order_item', 'rating', 'comment']
 
     order_item = OrderItemSerializer()
 

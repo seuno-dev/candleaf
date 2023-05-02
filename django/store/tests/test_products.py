@@ -41,6 +41,7 @@ def assert_product_response(product_response, product):
 
     if product.review_count > 0:
         for review_response, review in zip(product_response['reviews'], product.reviews):
+            assert review_response['id'] == review.id
             assert review_response['order_item']['id'] == review.order_item.id
             assert review_response['rating'] == review.rating
             assert review_response['comment'] == review.comment
