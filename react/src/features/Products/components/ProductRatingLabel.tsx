@@ -1,5 +1,5 @@
 import React from "react";
-import Star from "../../../assets/star.svg";
+import Star from "../../../assets/images/star.svg";
 import { Typography } from "@material-tailwind/react";
 import { Product } from "../types";
 
@@ -7,7 +7,7 @@ interface Props {
   product: Product;
 }
 
-const ProductRating = ({ product }: Props) => {
+const ProductRatingLabel = ({ product }: Props) => {
   return (
     <div className="flex flex-row items-center">
       <img src={Star} className="w-4" alt="review icon" />
@@ -18,4 +18,4 @@ const ProductRating = ({ product }: Props) => {
   );
 };
 
-export default ProductRating;
+export default ProductRatingLabel;

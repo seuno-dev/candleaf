@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { Product } from "../types";
 import { formatCurrency } from "../../../utils/currency";
-import ProductRating from "./ProductRating";
+import ProductRatingLabel from "./ProductRatingLabel";
 
 interface Props {
   product: Product;
@@ -31,7 +31,7 @@ function ProductCard({ product }: Props) {
         <Typography variant="h6">
           {formatCurrency(product.unitPrice)}
         </Typography>
-        {product.averageRating && <ProductRating product={product} />}
+        {product.averageRating && <ProductRatingLabel product={product} />}
       </CardBody>
     </Card>
   );

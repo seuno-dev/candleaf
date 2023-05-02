@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
 import { createCartItem, retrieveProductDetail } from "../api";
 import { Product } from "../types";
-import ProductRating from "../components/ProductRating";
+import ProductRatingLabel from "../components/ProductRatingLabel";
+import ProductReview from "../components/ProductReview";
 
 function ProductDetail() {
   const [product, setProduct] = useState<Product>({
@@ -18,6 +19,7 @@ function ProductDetail() {
     unitPrice: 0,
     averageRating: null,
     ratingCount: 0,
+    reviews: [],
   });
 
   const { slug } = useParams();
@@ -87,7 +89,7 @@ function ProductDetail() {
           <Typography variant="h4" className="break-words">
             {product.title}
           </Typography>
-          {product.averageRating && <ProductRating product={product} />}
+          {product.averageRating && <ProductRatingLabel product={product} />}
           <Typography variant="h2" className="mt-6">
             {formatCurrency(product.unitPrice)}
           </Typography>
@@ -106,6 +108,12 @@ function ProductDetail() {
             <Typography className="mt-5" variant="paragraph">
               {product.description}
             </Typography>
+          </div>
+          <div className="border-t-[0.5px] mt-5 border-gray-200 flex flex-col gap-3">
+            <Typography variant="h6">Reviews</Typography>
+            {product.reviews.map((review) => (
+              <ProductReview review={review} key={review.id} />
+            ))}
           </div>
         </div>
         <div className="w-[270px] ml-4">

@@ -24,6 +24,7 @@ export type Product = {
   images: ProductImage[];
   averageRating: number | null;
   ratingCount: number;
+  reviews: Review[];
 };
 
 export type ProductList = {
@@ -38,3 +39,9 @@ export type ProductFilterParams = {
   priceMin: string | undefined;
   priceMax: string | undefined;
 };
+
+export interface Review {
+  id: number;
+  rating: number;
+  comment: string;
+}
