@@ -252,7 +252,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             return super().has_permission(request, view)
 
         def has_object_permission(self, request, view, review):
-            return review.order_item.customer.user == request.user
+            return review.order_item.order.customer.user == request.user
 
     permission_classes = [IsPurchasedItemOwner]
 
