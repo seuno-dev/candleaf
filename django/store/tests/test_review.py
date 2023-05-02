@@ -90,6 +90,10 @@ class TestUpdateReview:
 
         assert response.status_code == status.HTTP_200_OK
 
+        review.refresh_from_db()
+        assert review.rating == params['rating']
+        assert review.comment == params['comment']
+
     def test_not_own_review_returns_404(self, authenticate_client, review_detail_url):
         review = baker.make(models.Review)
 
