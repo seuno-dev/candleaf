@@ -14,7 +14,7 @@ export type Order = {
   items: OrderItem[];
   totalPrice: number;
   orderTime: string;
-  paymentStatus: string;
+  status: string;
 };
 
 export type OrderList = {

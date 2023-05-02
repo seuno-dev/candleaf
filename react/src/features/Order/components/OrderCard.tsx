@@ -8,38 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
-
-interface PaymentStatusLabelProp {
-  paymentStatusKey: string;
-}
-
-function PaymentStatusLabel({ paymentStatusKey }: PaymentStatusLabelProp) {
-  if (paymentStatusKey === "P") {
-    return (
-      <div className="bg-orange-200 px-2 py-1 rounded-md">
-        <Typography variant="small">Pending</Typography>
-      </div>
-    );
-  } else if (paymentStatusKey === "C") {
-    return (
-      <div className="bg-light-green-500 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Completed
-        </Typography>
-      </div>
-    );
-  } else if (paymentStatusKey === "F") {
-    return (
-      <div className="bg-red-900 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Failed
-        </Typography>
-      </div>
-    );
-  } else {
-    return <></>;
-  }
-}
+import OrderStatusLabel from "./OrderStatusLabel";
 
 type OrderItemProps = {
   order: Order;
@@ -59,7 +28,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
       >
         <Typography>{order.orderTime.split("T")[0]}</Typography>
         <div className="ml-5">
-          <PaymentStatusLabel paymentStatusKey={order.paymentStatus} />
+          <OrderStatusLabel statusKey={order.status} />
         </div>
       </CardHeader>
       <CardBody className="flex flex-row">
