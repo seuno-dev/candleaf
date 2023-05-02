@@ -4,10 +4,9 @@ import ReactPaginate from "react-paginate";
 type PaginationProps = {
   onPageChange: (e: { selected: number }) => void;
   pageCount: number;
-  initialPage: number;
 };
 
-function Pagination({ onPageChange, pageCount, initialPage }: PaginationProps) {
+function Pagination({ onPageChange, pageCount }: PaginationProps) {
   const linkContainerClass =
     "border-t-2 border-b-2 border-l-2 border-light-green-500";
   const linkClass = "px-3";
@@ -28,7 +27,6 @@ function Pagination({ onPageChange, pageCount, initialPage }: PaginationProps) {
       previousLinkClassName={linkClass}
       pageLinkClassName={linkClass}
       nextLinkClassName={linkClass}
-      initialPage={initialPage}
     />
   );
 }

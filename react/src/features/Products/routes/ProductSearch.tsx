@@ -83,11 +83,7 @@ function ProductSearch() {
           ))}
         </ul>
         <div className="mt-5 flex flex-row justify-center">
-          <Pagination
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            initialPage={page}
-          />
+          <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
         </div>
       </div>
     </div>
