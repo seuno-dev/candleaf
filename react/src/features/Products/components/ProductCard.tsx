@@ -7,6 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { Product } from "../types";
 import { formatCurrency } from "../../../utils/currency";
+import Star from "../../../assets/star.svg";
 
 interface Props {
   product: Product;
@@ -30,6 +31,14 @@ function ProductCard({ product }: Props) {
         <Typography variant="h6">
           {formatCurrency(product.unitPrice)}
         </Typography>
+        {product.averageRating && (
+          <div className="flex flex-row items-center">
+            <img src={Star} className="w-4" />
+            <Typography className="ml-2">
+              {product.averageRating} ({product.ratingCount} ratings)
+            </Typography>
+          </div>
+        )}
       </CardBody>
     </Card>
   );
