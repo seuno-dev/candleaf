@@ -5,24 +5,31 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
+import { Product } from "../types";
+import { formatCurrency } from "../../../utils/currency";
 
-type ProductCardProps = {
-  title: string;
-  price: string;
-  imageUrl: string;
-};
+interface Props {
+  product: Product;
+}
 
-function ProductCard({ title, price, imageUrl }: ProductCardProps) {
+function ProductCard({ product }: Props) {
   return (
     <Card className="w-52 border-[0.5px] border-gray-200" shadow={false}>
       <CardHeader className="m-0 rounded-b-none" floated={false} shadow={false}>
-        <img src={imageUrl} alt={`Image of product ${title}`} />
+        <img
+          src={
+            product.images.length == 0 ? "logo512.png" : product.images[0].image
+          }
+          alt={`Image of product ${product.title}`}
+        />
       </CardHeader>
       <CardBody>
         <Typography className="line-clamp-2 break-words" variant="h6">
-          {title}
+          {product.title}
         </Typography>
-        <Typography variant="h6">{price}</Typography>
+        <Typography variant="h6">
+          {formatCurrency(product.unitPrice)}
+        </Typography>
       </CardBody>
     </Card>
   );
