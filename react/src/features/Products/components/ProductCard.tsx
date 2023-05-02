@@ -33,7 +33,7 @@ function ProductCard({ product }: Props) {
         </Typography>
         {product.averageRating && (
           <div className="flex flex-row items-center">
-            <img src={Star} className="w-4" />
+            <img src={Star} className="w-4" alt="review icon"/>
             <Typography className="ml-2">
               {product.averageRating} ({product.ratingCount} ratings)
             </Typography>
