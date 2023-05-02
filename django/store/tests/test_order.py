@@ -22,6 +22,20 @@ def order_detail_url():
     return _method
 
 
+def assert_order_item_response(item_response, order_item):
+    assert item_response['product']['title'] == order_item.product.title
+    assert item_response['unit_price'] == order_item.unit_price
+    assert item_response['quantity'] == order_item.quantity
+    assert item_response['total_price'] == order_item.unit_price * order_item.quantity
+
+    review = order_item.review
+    if review:
+        assert item_response['review']['rating'] == review.rating
+        assert item_response['review']['comment'] == review.comment
+    else:
+        assert item_response['review'] is None
+
+
 @pytest.mark.django_db
 class TestCreateOrder:
     def test_returns_201(self, authenticate_client, order_list_url):
@@ -90,6 +104,9 @@ class TestListOrder:
             order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(1, 10))
             order_items_set.append(order_items)
 
+            for order_item in order_items:
+                baker.make(models.Review, order_item=order_item)
+
         # Data from other customers
         baker.make(models.OrderItem, _quantity=5,
                    order=cycle(baker.make(models.Order, customer=baker.make(models.Customer), _quantity=5)))
@@ -105,10 +122,7 @@ class TestListOrder:
             assert len(order_items) != 0
 
             for item_response, order_item in zip(order_response['items'], order_items):
-                assert item_response['product']['title'] == order_item.product.title
-                assert item_response['unit_price'] == order_item.unit_price
-                assert item_response['quantity'] == order_item.quantity
-                assert item_response['total_price'] == order_item.unit_price * order_item.quantity
+                assert_order_item_response(item_response, order_item)
 
     def test_empty_returns_200(self, authenticate_client, order_list_url):
         customer = baker.make(models.Customer)
@@ -133,6 +147,8 @@ class TestRetrieveOrder:
 
         order = baker.make(models.Order, customer=customer)
         order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(3, 5))
+        for item in order_items:
+            baker.make(models.Review, order_item=item)
 
         response = client.get(order_detail_url(order.id))
 
@@ -143,10 +159,7 @@ class TestRetrieveOrder:
         response_items = response.data['items']
         assert len(response_items) == len(order_items)
         for item_response, order_item in zip(response_items, order_items):
-            assert item_response['product']['title'] == order_item.product.title
-            assert item_response['quantity'] == order_item.quantity
-            assert item_response['unit_price'] == order_item.unit_price
-            assert item_response['total_price'] == order_item.quantity * order_item.unit_price
+            assert_order_item_response(item_response, order_item)
 
     def test_if_not_own_order_returns_404(self, authenticate_client, order_detail_url):
         customer = baker.make(models.Customer)

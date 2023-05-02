@@ -46,12 +46,19 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'unit_price', 'inventory', 'image']
 
 
+class SimpleReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Review
+        fields = ['id', 'rating', 'comment']
+
+
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OrderItem
-        fields = ['id', 'order_id', 'product', 'unit_price', 'quantity', 'total_price']
+        fields = ['id', 'order_id', 'product', 'unit_price', 'quantity', 'total_price', 'review']
 
     product = SimpleProductSerializer()
+    review = SimpleReviewSerializer()
 
 
 class ReviewSerializer(serializers.ModelSerializer):

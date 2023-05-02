@@ -204,6 +204,10 @@ class OrderItem(models.Model):
     def total_price(self):
         return self.quantity * self.unit_price
 
+    @property
+    def review(self):
+        return self.review_set.first()
+
 
 class Review(models.Model):
     RATING_CHOICES = (
