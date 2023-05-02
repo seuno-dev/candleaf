@@ -73,6 +73,22 @@ class TestCreateReview:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
+    def test_if_review_already_exists_returns_400(self, authenticate_client, review_list_url):
+        customer = baker.make(models.Customer)
+        order_item = baker.make(models.OrderItem, order__customer=customer)
+        baker.make(models.Review, order_item=order_item)
+
+        client = authenticate_client(customer.user)
+
+        params = {
+            "order_item": order_item.id,
+            "rating": 3,
+            "comment": "dfasuawioe"
+        }
+        response = client.post(review_list_url, params)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
 
 @pytest.mark.django_db
 class TestUpdateReview:
