@@ -271,7 +271,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         order_item = serializer.validated_data['order_item']
 
-        if order_item.review_set.all().count() > 0:
+        if order_item.review_set.all().count() > 0 or order_item.order.status != models.Order.STATUS_COMPLETED:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         self.perform_create(serializer)

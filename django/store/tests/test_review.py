@@ -23,7 +23,7 @@ def review_detail_url():
 class TestCreateReview:
     def test_returns_201(self, authenticate_client, review_list_url):
         customer = baker.make(models.Customer)
-        order_item = baker.make(models.OrderItem, order__customer=customer)
+        order_item = baker.make(models.OrderItem, order__customer=customer, order__status=models.Order.STATUS_COMPLETED)
 
         client = authenticate_client(customer.user)
 
@@ -77,6 +77,23 @@ class TestCreateReview:
         customer = baker.make(models.Customer)
         order_item = baker.make(models.OrderItem, order__customer=customer)
         baker.make(models.Review, order_item=order_item)
+
+        client = authenticate_client(customer.user)
+
+        params = {
+            "order_item": order_item.id,
+            "rating": 3,
+            "comment": "dfasuawioe"
+        }
+        response = client.post(review_list_url, params)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    @pytest.mark.parametrize('order_status', [models.Order.STATUS_AWAITING_PAYMENT, models.Order.STATUS_PROCESSED,
+                                              models.Order.STATUS_SHIPPED, models.Order.STATUS_CANCELLED])
+    def test_order_not_completed_returns_400(self, authenticate_client, review_list_url, order_status):
+        customer = baker.make(models.Customer)
+        order_item = baker.make(models.OrderItem, order__customer=customer, order__status=order_status)
 
         client = authenticate_client(customer.user)
 
