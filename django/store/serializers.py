@@ -38,29 +38,54 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    slug = serializers.CharField(read_only=True)
-    images = ProductImageSerializer(many=True, read_only=True)
-    category = CategorySerializer()
-
-    class Meta:
-        model = models.Product
-        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'category', 'images',
-                  'average_rating', 'rating_count']
-
-
-class CreateProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Product
-        fields = ['id', 'title', 'description', 'unit_price', 'inventory', 'category', ]
-
-
 class SimpleProductSerializer(serializers.ModelSerializer):
     image = ProductImageSerializer(read_only=True)
 
     class Meta:
         model = models.Product
         fields = ['id', 'title', 'unit_price', 'inventory', 'image']
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.OrderItem
+        fields = ['id', 'order_id', 'product', 'unit_price', 'quantity', 'total_price']
+
+    product = SimpleProductSerializer()
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Review
+        fields = ['order_item', 'rating', 'comment']
+
+    order_item = OrderItemSerializer()
+
+
+class CreateReviewSerializer(serializers.ModelSerializer):
+    order_item = serializers.PrimaryKeyRelatedField(required=True, queryset=models.OrderItem.objects.all())
+
+    class Meta:
+        model = models.Review
+        fields = ['order_item', 'rating', 'comment']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    slug = serializers.CharField(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
+    category = CategorySerializer()
+    reviews = ReviewSerializer(many=True)
+
+    class Meta:
+        model = models.Product
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'category', 'images',
+                  'average_rating', 'review_count', 'reviews']
+
+
+class CreateProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Product
+        fields = ['id', 'title', 'description', 'unit_price', 'inventory', 'category', ]
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -112,33 +137,9 @@ class WriteCartItemSerializer(serializers.ModelSerializer):
         return self.instance
 
 
-class OrderItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.OrderItem
-        fields = ['id', 'order_id', 'product', 'unit_price', 'quantity', 'total_price']
-
-    product = SimpleProductSerializer()
-
-
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
         fields = ['id', 'items', 'order_time', 'total_price', 'status']
 
     items = OrderItemSerializer(many=True)
-
-
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Review
-        fields = ['order_item', 'rating', 'comment']
-
-    order_item = OrderItemSerializer()
-
-
-class CreateReviewSerializer(serializers.ModelSerializer):
-    order_item = serializers.PrimaryKeyRelatedField(required=True, queryset=models.OrderItem.objects.all())
-
-    class Meta:
-        model = models.Review
-        fields = ['order_item', 'rating', 'comment']

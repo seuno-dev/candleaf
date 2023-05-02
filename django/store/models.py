@@ -67,8 +67,12 @@ class Product(models.Model):
         return total / len(reviews)
 
     @property
-    def rating_count(self):
-        return Review.objects.filter(order_item__product=self).count()
+    def reviews(self):
+        return Review.objects.filter(order_item__product=self)
+
+    @property
+    def review_count(self):
+        return self.reviews.count()
 
 
 class ProductImage(models.Model):

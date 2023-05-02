@@ -29,6 +29,8 @@ def assert_product_response(product_response, product):
     assert product_response['description'] == product.description
     assert product_response['unit_price'] == product.unit_price
     assert product_response['inventory'] == product.inventory
+    assert product_response['average_rating'] == product.average_rating
+    assert product_response['review_count'] == product.review_count
 
     if product.category:
         assert product_response['category']['id'] == product.category.id
@@ -36,6 +38,12 @@ def assert_product_response(product_response, product):
         assert product_response['category']['slug'] == product.category.slug
     else:
         assert product_response['category'] is None
+
+    if product.review_count > 0:
+        for review_response, review in zip(product_response['reviews'], product.reviews):
+            assert review_response['order_item']['id'] == review.order_item.id
+            assert review_response['rating'] == review.rating
+            assert review_response['comment'] == review.comment
 
 
 @pytest.mark.django_db
