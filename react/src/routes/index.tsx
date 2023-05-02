@@ -8,6 +8,7 @@ import Navbar from "../components/Elements/Navbar";
 import useAuth from "../hooks/useAuth";
 import StripePaymentRoutes from "../features/StripePayment/routes";
 import ProfileRoutes from "../features/Profile/routes";
+import ProductSearch from "../features/Products/routes/ProductSearch";
 
 const App = () => {
   return (
@@ -33,9 +34,9 @@ export const AppRoutes = () => {
       path: "/",
       element: <App />,
       children: [
-        { index: true, element: <ProductRoutes /> },
+        { index: true, element: <ProductSearch /> },
         { path: "profile/", children: ProfileRoutes },
-        { path: "products/", element: <ProductRoutes /> },
+        { path: "products/", children: ProductRoutes },
         { path: "cart/", element: requireAuthenticated(CartRoutes) },
         { path: "orders/", element: requireAuthenticated(OrderRoutes) },
         {
