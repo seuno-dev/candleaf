@@ -18,7 +18,7 @@ function ProductDetail() {
     slug: "",
     unitPrice: 0,
     averageRating: null,
-    ratingCount: 0,
+    reviewCount: 0,
     reviews: [],
   });
 

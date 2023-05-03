@@ -23,7 +23,7 @@ export type Product = {
   category: Category | null;
   images: ProductImage[];
   averageRating: number | null;
-  ratingCount: number;
+  reviewCount: number;
   reviews: Review[];
 };
 
