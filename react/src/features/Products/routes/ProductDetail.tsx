@@ -109,7 +109,7 @@ function ProductDetail() {
               {product.description}
             </Typography>
           </div>
-          <div className="border-t-[0.5px] mt-5 border-gray-200 flex flex-col gap-3">
+          <div className="border-t-[0.5px] mt-5 border-gray-200 flex flex-col gap-4">
             <Typography variant="h6">Reviews</Typography>
             {product.reviews.map((review) => (
               <ProductReview review={review} key={review.id} />
