@@ -8,7 +8,6 @@ import Navbar from "../components/Elements/Navbar";
 import useAuth from "../hooks/useAuth";
 import StripePaymentRoutes from "../features/StripePayment/routes";
 import ProfileRoutes from "../features/Profile/routes";
-import ProductSearch from "../features/Products/routes/ProductSearch";
 
 const App = () => {
   return (
