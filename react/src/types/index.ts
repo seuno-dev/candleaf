@@ -21,3 +21,4 @@ export interface SimpleReview {
   rating: number;
   comment: string;
 }
+

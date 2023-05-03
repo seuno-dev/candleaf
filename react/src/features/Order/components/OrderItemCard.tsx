@@ -10,7 +10,8 @@ type OrderItemCardProps = {
   item: OrderItem;
 };
 
-function OrderItemCard({ order, item }: OrderItemCardProps) {
+function OrderItemCard({ order, item: _item }: OrderItemCardProps) {
+  const [item, setItem] = useState(_item);
   const [isReviewing, setIsReviewing] = useState(false);
 
   return (
@@ -34,7 +35,8 @@ function OrderItemCard({ order, item }: OrderItemCardProps) {
               {formatCurrency(item.totalPrice)}
             </Typography>
           </div>
-          {order.status == "d" && !isReviewing &&
+          {order.status == "d" &&
+            !isReviewing &&
             (item.review != null ? (
               <div className="w-20">
                 <ReviewStarLabel review={item.review} />
@@ -45,7 +47,13 @@ function OrderItemCard({ order, item }: OrderItemCardProps) {
               </Button>
             ))}
         </div>
-        {isReviewing && <AddReview />}
+        {isReviewing && (
+          <AddReview
+            orderItem={item}
+            setOrderItem={setItem}
+            onSubmit={() => setIsReviewing(false)}
+          />
+        )}
       </CardBody>
     </Card>
   );

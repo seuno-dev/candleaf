@@ -2,7 +2,7 @@ import { SimpleProduct } from "../../Products/types";
 import { SimpleReview } from "../../../types";
 
 export type OrderItem = {
-  id: string;
+  id: number;
   orderId: string;
   product: SimpleProduct;
   unitPrice: number;
@@ -27,3 +27,9 @@ export type OrderList = {
 export type SubmitOrder = {
   orderId: string;
 };
+
+export interface CreateReview {
+  orderItem: number;
+  rating: number;
+  comment: string;
+}
