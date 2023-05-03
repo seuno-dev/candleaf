@@ -5,7 +5,7 @@ import { formatCurrency } from "../../../utils/currency";
 import { createCartItem, retrieveProductDetail } from "../api";
 import { Product } from "../types";
 import ProductRatingLabel from "../components/ProductRatingLabel";
-import ProductReview from "../components/ProductReview";
+import ReviewFull from "../../../components/ReviewFull";
 
 function ProductDetail() {
   const [product, setProduct] = useState<Product>({
@@ -112,7 +112,7 @@ function ProductDetail() {
           <div className="border-t-[0.5px] mt-5 border-gray-200 flex flex-col gap-4">
             <Typography variant="h6">Reviews</Typography>
             {product.reviews.map((review) => (
-              <ProductReview review={review} key={review.id} />
+              <ReviewFull review={review} key={review.id} />
             ))}
           </div>
         </div>

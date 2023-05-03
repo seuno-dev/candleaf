@@ -1,4 +1,5 @@
 import { SimpleProduct } from "../../Products/types";
+import { SimpleReview } from "../../../types";
 
 export type OrderItem = {
   id: string;
@@ -7,6 +8,7 @@ export type OrderItem = {
   unitPrice: number;
   quantity: number;
   totalPrice: number;
+  review: SimpleReview | null;
 };
 
 export type Order = {

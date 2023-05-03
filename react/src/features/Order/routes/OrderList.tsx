@@ -45,7 +45,7 @@ function OrderList() {
                   key={item.id}
                   className="mb-2 border-[0.5px] border-gray-200"
                 >
-                  <OrderItemCard item={item} />
+                  <OrderItemCard order={selectedOrder} item={item} />
                 </li>
               ))}
             </ul>

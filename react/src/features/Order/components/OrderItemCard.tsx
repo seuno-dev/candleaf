@@ -1,16 +1,18 @@
 import React from "react";
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { formatCurrency } from "../../../utils/currency";
-import { OrderItem } from "../types";
+import { Order, OrderItem } from "../types";
+import ReviewStarLabel from "../../../components/ReviewStarLabel";
 
 type OrderItemCardProps = {
+  order: Order;
   item: OrderItem;
 };
 
-function OrderItemCard({ item }: OrderItemCardProps) {
+function OrderItemCard({ order, item }: OrderItemCardProps) {
   return (
     <Card shadow={false}>
-      <CardBody className="flex flex-row">
+      <CardBody className="flex flex-row justify-around items-center">
         <img
           src={item.product.image.image}
           alt={`Image of ${item.product.title}`}
@@ -28,6 +30,13 @@ function OrderItemCard({ item }: OrderItemCardProps) {
             {formatCurrency(item.totalPrice)}
           </Typography>
         </div>
+        {order.status == "d" && item.review != null ? (
+          <div className="w-20">
+            <ReviewStarLabel review={item.review} />
+          </div>
+        ) : (
+          <Button color="light-green">Review</Button>
+        )}
       </CardBody>
     </Card>
   );

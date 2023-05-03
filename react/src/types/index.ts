@@ -10,3 +10,14 @@ export type User = {
   lastName: string;
   email: string;
 };
+
+export interface Review {
+  rating: number;
+  comment: string;
+}
+
+export interface SimpleReview {
+  id: number;
+  rating: number;
+  comment: string;
+}

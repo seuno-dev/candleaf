@@ -1,4 +1,4 @@
-import { Category } from "../../../types";
+import { Category, SimpleReview } from "../../../types";
 
 export type ProductImage = {
   id: number;
@@ -24,7 +24,7 @@ export type Product = {
   images: ProductImage[];
   averageRating: number | null;
   reviewCount: number;
-  reviews: Review[];
+  reviews: SimpleReview[];
 };
 
 export type ProductList = {
@@ -39,9 +39,3 @@ export type ProductFilterParams = {
   priceMin: string | undefined;
   priceMax: string | undefined;
 };
-
-export interface Review {
-  id: number;
-  rating: number;
-  comment: string;
-}
