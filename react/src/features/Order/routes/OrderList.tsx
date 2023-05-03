@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import OrderCard from "../components/OrderCard";
-import { Dialog, DialogBody } from "@material-tailwind/react";
-import OrderItemCard from "../components/OrderItemCard";
 import { Order } from "../types";
 import { retrieveOrderList } from "../api";
+import OrderDetailDialog from "../components/OrderDetailDialog";
 
 function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -33,24 +32,11 @@ function OrderList() {
         ))}
       </ul>
       {selectedOrder && (
-        <Dialog
+        <OrderDetailDialog
+          order={selectedOrder}
           open={openDetailDialog}
           handler={handleOpenDetailDialog}
-          className="flex flex-col"
-        >
-          <DialogBody>
-            <ul>
-              {selectedOrder.items.map((item) => (
-                <li
-                  key={item.id}
-                  className="mb-2 border-[0.5px] border-gray-200"
-                >
-                  <OrderItemCard order={selectedOrder} item={item} />
-                </li>
-              ))}
-            </ul>
-          </DialogBody>
-        </Dialog>
+        />
       )}
     </div>
   );
