@@ -12,7 +12,7 @@ type OrderItemCardProps = {
 function OrderItemCard({ order, item }: OrderItemCardProps) {
   return (
     <Card shadow={false}>
-      <CardBody className="flex flex-row justify-around items-center">
+      <CardBody className="flex flex-row justify-between items-center">
         <img
           src={item.product.image.image}
           alt={`Image of ${item.product.title}`}
@@ -30,13 +30,13 @@ function OrderItemCard({ order, item }: OrderItemCardProps) {
             {formatCurrency(item.totalPrice)}
           </Typography>
         </div>
-        {order.status == "d" && item.review != null ? (
+        {order.status == "d" && (item.review != null ? (
           <div className="w-20">
             <ReviewStarLabel review={item.review} />
           </div>
         ) : (
           <Button color="light-green">Review</Button>
-        )}
+        ))}
       </CardBody>
     </Card>
   );
