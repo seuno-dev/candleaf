@@ -31,7 +31,7 @@ function OrderCard({ order, handleClickDetail }: OrderItemProps) {
           <OrderStatusLabel statusKey={order.status} />
         </div>
       </CardHeader>
-      <CardBody className="flex flex-row">
+      <CardBody className="flex flex-row justify-between">
         <img
           src={firstItem.product.image.image}
           alt={`Image of ${firstItem.product.title}`}
