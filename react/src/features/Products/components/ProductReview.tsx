@@ -1,13 +1,13 @@
 import React from "react";
 import Typography from "@material-tailwind/react/components/Typography";
-import { SimpleReview } from "../types";
-import ReviewStarLabel from "./ReviewStarLabel";
+import { SimpleReview } from "../../../types";
+import ReviewStarLabel from "../../../components/ReviewStarLabel";
 
 interface Props {
   review: SimpleReview;
 }
 
-const ReviewFull = ({ review }: Props) => {
+const ProductReview = ({ review }: Props) => {
   return (
     <div className="flex flex-col">
       <ReviewStarLabel review={review} />
@@ -16,4 +16,4 @@ const ReviewFull = ({ review }: Props) => {
   );
 };
 
-export default ReviewFull;
+export default ProductReview;
