@@ -78,15 +78,15 @@ class CreateReviewSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    slug = serializers.CharField(read_only=True)
-    images = ProductImageSerializer(many=True, read_only=True)
-    category = CategorySerializer()
-    reviews = ReviewSerializer(many=True)
-
     class Meta:
         model = models.Product
         fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'category', 'images',
                   'average_rating', 'review_count', 'reviews']
+
+    slug = serializers.CharField(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
+    category = CategorySerializer()
+    reviews = ReviewSerializer(many=True, source="few_reviews")
 
 
 class CreateProductSerializer(serializers.ModelSerializer):

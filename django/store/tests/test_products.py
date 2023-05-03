@@ -40,7 +40,7 @@ def assert_product_response(product_response, product):
         assert product_response['category'] is None
 
     if product.review_count > 0:
-        for review_response, review in zip(product_response['reviews'], product.reviews):
+        for review_response, review in zip(product_response['reviews'], product.few_reviews):
             assert review_response['id'] == review.id
             assert review_response['order_item']['id'] == review.order_item.id
             assert review_response['rating'] == review.rating
@@ -159,7 +159,7 @@ class TestListProduct:
 class TestRetrieveProduct:
     def test_returns_200(self, api_client, products_detail_url):
         product = baker.make(models.Product)
-        baker.make(models.Review, order_item__product=product, _quantity=10)
+        baker.make(models.Review, order_item__product=product, _quantity=20)
 
         response = api_client.get(products_detail_url(product.slug))
 

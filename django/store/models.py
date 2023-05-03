@@ -71,6 +71,13 @@ class Product(models.Model):
         return Review.objects.filter(order_item__product=self)
 
     @property
+    def few_reviews(self):
+        qs = self.reviews
+        if qs.count() > 10:
+            return qs[:10]
+        return qs
+
+    @property
     def review_count(self):
         return self.reviews.count()
 
