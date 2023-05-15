@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from DjangoKart import settings
+from ShopZone import settings
 from . import models, serializers, filters
 from .paginations import PageNumberPagination
 

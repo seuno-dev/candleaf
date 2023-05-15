@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django_fsm import FSMField, transition
 
-from DjangoKart import settings
+from ShopZone import settings
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
