@@ -61,7 +61,7 @@ function Navbar() {
     <BaseNavbar fullWidth={true} color="light-green" variant="filled">
       <div className="container mx-auto flex items-center justify-between">
         <Link to="/">
-          <Typography variant="h4">DjangoKart</Typography>
+          <Typography variant="h4">ShopZone</Typography>
         </Link>
         <div className="px-5">
           <Menu open={openCategoryMenu} handler={setOpenCategoryMenu}>
