@@ -27,7 +27,7 @@ export const AppRoutes = () => {
   return useRoutes([
     {
       path: "/auth/",
-      element: <AuthRoutes />,
+      children: AuthRoutes,
     },
     {
       path: "/",
