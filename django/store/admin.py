@@ -21,11 +21,15 @@ class ReviewAdmin(admin.ModelAdmin):
 
     @admin.display(ordering='order_item__order__customer__user__username', description="Username")
     def get_username(self, review):
-        return review.order_item.order.customer.user.username
+        if review.order_item:
+            return review.order_item.order.customer.user.username
+        return ""
 
     @admin.display(ordering='order_item__product__title', description="Product")
     def get_product(self, review):
-        return review.order_item.product.title
+        if review.order_item:
+            return review.order_item.product.title
+        return ""
 
 
 @admin.register(models.Order)
