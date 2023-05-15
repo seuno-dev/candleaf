@@ -18,6 +18,7 @@ function ProductCard({ product }: Props) {
     <Card className="w-52 border-[0.5px] border-gray-200" shadow={false}>
       <CardHeader className="m-0 rounded-b-none" floated={false} shadow={false}>
         <img
+          className="object-contain h-52"
           src={
             product.images.length == 0 ? "logo512.png" : product.images[0].image
           }
