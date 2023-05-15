@@ -3,7 +3,7 @@ import { Alert, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
 import { createCartItem, retrieveProductDetail } from "../api";
-import { Product } from "../types";
+import { Product, ProductImage } from "../types";
 import ProductRatingLabel from "../components/ProductRatingLabel";
 import ProductReview from "../components/ProductReview";
 
@@ -25,6 +25,11 @@ function ProductDetail() {
   const { slug } = useParams();
   const [showCartSuccessAlert, setShowCartSuccessAlert] = useState(false);
   const [showCartFailedAlert, setShowCartFailedAlert] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<ProductImage | undefined>(
+    undefined
+  );
+
+  const defaultImagesClassName = "w-16 h-16 mr-3 rounded-lg";
 
   const navigate = useNavigate();
   if (!slug) {
@@ -35,6 +40,10 @@ function ProductDetail() {
   useEffect(() => {
     retrieveProductDetail(slug).then((product) => setProduct(product));
   }, []);
+
+  useEffect(() => {
+    setSelectedImage(product.images.length > 0 ? product.images[0] : undefined);
+  }, [product]);
 
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
@@ -75,15 +84,28 @@ function ProductDetail() {
         </Alert>
       </div>
       <div className="mt-5 flex flex-row justify-center">
-        <div className="w-[350px] h-full">
+        <div className="w-[380px] h-full flex flex-col items-center">
           <img
-            src={
-              product.images.length > 0
-                ? product.images[0].image
-                : "logo512.png"
-            }
+            className="object-cover w-[350px] h-[350px]"
+            src={selectedImage ? selectedImage.image : "logo512.png"}
             alt={`Image of product ${product.title}`}
           />
+          <div className="overflow-x-auto flex flex-row pt-10">
+            {product.images.map((image) => (
+              <img
+                className={
+                  image === selectedImage
+                    ? defaultImagesClassName +
+                      " border-light-green-500 border-2"
+                    : defaultImagesClassName
+                }
+                key={image.id}
+                src={image.image}
+                onPointerEnter={() => setSelectedImage(image)}
+                alt={`Image of product ${product.title}`}
+              />
+            ))}
+          </div>
         </div>
         <div className="w-[480px] ml-4 flex flex-col">
           <Typography variant="h4" className="break-words">
