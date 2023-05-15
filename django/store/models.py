@@ -226,5 +226,5 @@ class Review(models.Model):
     )
     order_item = models.ForeignKey(OrderItem, null=True, on_delete=models.SET_NULL)
     rating = models.IntegerField(choices=RATING_CHOICES)
-    comment = models.TextField()
+    comment = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
