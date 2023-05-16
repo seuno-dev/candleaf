@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
-from fsm_admin.mixins import FSMTransitionMixin
 
 from . import models
 
@@ -33,9 +32,8 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Order)
-class OrderAdmin(FSMTransitionMixin, admin.ModelAdmin):
+class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'status']
-    fsm_field = ['status']
     inlines = [OrderItemInline]
 
 
