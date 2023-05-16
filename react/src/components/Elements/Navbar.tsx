@@ -35,6 +35,10 @@ function Navbar() {
 
   const navigate = useNavigate();
 
+  const handleProfile = () => {
+    return navigate("/profile");
+  };
+
   const handleLogout = () => {
     onLogout();
     return navigate("/auth/login");
@@ -110,6 +114,9 @@ function Navbar() {
                 </Typography>
               </MenuHandler>
               <MenuList {...profileTriggers}>
+                <MenuItem onClick={handleProfile}>
+                  <Typography>Profile</Typography>
+                </MenuItem>
                 <MenuItem onClick={handleOrders}>
                   <Typography>Orders</Typography>
                 </MenuItem>
