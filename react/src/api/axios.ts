@@ -2,7 +2,12 @@ import axios from "axios";
 import { camelizeKeys } from "humps";
 
 export const REFRESH_KEY = "refresh";
-const ACCESS_KEY = "access";
+export const ACCESS_KEY = "access";
+
+export const logout = () => {
+  localStorage.removeItem(REFRESH_KEY);
+  localStorage.removeItem(ACCESS_KEY);
+};
 
 let isRefreshing = false;
 type refreshQueueType = {
@@ -16,32 +21,6 @@ export const BASE_URL = "http://127.0.0.1:8000/";
 export const client = axios.create({
   baseURL: BASE_URL,
 });
-
-export const login = async (username: string, password: string) => {
-  const response = await fetch(`${BASE_URL}auth/jwt/create/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username, password }),
-  });
-  if (response.status === 401) {
-    throw new Error();
-  }
-  const data = await response.json();
-  const refreshToken = data.refresh;
-  const accessToken = data.access;
-
-  localStorage.setItem(REFRESH_KEY, refreshToken);
-  localStorage.setItem(ACCESS_KEY, accessToken);
-
-  return { refreshToken, accessToken };
-};
-
-export const logout = () => {
-  localStorage.removeItem(REFRESH_KEY);
-  localStorage.removeItem(ACCESS_KEY);
-};
 
 client.interceptors.request.use((config) => {
   const token = localStorage.getItem(ACCESS_KEY);
@@ -93,7 +72,7 @@ client.interceptors.response.use(
           isRefreshing = false;
           return client(originalRequest);
         } else if (response.status === 401) {
-          logout();
+          // logout();
         }
       } else {
         return new Promise<void>((resolve, reject) => {

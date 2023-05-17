@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
-import useAuth from "../../../hooks/useAuth";
+import useLogin from "../../../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const { onLogin } = useAuth();
+  const { mutate, isSuccess, error } = useLogin();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -18,12 +18,20 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const handleLogin = async () => {
-    if (await onLogin(username, password)) {
+  useEffect(() => {
+    if (isSuccess) {
       navigate("/");
-    } else {
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (error) {
       setErrorMessage("Invalid username or password");
     }
+  }, [error]);
+
+  const handleLogin = async () => {
+    mutate({ username, password });
   };
 
   return (

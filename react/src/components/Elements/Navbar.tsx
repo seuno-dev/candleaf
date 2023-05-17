@@ -8,15 +8,18 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import useProfile from "../../hooks/useProfile";
 import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
 import { useCategoryList } from "../../hooks/useCategoryList";
+import useLogout from "../../hooks/useLogout";
+import { getAuthenticationStatus } from "../../api";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
-  const { isAuthenticated, onLogout } = useAuth();
+  const { onLogout } = useLogout();
+  const isAuthenticated = getAuthenticationStatus();
+
   const { user } = useProfile();
   const { categories } = useCategoryList();
 

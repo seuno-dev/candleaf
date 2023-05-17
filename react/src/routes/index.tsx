@@ -5,9 +5,9 @@ import React from "react";
 import CartRoutes from "../features/Cart/routes";
 import OrderRoutes from "../features/Order/routes";
 import Navbar from "../components/Elements/Navbar";
-import useAuth from "../hooks/useAuth";
 import StripePaymentRoutes from "../features/StripePayment/routes";
 import ProfileRoutes from "../features/Profile/routes";
+import { getAuthenticationStatus } from "../api";
 
 const App = () => {
   return (
@@ -19,8 +19,11 @@ const App = () => {
 };
 
 const requireAuthenticated = (Component: React.FC) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Component /> : <Navigate to="/auth/login" />;
+  return getAuthenticationStatus() ? (
+    <Component />
+  ) : (
+    <Navigate to="/auth/login" />
+  );
 };
 
 export const AppRoutes = () => {

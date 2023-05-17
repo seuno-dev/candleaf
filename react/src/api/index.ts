@@ -1,7 +1,7 @@
-import { client, login, logout } from "./axios";
-import { Category, User } from "../types";
+import { BASE_URL, client, logout, REFRESH_KEY } from "./axios";
+import { Category, Credential, User } from "../types";
 
-export { client, login, logout };
+export { client, logout };
 
 export const retrieveProfile = async (): Promise<User> => {
   const response = await client.get<User>("/auth/users/me/");
@@ -11,4 +11,20 @@ export const retrieveProfile = async (): Promise<User> => {
 export const retrieveCategoryList = async (): Promise<Category[]> => {
   const response = await client.get<Category[]>("/store/categories/");
   return response.data;
+};
+
+export const login = async (credential: Credential) => {
+  const response = await fetch(`${BASE_URL}auth/jwt/create/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credential),
+  });
+  if (response.status === 200) return await response.json();
+  else throw new Error();
+};
+
+export const getAuthenticationStatus = () => {
+  return localStorage.getItem(REFRESH_KEY) !== null;
 };

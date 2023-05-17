@@ -22,3 +22,7 @@ export interface SimpleReview {
   comment: string;
 }
 
+export type Credential = {
+  username: string;
+  password: string;
+};
