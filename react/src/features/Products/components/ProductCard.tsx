@@ -15,7 +15,7 @@ interface Props {
 
 function ProductCard({ product }: Props) {
   return (
-    <Card className="w-52 border-[0.5px] border-gray-200" shadow={false}>
+    <Card className="w-44 border-[0.5px] border-gray-200" shadow={false}>
       <CardHeader className="m-0 rounded-b-none" floated={false} shadow={false}>
         <img
           className="object-contain h-52"
@@ -32,7 +32,11 @@ function ProductCard({ product }: Props) {
         <Typography variant="h6">
           {formatCurrency(product.unitPrice)}
         </Typography>
-        {product.averageRating && <ProductRatingLabel product={product} />}
+        {product.averageRating && (
+          <div className="mt-2">
+            <ProductRatingLabel product={product} />
+          </div>
+        )}
       </CardBody>
     </Card>
   );

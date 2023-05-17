@@ -11,7 +11,7 @@ const ProductRatingLabel = ({ product }: Props) => {
   return (
     <div className="flex flex-row items-center">
       <img src={Star} className="w-4" alt="review icon" />
-      <Typography className="ml-2">
+      <Typography className="ml-2" variant="small">
         {product.averageRating?.toPrecision(2)} ({product.reviewCount} ratings)
       </Typography>
     </div>
