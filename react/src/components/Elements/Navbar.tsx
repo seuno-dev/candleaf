@@ -8,19 +8,19 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
-import useProfile from "../../hooks/useProfile";
 import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
 import { useCategoryList } from "../../hooks/useCategoryList";
 import useLogout from "../../features/Auth/hooks/useLogout";
 import { getAuthenticationStatus } from "../../api";
+import useRetrieveProfile from "../../features/Profile/hooks/useRetrieveProfile";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
   const { onLogout } = useLogout();
   const isAuthenticated = getAuthenticationStatus();
 
-  const { user } = useProfile();
+  const { data } = useRetrieveProfile();
   const { categories } = useCategoryList();
 
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
@@ -106,14 +106,14 @@ function Navbar() {
           <Link className="w-12" to="/cart">
             <img src={ShoppingCart} alt="Icon of shopping cart" />
           </Link>
-          {isAuthenticated && (
+          {isAuthenticated && data && (
             <Menu open={openProfileMenu} handler={setOpenProfileMenu}>
               <MenuHandler {...profileTriggers}>
                 <Typography
                   className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
                   variant="small"
                 >
-                  {user.firstName} {user.lastName}
+                  {data.firstName} {data.lastName}
                 </Typography>
               </MenuHandler>
               <MenuList {...profileTriggers}>
