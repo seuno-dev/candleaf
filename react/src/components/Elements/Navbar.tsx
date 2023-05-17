@@ -12,7 +12,7 @@ import useProfile from "../../hooks/useProfile";
 import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
 import { useCategoryList } from "../../hooks/useCategoryList";
-import useLogout from "../../hooks/useLogout";
+import useLogout from "../../features/Auth/hooks/useLogout";
 import { getAuthenticationStatus } from "../../api";
 
 // noinspection JSUnusedGlobalSymbols

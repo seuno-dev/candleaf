@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
-import useLogin from "../../../hooks/useLogin";
+import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 
 function Login() {

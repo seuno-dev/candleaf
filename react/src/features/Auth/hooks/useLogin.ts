@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { ACCESS_KEY, REFRESH_KEY } from "../api/axios";
-import { login } from "../api";
-import { Credential } from "../types";
+import { ACCESS_KEY, REFRESH_KEY } from "../../../api/axios";
+import { login } from "../../../api";
+import { Credential } from "../../../types";
 
 const useLogin = () =>
   useMutation({

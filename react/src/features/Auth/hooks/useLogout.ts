@@ -1,4 +1,4 @@
-import { logout } from "../api";
+import { logout } from "../../../api";
 
 const useLogout = () => ({ onLogout: () => logout() });
 
