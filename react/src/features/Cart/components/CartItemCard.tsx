@@ -7,22 +7,17 @@ import PlusIcon from "../../../assets/images/plus-circle.svg";
 import DeleteIcon from "../../../assets/images/delete.svg";
 import { formatCurrency } from "../../../utils/currency";
 import { CartItem } from "../types";
+import useUpdateCartItem from "../hooks/useUpdateCartItem";
+import useDeleteCartItem from "../hooks/useDeleteCartItem";
 
 type CartItemProps = {
   item: CartItem;
-  updateItemQuantity: (id: number, newQuantity: number) => Promise<boolean>;
-  setCartItemList: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  cartItemList: CartItem[];
-  deleteItem: (id: number) => Promise<boolean>;
 };
 
-function CartItemCard({
-  item,
-  updateItemQuantity,
-  setCartItemList,
-  cartItemList,
-  deleteItem,
-}: CartItemProps) {
+function CartItemCard({ item }: CartItemProps) {
+  const { mutate: update } = useUpdateCartItem();
+  const { mutate: remove } = useDeleteCartItem();
+
   return (
     <Card className="flex flex-row mb-5 p-5">
       <img
@@ -48,19 +43,7 @@ function CartItemCard({
                 src={MinusIcon}
                 className="cursor-pointer"
                 alt="Button to decrease quantity"
-                onClick={() => {
-                  updateItemQuantity(item.id, item.quantity - 1);
-                  setCartItemList(
-                    cartItemList.map((mapItem) => {
-                      if (mapItem.id == item.id) {
-                        mapItem.quantity -= 1;
-                        mapItem.totalPrice =
-                          mapItem.quantity * mapItem.product.unitPrice;
-                      }
-                      return mapItem;
-                    })
-                  );
-                }}
+                onClick={() => update({ ...item, quantity: item.quantity - 1 })}
               />
             ) : (
               <img
@@ -81,31 +64,14 @@ function CartItemCard({
                 src={PlusIcon}
                 className="cursor-pointer"
                 alt="Button to increase quantity"
-                onClick={() => {
-                  updateItemQuantity(item.id, item.quantity + 1);
-                  setCartItemList(
-                    cartItemList.map((mapItem) => {
-                      if (mapItem.id == item.id) {
-                        mapItem.quantity += 1;
-                        mapItem.totalPrice =
-                          mapItem.quantity * mapItem.product.unitPrice;
-                      }
-                      return mapItem;
-                    })
-                  );
-                }}
+                onClick={() => update({ ...item, quantity: item.quantity + 1 })}
               />
             )}
             <img
               src={DeleteIcon}
               className="cursor-pointer"
               alt="Button to delete cart item"
-              onClick={() => {
-                deleteItem(item.id);
-                setCartItemList(
-                  cartItemList.filter((mapItem) => mapItem.id != item.id)
-                );
-              }}
+              onClick={() => remove(item)}
             />
           </div>
         </div>

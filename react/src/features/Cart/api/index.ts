@@ -1,22 +1,22 @@
 import { client } from "../../../api";
-import { CartItem } from "../types";
+import { CartItem, WriteCartItem } from "../types";
 
-export const retrieveCartItemList = async (): Promise<CartItem[]> => {
+export const retrieveCartItems = async (): Promise<CartItem[]> => {
   const response = await client.get<CartItem[]>("/store/cart-items/");
   return response.data;
 };
 
-export const updateCartItemQuantity = async (
-  id: number,
-  newQuantity: number
-) => {
-  const response = await client.patch(`/store/cart-items/${id}/`, {
-    quantity: newQuantity,
-  });
-  return response.status === 200;
+export const updateCartItemQuantity = async (cartItem: WriteCartItem) => {
+  const response = await client.patch<WriteCartItem>(
+    `/store/cart-items/${cartItem.id}/`,
+    {
+      quantity: cartItem.quantity,
+    }
+  );
+  return response.data;
 };
 
-export const deleteCartItem = async (id: number) => {
-  const response = await client.delete(`/store/cart-items/${id}/`);
+export const deleteCartItem = async (cartItem: CartItem) => {
+  const response = await client.delete(`/store/cart-items/${cartItem.id}/`);
   return response.status === 204;
 };

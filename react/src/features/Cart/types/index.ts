@@ -6,3 +6,9 @@ export type CartItem = {
   quantity: number;
   totalPrice: number;
 };
+
+export type WriteCartItem = {
+  id: number;
+  productId: number;
+  quantity: number;
+}

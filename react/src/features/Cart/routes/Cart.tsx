@@ -2,43 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CartItemCard from "../components/CartItemCard";
-import {
-  deleteCartItem,
-  retrieveCartItemList,
-  updateCartItemQuantity,
-} from "../api";
 import { submitOrder } from "../../Order/api";
-import { CartItem } from "../types";
+import useCartItems from "../hooks/useCartItems";
 
 function Cart() {
-  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
+  const { data } = useCartItems();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-
-  const handleUpdateQty = async (id: number, newQuantity: number) => {
-    return await updateCartItemQuantity(id, newQuantity);
-  };
-
-  const handleDeleteItem = async (id: number) => {
-    return await deleteCartItem(id);
-  };
 
   const createOrder = async () => {
     return await submitOrder();
   };
 
   useEffect(() => {
-    retrieveCartItemList().then((items) => setCartItemList(items));
-  }, []);
-
-  useEffect(() => {
     setTotalPrice(
-      cartItemList.reduce(
+      data?.reduce(
         (previousItem, currentItem) => previousItem + currentItem.totalPrice,
         0
-      )
+      ) || 0
     );
-  }, [cartItemList]);
+  }, [data]);
 
   const handleCreateOrderClick = async () => {
     const orderId = await createOrder();
@@ -50,15 +33,8 @@ function Cart() {
       <div className="w-[680px]">
         <Typography variant="h4">Cart</Typography>
         <div className="mt-10 flex flex-col">
-          {cartItemList.map((item) => (
-            <CartItemCard
-              key={item.id}
-              item={item}
-              updateItemQuantity={handleUpdateQty}
-              setCartItemList={setCartItemList}
-              cartItemList={cartItemList}
-              deleteItem={handleDeleteItem}
-            />
+          {data?.map((item) => (
+            <CartItemCard key={item.id} item={item} />
           ))}
         </div>
       </div>
