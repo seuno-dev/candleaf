@@ -1,51 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
-import { Product, ProductImage } from "../types";
+import { ProductImage } from "../types";
 import ProductRatingLabel from "../components/ProductRatingLabel";
 import ProductReview from "../components/ProductReview";
 import useAddCartItem from "../../Cart/hooks/useAddCartItem";
-import { retrieveProductDetail } from "../api";
+import useProduct from "../hooks/useProduct";
 
 function ProductDetail() {
-  const [product, setProduct] = useState<Product>({
-    category: null,
-    description: "",
-    id: 0,
-    images: [],
-    inventory: 0,
-    title: "",
-    slug: "",
-    unitPrice: 0,
-    averageRating: null,
-    reviewCount: 0,
-    reviews: [],
-  });
   const { mutate, isSuccess, isError } = useAddCartItem();
-
   const { slug } = useParams();
+  const { data: product, error } = useProduct(slug || "");
+
   const [showCartSuccessAlert, setShowCartSuccessAlert] = useState(false);
   const [showCartFailedAlert, setShowCartFailedAlert] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState<ProductImage | undefined>(
     undefined
   );
 
-  const defaultImagesClassName = "w-16 h-16 mr-3 rounded-lg";
-
-  const navigate = useNavigate();
-  if (!slug) {
-    navigate("/");
-    return <></>;
-  }
-
   useEffect(() => {
-    retrieveProductDetail(slug).then((product) => setProduct(product));
-  }, []);
-
-  useEffect(() => {
-    setSelectedImage(product.images.length > 0 ? product.images[0] : undefined);
+    if (product) {
+      setSelectedImage(
+        product.images.length > 0 ? product.images[0] : undefined
+      );
+    }
   }, [product]);
+
+  const defaultImagesClassName = "w-16 h-16 mr-3 rounded-lg";
+  const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
+    setShowAlert(true);
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+      clearTimeout(timer);
+    }, 3000);
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -59,13 +49,9 @@ function ProductDetail() {
     }
   }, [isError]);
 
-  const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
-    setShowAlert(true);
-    const timer = setTimeout(() => {
-      setShowAlert(false);
-      clearTimeout(timer);
-    }, 3000);
-  };
+  if (error) throw error;
+
+  if (!product) return <></>;
 
   const onAddToCart = () => {
     mutate({ productId: product.id, quantity: 1 });

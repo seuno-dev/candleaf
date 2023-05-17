@@ -31,7 +31,7 @@ const useUpdateCartItem = () => {
 
       return { previousCartItems };
     },
-    onSuccess: (savedCartItem, newCartItem) => {
+    onSuccess: (savedCartItem) => {
       queryClient.setQueryData<CartItem[]>(CACHE_KEY_CART, (cartItems = []) =>
         cartItems.map((cartItem) => {
           if (cartItem.id === savedCartItem.id) {
