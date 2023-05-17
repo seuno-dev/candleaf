@@ -8,7 +8,7 @@ export type CartItem = {
 };
 
 export type WriteCartItem = {
-  id: number;
+  id?: number;
   productId: number;
   quantity: number;
 }

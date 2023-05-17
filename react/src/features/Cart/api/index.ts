@@ -1,9 +1,18 @@
 import { client } from "../../../api";
 import { CartItem, WriteCartItem } from "../types";
+import { decamelizeKeys } from "humps";
 
 export const retrieveCartItems = async (): Promise<CartItem[]> => {
   const response = await client.get<CartItem[]>("/store/cart-items/");
   return response.data;
+};
+
+export const createCartItem = async (cartItem: WriteCartItem) => {
+  const response = await client.post(
+    "/store/cart-items/",
+    decamelizeKeys(cartItem)
+  );
+  return response.status === 201;
 };
 
 export const updateCartItemQuantity = async (cartItem: WriteCartItem) => {

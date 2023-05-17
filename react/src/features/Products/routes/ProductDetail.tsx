@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
-import { createCartItem, retrieveProductDetail } from "../api";
 import { Product, ProductImage } from "../types";
 import ProductRatingLabel from "../components/ProductRatingLabel";
 import ProductReview from "../components/ProductReview";
+import useAddCartItem from "../../Cart/hooks/useAddCartItem";
+import { retrieveProductDetail } from "../api";
 
 function ProductDetail() {
   const [product, setProduct] = useState<Product>({
@@ -21,6 +22,7 @@ function ProductDetail() {
     reviewCount: 0,
     reviews: [],
   });
+  const { mutate, isSuccess, isError } = useAddCartItem();
 
   const { slug } = useParams();
   const [showCartSuccessAlert, setShowCartSuccessAlert] = useState(false);
@@ -45,6 +47,18 @@ function ProductDetail() {
     setSelectedImage(product.images.length > 0 ? product.images[0] : undefined);
   }, [product]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      showAlertTemporarily(setShowCartSuccessAlert);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      showAlertTemporarily(setShowCartFailedAlert);
+    }
+  }, [isError]);
+
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
     const timer = setTimeout(() => {
@@ -54,13 +68,7 @@ function ProductDetail() {
   };
 
   const onAddToCart = () => {
-    createCartItem(product.id).then((isSuccess) => {
-      if (isSuccess) {
-        showAlertTemporarily(setShowCartSuccessAlert);
-      } else {
-        showAlertTemporarily(setShowCartFailedAlert);
-      }
-    });
+    mutate({ productId: product.id, quantity: 1 });
   };
 
   return (
