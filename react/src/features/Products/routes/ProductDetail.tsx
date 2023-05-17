@@ -146,10 +146,20 @@ function ProductDetail() {
             ))}
           </div>
         </div>
-        <div className="w-[270px] ml-4">
-          <Button fullWidth={true} color="light-green" onClick={onAddToCart}>
+        <div className="w-[270px] ml-4 flex flex-col items-center">
+          <Button
+            fullWidth={true}
+            color="light-green"
+            onClick={onAddToCart}
+            disabled={product.inventory === 0}
+          >
             Add to cart
           </Button>
+          {product.inventory === 0 && (
+            <Typography className="mt-3" color="red" variant="h6">
+              Out of stock
+            </Typography>
+          )}
         </div>
       </div>
     </div>
