@@ -10,10 +10,10 @@ import {
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
-import { useCategoryList } from "../../hooks/useCategoryList";
 import useLogout from "../../features/Auth/hooks/useLogout";
 import { getAuthenticationStatus } from "../../api";
 import useRetrieveProfile from "../../features/Profile/hooks/useRetrieveProfile";
+import useCategories from "../../features/Products/hooks/useCategories";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
@@ -21,7 +21,7 @@ function Navbar() {
   const isAuthenticated = getAuthenticationStatus();
 
   const { data } = useRetrieveProfile();
-  const { categories } = useCategoryList();
+  const { data: categories } = useCategories();
 
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
   const [openCategoryMenu, setOpenCategoryMenu] = useState(false);
@@ -88,7 +88,7 @@ function Navbar() {
               </Typography>
             </MenuHandler>
             <MenuList {...categoryTriggers}>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <MenuItem
                   key={category.id}
                   onClick={() => handleCategoryClick(category.id.toString())}

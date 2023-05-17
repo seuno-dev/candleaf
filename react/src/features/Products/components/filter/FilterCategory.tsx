@@ -1,7 +1,7 @@
-import { useCategoryList } from "../../../../hooks/useCategoryList";
 import React, { useEffect, useState } from "react";
 import { Typography } from "@material-tailwind/react";
 import FilterCategoryButton from "./FilterCategoryButton";
+import useCategories from "../../hooks/useCategories";
 
 interface Props {
   selectedCategory: number | string | undefined;
@@ -12,7 +12,7 @@ function FilterCategory({
   selectedCategory: _selectedCategory,
   onCategoryClick,
 }: Props) {
-  const { categories } = useCategoryList();
+  const { data } = useCategories();
   const [selectedCategory, setSelectedCategory] = useState<
     number | string | undefined
   >(_selectedCategory);
@@ -36,7 +36,7 @@ function FilterCategory({
       <Typography variant="h6" className="mb-3">
         Category
       </Typography>
-      {categories.map((category) => (
+      {data?.map((category) => (
         <FilterCategoryButton
           key={category.id}
           text={category.title}
