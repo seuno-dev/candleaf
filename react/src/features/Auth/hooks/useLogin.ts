@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { ACCESS_KEY, REFRESH_KEY } from "../../../api/axios";
+import { ACCESS_KEY, REFRESH_KEY } from "../../../api/client";
 import { login } from "../../../api";
 import { Credential } from "../../../types";
 

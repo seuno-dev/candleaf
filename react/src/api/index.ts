@@ -1,12 +1,7 @@
-import { BASE_URL, client, logout, REFRESH_KEY } from "./axios";
-import { Category, Credential, User } from "../types";
+import { BASE_URL, client, logout, REFRESH_KEY } from "./client";
+import { Category, Credential } from "../types";
 
 export { client, logout };
-
-export const retrieveProfile = async (): Promise<User> => {
-  const response = await client.get<User>("/auth/users/me/");
-  return response.data;
-};
 
 export const retrieveCategoryList = async (): Promise<Category[]> => {
   const response = await client.get<Category[]>("/store/categories/");
