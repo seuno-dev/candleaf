@@ -48,6 +48,7 @@ function Login() {
             <Input
               type="text"
               label="Username"
+              data-testid="username-input"
               onChange={handleUsername}
               value={username}
             />
@@ -56,6 +57,7 @@ function Login() {
             <Input
               type="password"
               label="Password"
+              data-testid="password-input"
               onChange={handlePassword}
               value={password}
             />

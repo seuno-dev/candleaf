@@ -2,7 +2,7 @@ import {
   createBrowserRouter,
   isRouteErrorResponse,
   Navigate,
-  Outlet,
+  Outlet, RouteObject,
   useRouteError,
 } from "react-router-dom";
 import AuthRoutes from "../features/Auth/routes";
@@ -50,7 +50,7 @@ const requireAuthenticated = (Component: React.FC) => {
   );
 };
 
-const router = createBrowserRouter([
+const routes: RouteObject[] = [
   {
     path: "/auth/",
     children: AuthRoutes,
@@ -72,6 +72,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+]
 
-export default router;
+export default routes;

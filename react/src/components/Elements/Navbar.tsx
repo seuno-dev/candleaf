@@ -74,7 +74,7 @@ function Navbar() {
   return (
     <BaseNavbar fullWidth={true} color="light-green" variant="filled">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/">
+        <Link data-testid="navbar-brand" to="/">
           <Typography variant="h4">ShopZone</Typography>
         </Link>
         <div className="px-5">

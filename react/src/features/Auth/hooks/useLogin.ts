@@ -7,7 +7,6 @@ const useLogin = () =>
   useMutation({
     mutationFn: (credential: Credential) => login(credential),
     onSuccess: (data) => {
-      console.log(data);
       const { refresh, access } = data;
       localStorage.setItem(REFRESH_KEY, refresh);
       localStorage.setItem(ACCESS_KEY, access);
