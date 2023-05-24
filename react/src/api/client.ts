@@ -16,7 +16,7 @@ type refreshQueueType = {
 };
 const refreshQueue: refreshQueueType[] = [];
 
-export const BASE_URL = "http://127.0.0.1:8000/";
+export const BASE_URL = "http://127.0.0.1:8000";
 
 export const client = axios.create({
   baseURL: BASE_URL,
@@ -53,7 +53,7 @@ client.interceptors.response.use(
         console.log("refreshing token!");
         isRefreshing = true;
 
-        const response = await fetch(`${BASE_URL}auth/jwt/refresh/`, {
+        const response = await fetch(`${BASE_URL}/auth/jwt/refresh/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

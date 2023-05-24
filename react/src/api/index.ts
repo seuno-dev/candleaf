@@ -9,7 +9,7 @@ export const retrieveCategoryList = async (): Promise<Category[]> => {
 };
 
 export const login = async (credential: Credential) => {
-  const response = await fetch(`${BASE_URL}auth/jwt/create/`, {
+  const response = await fetch(`${BASE_URL}/auth/jwt/create/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -4,7 +4,7 @@ import { password, username } from "../db/auth";
 import { Credential } from "../../../types";
 
 export const authHandlers = [
-  rest.post(baseUrl("auth/jwt/create/"), async (req, res, ctx) => {
+  rest.post(baseUrl("/auth/jwt/create/"), async (req, res, ctx) => {
     const credential: Credential = await req.json();
 
     if (credential.username === username && credential.password === password) {
