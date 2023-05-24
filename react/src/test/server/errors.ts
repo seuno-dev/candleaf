@@ -1,0 +1,1 @@
+class AuthError extends Error {}

@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { renderWithRoute } from "../../../test/utils";
 import userEvent from "@testing-library/user-event";
-import { password, username } from "../../../test/server/db/auth";
+import { password, username } from "../../../test/server/db/credential";
 
 const renderLogin = () => renderWithRoute("/auth/login");
 

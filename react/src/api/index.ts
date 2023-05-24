@@ -1,4 +1,4 @@
-import { BASE_URL, client, logout, REFRESH_KEY } from "./client";
+import { ACCESS_KEY, BASE_URL, client, logout, REFRESH_KEY } from "./client";
 import { Category, Credential } from "../types";
 
 export { client, logout };
@@ -21,5 +21,8 @@ export const login = async (credential: Credential) => {
 };
 
 export const getAuthenticationStatus = () => {
-  return localStorage.getItem(REFRESH_KEY) !== null;
+  return (
+    localStorage.getItem(REFRESH_KEY) !== null &&
+    localStorage.getItem(ACCESS_KEY) !== null
+  );
 };

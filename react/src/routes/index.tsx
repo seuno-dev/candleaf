@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
   isRouteErrorResponse,
   Navigate,
-  Outlet, RouteObject,
+  Outlet,
+  RouteObject,
   useRouteError,
 } from "react-router-dom";
 import AuthRoutes from "../features/Auth/routes";
@@ -72,6 +72,6 @@ const routes: RouteObject[] = [
       },
     ],
   },
-]
+];
 
 export default routes;

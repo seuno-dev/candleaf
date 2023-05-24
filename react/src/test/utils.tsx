@@ -1,10 +1,16 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { render } from "@testing-library/react";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter,
+  createMemoryRouter,
+  RouterProvider,
+} from "react-router-dom";
 import routes from "../routes";
+import { ACCESS_KEY, REFRESH_KEY } from "../api/client";
+import { access, refresh } from "./server/db/credential";
 
-export const createWrapper = () => {
+export const createQueryWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -18,12 +24,31 @@ export const createWrapper = () => {
   );
 };
 
+export const createRouterWrapper = () => {
+  const QueryWrapper = createQueryWrapper();
+  return ({ children }: { children: React.ReactNode }) => (
+    <BrowserRouter>
+      <QueryWrapper>{children}</QueryWrapper>
+    </BrowserRouter>
+  );
+};
+
+export const authenticate = () => {
+  localStorage.setItem(REFRESH_KEY, refresh);
+  localStorage.setItem(ACCESS_KEY, access);
+};
+
 export const renderWithRoute = (route = "/") => {
   const router = createMemoryRouter(routes, {
     initialEntries: [route],
   });
 
   return render(<RouterProvider router={router} />, {
-    wrapper: createWrapper(),
+    wrapper: createQueryWrapper(),
   });
+};
+
+export const renderWithRouteAuthenticated = (route = "/") => {
+  authenticate();
+  return renderWithRoute(route);
 };

@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import baseUrl from "../url";
-import { password, username } from "../db/auth";
+import { access, password, refresh, username } from "../db/credential";
 import { Credential } from "../../../types";
 
 export const authHandlers = [
@@ -11,10 +11,8 @@ export const authHandlers = [
       return res(
         ctx.status(200),
         ctx.json({
-          refresh:
-            "refreshGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-          access:
-            "accessciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          refresh,
+          access,
         })
       );
     }

@@ -83,6 +83,7 @@ function Navbar() {
               <Typography
                 className="w-32 h-10 rounded-md leading-10 hei text-center align-middle cursor-pointer hover:bg-light-green-300"
                 variant="small"
+                data-testid="navbar-category"
               >
                 Category
               </Typography>
