@@ -1,5 +1,5 @@
 import { authenticate, createRouterWrapper } from "../../../test/utils";
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Navbar from "../Navbar";
 import userEvent from "@testing-library/user-event";
 import { categories } from "../../../test/server/db/categories";
@@ -28,6 +28,12 @@ describe("Customer dropdown", () => {
       await screen.findByText(`${customer.first_name} ${customer.last_name}`)
     ).toBeDefined();
 
-    screen.debug();
+    expect(screen.queryByText("Login")).toBeNull();
+  });
+
+  it("should show login button if not authenticated", async () => {
+    render(<Navbar />, { wrapper: createRouterWrapper() });
+
+    expect(await screen.findByText("Login")).toBeDefined();
   });
 });
