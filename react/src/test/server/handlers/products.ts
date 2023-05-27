@@ -34,13 +34,18 @@ export const productsHandler = [
       return true;
     });
 
-    const paginatedResult = filteredProducts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    const paginatedResult = filteredProducts.slice(
+      (page - 1) * PAGE_SIZE,
+      page * PAGE_SIZE
+    );
+
+    console.log(paginatedResult);
 
     return res(
       context.status(200),
       context.json({
         results: paginatedResult,
-        total_pages: Math.ceil(filteredProducts.length / PAGE_SIZE)
+        total_pages: Math.ceil(filteredProducts.length / PAGE_SIZE),
       })
     );
   }),

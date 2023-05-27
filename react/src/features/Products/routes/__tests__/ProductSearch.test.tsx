@@ -2,6 +2,8 @@ import { renderWithRoute } from "../../../../test/utils";
 import { fireEvent, screen } from "@testing-library/react";
 import { products } from "../../../../test/server/db/products";
 import { PAGE_SIZE } from "../../../../test/server/handlers/products";
+import { categories } from "../../../../test/server/db/categories";
+import userEvent from "@testing-library/user-event";
 
 describe("ProductSearch", () => {
   it("should show all pages of products", async () => {
@@ -26,5 +28,32 @@ describe("ProductSearch", () => {
     }
   });
 
-  it("")
+  it("should only show based on a category", async () => {
+    renderWithRoute("/products");
+
+    const category = categories[0];
+
+    await screen.findByText(category.title);
+
+    await userEvent.click(
+      await screen.getByRole("button", { name: category.title })
+    );
+
+    const correctProducts = products.filter((product) => {
+      return product.category === category;
+    });
+    const wrongProducts = products.filter((product) => {
+      return product.category !== category;
+    });
+
+    await screen.findByText(correctProducts[correctProducts.length - 1].title);
+
+    for (const product of correctProducts) {
+      expect(screen.getByText(product.title)).toBeDefined();
+    }
+
+    for (const product of wrongProducts) {
+      expect(screen.queryByText(product.title)).toBeNull();
+    }
+  });
 });

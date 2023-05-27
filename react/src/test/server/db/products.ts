@@ -65,4 +65,5 @@ const createProducts = (numOfCategories: number, numEachCategory: number) => {
   return products;
 };
 
-export const products = createProducts(categories.length, 6);
+export const numEachCategory = 6;
+export const products = createProducts(categories.length, numEachCategory);
