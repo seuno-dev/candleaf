@@ -9,7 +9,8 @@ describe("ProductSearch", () => {
 
     await screen.findByText(products[0].title);
 
-    for (let page = 1; page <= Math.ceil(products.length / PAGE_SIZE); page++) {
+    const totalPages = Math.ceil(products.length / PAGE_SIZE);
+    for (let page = 1; page <= totalPages; page++) {
       let productPage = products.slice(
         (page - 1) * PAGE_SIZE,
         page * PAGE_SIZE
