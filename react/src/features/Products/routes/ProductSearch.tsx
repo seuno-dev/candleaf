@@ -8,7 +8,6 @@ import useProducts from "../hooks/useProducts";
 function ProductSearch() {
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(0);
   const [title, setTitle] = useState("");
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
@@ -59,10 +58,6 @@ function ProductSearch() {
     setPriceMax(searchParams.get("price_max") || "");
   }, [searchParams]);
 
-  useEffect(() => {
-    setPageCount(data?.totalPages || 0);
-  }, [data]);
-
   return (
     <div className="container mx-auto mt-5 flex flex-row">
       <div className="w-[480px]">
@@ -83,7 +78,10 @@ function ProductSearch() {
           ))}
         </ul>
         <div className="mt-5 flex flex-row justify-center">
-          <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
+          <Pagination
+            onPageChange={handlePageClick}
+            pageCount={data?.totalPages || 0}
+          />
         </div>
       </div>
     </div>
