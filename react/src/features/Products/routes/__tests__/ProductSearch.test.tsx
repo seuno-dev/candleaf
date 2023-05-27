@@ -4,7 +4,7 @@ import { products } from "../../../../test/server/db/products";
 import { PAGE_SIZE } from "../../../../test/server/handlers/products";
 
 describe("ProductSearch", () => {
-  it("Show all pages of products", async () => {
+  it("should show all pages of products", async () => {
     renderWithRoute("/products");
 
     await screen.findByText(products[0].title);
@@ -25,4 +25,6 @@ describe("ProductSearch", () => {
       fireEvent.click(screen.getByRole("button", { name: "Next page" }));
     }
   });
+
+  it("")
 });
