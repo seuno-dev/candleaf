@@ -56,4 +56,36 @@ describe("ProductSearch", () => {
       expect(screen.queryByText(product.title)).toBeNull();
     }
   });
+
+  it("should filter by minimum and maximum price", async () => {
+    renderWithRoute("/products");
+
+    // Expect products with price between $20 and $30.
+    const correctProducts = products.filter((product) => {
+      const price = parseFloat(product.unit_price);
+      return price >= 20 && price <= 30;
+    });
+    const wrongProducts = products.filter((product) => {
+      const price = parseFloat(product.unit_price);
+      return !(price >= 20 && price <= 30);
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("Minimum price"), {
+      target: { value: "20" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Maximum price"), {
+      target: { value: "30" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+
+    await screen.findByText(correctProducts[correctProducts.length - 1].title);
+
+    for (const product of correctProducts) {
+      expect(screen.getByText(product.title)).toBeDefined();
+    }
+
+    for (const product of wrongProducts) {
+      expect(screen.queryByText(product.title)).toBeNull();
+    }
+  });
 });

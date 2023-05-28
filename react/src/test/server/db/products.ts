@@ -33,37 +33,46 @@ interface ProductMock {
   reviews: SimpleReviewMock[];
 }
 
-const createProducts = (numOfCategories: number, numEachCategory: number) => {
+let id = 1;
+
+const createProducts = (
+  numOfCategories: number,
+  numEachCategory: number,
+  price: string
+) => {
   const numProducts = numOfCategories * numEachCategory;
   const products: ProductMock[] = [];
 
-  let idImage = 1;
-  for (let id = 1; id <= numProducts; id++) {
+  for (let i = 1; i <= numProducts; i++) {
     const title = faker.commerce.product() + faker.number.int({ max: 10000 });
     const slug = slugify(title);
+
     products.push({
       id,
       title,
       slug,
+      unit_price: price,
       description: faker.commerce.productDescription(),
-      unit_price: faker.finance.amount(),
       inventory: faker.number.int({ min: 1, max: 100 }),
-      category: categories[id % numOfCategories],
-      images: [{ id: idImage, image: `${slug}.png` }],
+      category: categories[i % numOfCategories],
+      images: [{ id, image: `${slug}.png` }],
       average_rating: faker.number.float({ min: 1, max: 5, precision: 2 }),
       review_count: faker.number.int({ min: 10, max: 100 }),
       reviews: [
         {
-          id: 1,
+          id,
           rating: faker.number.int({ min: 1, max: 5 }),
           comment: faker.hacker.phrase(),
         },
       ],
     });
-    idImage++;
+    id++;
   }
   return products;
 };
 
-export const numEachCategory = 6;
-export const products = createProducts(categories.length, numEachCategory);
+export const products = [
+  ...createProducts(categories.length, 2, "11.0"),
+  ...createProducts(categories.length, 2, "21.0"),
+  ...createProducts(categories.length, 2, "31.0"),
+];

@@ -20,7 +20,7 @@ export const productsHandler = [
 
       if (
         params.get("price_max") &&
-        unitPrice > parseFloat(<string>params.get("price_min"))
+        unitPrice > parseFloat(<string>params.get("price_max"))
       )
         return false;
 
