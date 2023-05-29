@@ -67,6 +67,24 @@ describe("ProductDetail", () => {
     ).toBeDefined();
   });
 
+  it("should show error dialog when failed adding to cart ", async () => {
+    const product = products[0];
+
+    server.use(
+        rest.post(baseUrl("/store/cart-items/"), (req, res, context) => {
+          return res(context.status(500));
+        }),
+    );
+
+    await renderAndLoadProductPage(product);
+
+    fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
+
+    expect(
+        await screen.findByText("Failed adding to cart.")
+    ).toBeDefined();
+  });
+
   it("should show out of stock if the inventory is 0", async () => {
     const product = products[0];
 
