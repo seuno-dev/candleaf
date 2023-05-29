@@ -29,6 +29,9 @@ describe("ProductDetail", () => {
     ).toBeDefined();
     expect(screen.getByText(product.category.title)).toBeDefined();
     expect(screen.getByText(product.reviews[0].comment)).toBeDefined();
+    expect(
+      screen.getAllByRole("img", { name: `Image of product ${product.title}` })
+    ).toBeDefined();
   });
 
   it("should navigate to product search after click on category link", async () => {
@@ -71,18 +74,16 @@ describe("ProductDetail", () => {
     const product = products[0];
 
     server.use(
-        rest.post(baseUrl("/store/cart-items/"), (req, res, context) => {
-          return res(context.status(500));
-        }),
+      rest.post(baseUrl("/store/cart-items/"), (req, res, context) => {
+        return res(context.status(500));
+      })
     );
 
     await renderAndLoadProductPage(product);
 
     fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
 
-    expect(
-        await screen.findByText("Failed adding to cart.")
-    ).toBeDefined();
+    expect(await screen.findByText("Failed adding to cart.")).toBeDefined();
   });
 
   it("should show out of stock if the inventory is 0", async () => {
