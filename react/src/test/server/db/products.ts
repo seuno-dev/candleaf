@@ -19,7 +19,7 @@ export type ProductImageMock = {
   image: string;
 };
 
-interface ProductMock {
+export interface ProductMock {
   id: number;
   title: string;
   slug: string;

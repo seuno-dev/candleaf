@@ -99,8 +99,6 @@ describe("ProductSearch", () => {
       await screen.findByRole("link", { name: new RegExp(product.title) })
     );
 
-    screen.debug();
-
     await screen.findByText(product.description);
 
     expect(await screen.getByText(product.title)).toBeDefined();
