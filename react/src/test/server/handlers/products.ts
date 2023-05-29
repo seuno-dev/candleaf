@@ -10,7 +10,7 @@ export const productsHandler = [
     const page = parseInt(params.get("page") || "1");
 
     let filteredProducts = products.filter((product) => {
-      const unitPrice = parseFloat(product.unit_price);
+      const unitPrice = product.unit_price;
 
       if (
         params.get("price_min") &&
@@ -39,8 +39,6 @@ export const productsHandler = [
       page * PAGE_SIZE
     );
 
-    console.log(paginatedResult);
-
     return res(
       context.status(200),
       context.json({
@@ -48,5 +46,13 @@ export const productsHandler = [
         total_pages: Math.ceil(filteredProducts.length / PAGE_SIZE),
       })
     );
+  }),
+
+  rest.get(baseUrl("/store/products/:slug/"), (req, res, context) => {
+    const slug = req.params.slug as string;
+
+    const product = products.find((product) => product.slug === slug);
+
+    return res(context.status(200), context.json(product));
   }),
 ];
