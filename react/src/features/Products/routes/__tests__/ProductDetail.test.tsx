@@ -3,6 +3,9 @@ import { ProductMock, products } from "../../../../test/server/db/products";
 import { fireEvent, screen } from "@testing-library/react";
 import { formatCurrency } from "../../../../utils/currency";
 import userEvent from "@testing-library/user-event";
+import { server } from "../../../../test/server";
+import baseUrl from "../../../../test/server/url";
+import { rest } from "msw";
 
 const renderAndLoadProductPage = async (product: ProductMock) => {
   renderWithRoute(`/products/${product.slug}/`);
@@ -62,5 +65,22 @@ describe("ProductDetail", () => {
     expect(
       await screen.findByText("Added to cart successfully.")
     ).toBeDefined();
+  });
+
+  it("should show out of stock if the inventory is 0", async () => {
+    const product = products[0];
+
+    server.use(
+      rest.get(baseUrl("/store/products/:slug/"), (req, res, context) => {
+        return res(
+          context.status(200),
+          context.json({ ...product, inventory: 0 })
+        );
+      })
+    );
+
+    await renderAndLoadProductPage(product);
+
+    expect(await screen.getByText("Out of stock")).toBeDefined();
   });
 });
