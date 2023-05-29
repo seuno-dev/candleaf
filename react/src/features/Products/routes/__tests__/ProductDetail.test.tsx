@@ -1,6 +1,6 @@
 import { renderWithRoute } from "../../../../test/utils";
 import { ProductMock, products } from "../../../../test/server/db/products";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { formatCurrency } from "../../../../utils/currency";
 import userEvent from "@testing-library/user-event";
 
@@ -51,5 +51,16 @@ describe("ProductDetail", () => {
     for (const product of wrongProducts) {
       expect(screen.queryByText(product.title)).toBeNull();
     }
+  });
+
+  it("should show success dialog when adding to cart", async () => {
+    const product = products[0];
+    await renderAndLoadProductPage(product);
+
+    fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
+
+    expect(
+      await screen.findByText("Added to cart successfully.")
+    ).toBeDefined();
   });
 });
