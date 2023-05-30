@@ -20,6 +20,13 @@ export const errorResponse = (
 ) => {
   if (e instanceof AuthError) {
     return res(context.status(401), context.json({ message: e.message }));
+  } else if (e instanceof BadRequestError) {
+    return res(
+      context.status(400),
+      context.json({
+        message: e.message ? e.message : "Missing required parameters.",
+      })
+    );
   } else {
     return res(context.status(500));
   }

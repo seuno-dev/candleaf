@@ -45,7 +45,7 @@ const UpdateProfileDialog = ({
   };
 
   return (
-    <Dialog open={open} handler={handler}>
+    <Dialog open={open} handler={handler} data-testid="profile-dialog-update">
       <DialogHeader>{title}</DialogHeader>
       <DialogBody>
         <Input
