@@ -12,4 +12,6 @@ export const customer = {
   first_name: "Yuan",
   last_name: "Wang",
   email: "wy.ceo@x.com",
+  phone: "213124",
+  address: "sdjaiof",
 };
