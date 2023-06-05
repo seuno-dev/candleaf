@@ -11,4 +11,4 @@ export type WriteCartItem = {
   id?: number;
   productId: number;
   quantity: number;
-}
+};

@@ -50,7 +50,7 @@ const requireAuthenticated = (Component: React.FC) => {
   );
 };
 
-const routes: RouteObject[] = [
+const getRoutes = (): RouteObject[] => [
   {
     path: "/auth/",
     children: AuthRoutes,
@@ -74,4 +74,4 @@ const routes: RouteObject[] = [
   },
 ];
 
-export default routes;
+export default getRoutes;

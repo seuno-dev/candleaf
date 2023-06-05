@@ -1,4 +1,4 @@
-import { server } from "./test/server";
+import {server} from "./test/server";
 import ResizeObserver from "./test/mocks/ResizeObserver";
 
 // Mocks

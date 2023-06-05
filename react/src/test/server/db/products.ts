@@ -33,12 +33,21 @@ export interface ProductMock {
   reviews: SimpleReviewMock[];
 }
 
+export interface SimpleProductMock {
+  id: number;
+  title: string;
+  unit_price: number;
+  inventory: number;
+  image: ProductImageMock;
+}
+
 let id = 1;
 
 const createProducts = (
   numOfCategories: number,
   numEachCategory: number,
-  price: number
+  minPrice: number,
+  maxPrice: number
 ) => {
   const numProducts = numOfCategories * numEachCategory;
   const products: ProductMock[] = [];
@@ -51,7 +60,9 @@ const createProducts = (
       id,
       title,
       slug,
-      unit_price: price,
+      unit_price: parseFloat(
+        faker.finance.amount({ min: minPrice, max: maxPrice })
+      ),
       description: faker.commerce.productDescription(),
       inventory: faker.number.int({ min: 1, max: 100 }),
       category: categories[i % numOfCategories],
@@ -72,19 +83,7 @@ const createProducts = (
 };
 
 export const products = [
-  ...createProducts(
-    categories.length,
-    2,
-    parseFloat(faker.finance.amount({ min: 11.0, max: 19.0 }))
-  ),
-  ...createProducts(
-    categories.length,
-    2,
-    parseFloat(faker.finance.amount({ min: 21.0, max: 29.0 }))
-  ),
-  ...createProducts(
-    categories.length,
-    2,
-    parseFloat(faker.finance.amount({ min: 31.0, max: 39.0 }))
-  ),
+  ...createProducts(categories.length, 2, 11.0, 19.0),
+  ...createProducts(categories.length, 2, 21.0, 29.0),
+  ...createProducts(categories.length, 2, 31.0, 39.0),
 ];

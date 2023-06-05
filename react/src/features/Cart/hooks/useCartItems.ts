@@ -4,7 +4,7 @@ import { retrieveCartItems } from "../api";
 const useCartItems = () =>
   useQuery({
     queryKey: ["cart"],
-    queryFn: retrieveCartItems
+    queryFn: retrieveCartItems,
   });
 
 export default useCartItems;

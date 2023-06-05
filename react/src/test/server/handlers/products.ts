@@ -9,7 +9,7 @@ export const productsHandler = [
 
     const page = parseInt(params.get("page") || "1");
 
-    let filteredProducts = products.filter((product) => {
+    const filteredProducts = products.filter((product) => {
       const unitPrice = product.unit_price;
 
       if (

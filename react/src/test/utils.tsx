@@ -6,7 +6,7 @@ import {
   createMemoryRouter,
   RouterProvider,
 } from "react-router-dom";
-import routes from "../routes";
+import getRoutes from "../routes";
 import { ACCESS_KEY, REFRESH_KEY } from "../api/client";
 import { access, refresh } from "./server/db/credential";
 
@@ -34,12 +34,13 @@ export const createRouterWrapper = () => {
 };
 
 export const authenticate = () => {
+  console.log("Test: Authenticating");
   localStorage.setItem(REFRESH_KEY, refresh);
   localStorage.setItem(ACCESS_KEY, access);
 };
 
 export const renderWithRoute = (route = "/") => {
-  const router = createMemoryRouter(routes, {
+  const router = createMemoryRouter(getRoutes(), {
     initialEntries: [route],
   });
 

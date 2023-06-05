@@ -112,9 +112,7 @@ describe("ProductSearch", () => {
         } ratings)`
       )
     ).toBeDefined();
-    expect(
-      screen.getByText(product.category.title)
-    ).toBeDefined();
+    expect(screen.getByText(product.category.title)).toBeDefined();
     expect(screen.getByText(product.reviews[0].comment)).toBeDefined();
   });
 });

@@ -1,17 +1,10 @@
-import React, { useState } from "react";
-import {
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Navbar as BaseNavbar,
-  Typography,
-} from "@material-tailwind/react";
-import { createSearchParams, Link, useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {Menu, MenuHandler, MenuItem, MenuList, Navbar as BaseNavbar, Typography,} from "@material-tailwind/react";
+import {createSearchParams, Link, useNavigate} from "react-router-dom";
 import ShoppingCart from "../../assets/images/shopping-cart.svg";
 import SearchBar from "./SearchBar";
 import useLogout from "../../features/Auth/hooks/useLogout";
-import { getAuthenticationStatus } from "../../api";
+import {getAuthenticationStatus} from "../../api";
 import useRetrieveProfile from "../../features/Profile/hooks/useRetrieveProfile";
 import useCategories from "../../features/Products/hooks/useCategories";
 

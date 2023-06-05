@@ -34,7 +34,7 @@ function CartItemCard({ item }: CartItemProps) {
           {item.product.title}
         </Typography>
         <Typography variant="paragraph">
-          {formatCurrency(item.product.unitPrice)}
+          {formatCurrency(item.quantity * item.product.unitPrice)}
         </Typography>
         <div className="w-full flex flex-row justify-end">
           <div className="w-32 flex flex-row justify-between">
