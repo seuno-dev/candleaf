@@ -42,14 +42,17 @@ function CartItemCard({ item }: CartItemProps) {
               <img
                 src={MinusIcon}
                 className="cursor-pointer"
-                alt="Button to decrease quantity"
+                alt={"Button to decrease quantity for " + item.product.title}
                 onClick={() => update({ ...item, quantity: item.quantity - 1 })}
               />
             ) : (
               <img
                 src={MinusDisabledIcon}
                 className="cursor-pointer"
-                alt="Disabled button to decrease quantity"
+                alt={
+                  "Disabled button to decrease quantity for " +
+                  item.product.title
+                }
               />
             )}
             <Typography variant="paragraph">{item.quantity}</Typography>
@@ -57,20 +60,23 @@ function CartItemCard({ item }: CartItemProps) {
               <img
                 src={PlusDisabledIcon}
                 className="cursor-pointer"
-                alt="Disabled button to increase quantity"
+                alt={
+                  "Disabled button to increase quantity for " +
+                  item.product.title
+                }
               />
             ) : (
               <img
                 src={PlusIcon}
                 className="cursor-pointer"
-                alt="Button to increase quantity"
+                alt={"Button to increase quantity for " + item.product.title}
                 onClick={() => update({ ...item, quantity: item.quantity + 1 })}
               />
             )}
             <img
               src={DeleteIcon}
               className="cursor-pointer"
-              alt="Button to delete cart item"
+              alt={"Button to delete item " + item.product.title}
               onClick={() => remove(item)}
             />
           </div>
