@@ -39,4 +39,8 @@ describe("Cart", () => {
       expect(screen.queryByText(item.product.title)).toBeNull();
     }
   });
+
+  it("should update total price when updating quantity", async () => {
+    await renderWithRouteAuthenticated("/cart/");
+  });
 });
