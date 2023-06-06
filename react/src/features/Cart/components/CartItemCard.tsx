@@ -55,7 +55,9 @@ function CartItemCard({ item }: CartItemProps) {
                 }
               />
             )}
-            <Typography variant="paragraph">{item.quantity}</Typography>
+            <Typography variant="paragraph" data-testid={"qty-" + item.id}>
+              {item.quantity}
+            </Typography>
             {item.quantity == item.product.inventory ? (
               <img
                 src={PlusDisabledIcon}

@@ -64,7 +64,7 @@ const createProducts = (
         faker.finance.amount({ min: minPrice, max: maxPrice })
       ),
       description: faker.commerce.productDescription(),
-      inventory: faker.number.int({ min: 1, max: 100 }),
+      inventory: faker.number.int({ min: 10, max: 100 }),
       category: categories[i % numOfCategories],
       images: [{ id, image: `${slug}.png` }],
       average_rating: faker.number.float({ min: 1, max: 5, precision: 2 }),

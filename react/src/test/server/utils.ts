@@ -27,6 +27,13 @@ export const errorResponse = (
         message: e.message ? e.message : "Missing required parameters.",
       })
     );
+  } else if (e instanceof NotFoundError) {
+    return res(
+      context.status(404),
+      context.json({
+        message: e.message ? e.message : "Not found.",
+      })
+    );
   } else {
     return res(context.status(500));
   }

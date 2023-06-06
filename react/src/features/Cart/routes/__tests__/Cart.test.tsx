@@ -3,6 +3,8 @@ import { screen } from "@testing-library/react";
 import { carts } from "../../../../test/server/db/cart";
 import { customer } from "../../../../test/server/db/credential";
 import { formatCurrency } from "../../../../utils/currency";
+import userEvent from "@testing-library/user-event";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 describe("Cart", () => {
   it("should show the correct cart items", async () => {
@@ -20,7 +22,7 @@ describe("Cart", () => {
     expect(
       screen.getByText(
         new RegExp(
-          `\\` +
+          "\\" +
             formatCurrency(
               correctCart.items.reduce((prev, item) => {
                 return prev + item.total_price;
@@ -40,7 +42,44 @@ describe("Cart", () => {
     }
   });
 
-  it("should update total price when updating quantity", async () => {
+  it("should update when clicking decrease qty button", async () => {
     await renderWithRouteAuthenticated("/cart/");
+
+    const cart = carts.filter((cart) => cart.customer === customer.id)[0];
+
+    await screen.findByText(cart.items[0].product.title);
+
+    for (const item of cart.items) {
+      await userEvent.click(
+        screen.getByAltText(
+          "Button to decrease quantity for " + item.product.title
+        )
+      );
+      await wait(100);
+      expect(screen.getByTestId("qty-" + item.id).textContent).toEqual(
+        (item.quantity - 1).toString()
+      );
+    }
   });
+
+  it("should update when clicking increase qty button", async () => {
+    await renderWithRouteAuthenticated("/cart/");
+
+    const cart = carts.filter((cart) => cart.customer === customer.id)[0];
+
+    await screen.findByText(cart.items[0].product.title);
+
+    for (const item of cart.items) {
+      await userEvent.click(
+        screen.getByAltText(
+          "Button to increase quantity for " + item.product.title
+        )
+      );
+      await wait(100);
+      expect(screen.getByTestId("qty-" + item.id).textContent).toEqual(
+        (item.quantity + 1).toString()
+      );
+    }
+  });
+
 });
