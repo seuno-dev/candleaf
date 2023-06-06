@@ -1,5 +1,5 @@
 import { renderWithRouteAuthenticated } from "../../../../test/utils";
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { carts } from "../../../../test/server/db/cart";
 import { customer } from "../../../../test/server/db/credential";
 import { formatCurrency } from "../../../../utils/currency";
@@ -64,9 +64,7 @@ describe("Cart", () => {
 
   it("should update when clicking increase qty button", async () => {
     await renderWithRouteAuthenticated("/cart/");
-
     const cart = carts.filter((cart) => cart.customer === customer.id)[0];
-
     await screen.findByText(cart.items[0].product.title);
 
     for (const item of cart.items) {
@@ -82,4 +80,27 @@ describe("Cart", () => {
     }
   });
 
+  it("should delete cart item", async () => {
+    await renderWithRouteAuthenticated("/cart/");
+    const cart = carts.filter((cart) => cart.customer === customer.id)[0];
+    await screen.findByText(cart.items[0].product.title);
+
+    let currentItems = cart.items;
+    for (const item of cart.items) {
+      await userEvent.click(
+        screen.getByAltText("Button to delete item " + item.product.title)
+      );
+
+      await waitForElementToBeRemoved(screen.queryByText(item.product.title));
+
+      currentItems = currentItems.filter((_item) => _item !== item);
+      const currentTotalPrice = currentItems.reduce((previousValue, item) => {
+        return previousValue + item.total_price;
+      }, 0);
+
+      await screen.findAllByText(
+        new RegExp("\\" + formatCurrency(currentTotalPrice))
+      );
+    }
+  });
 });

@@ -14,7 +14,7 @@ describe("ProductSearch", () => {
 
     const totalPages = Math.ceil(products.length / PAGE_SIZE);
     for (let page = 1; page <= totalPages; page++) {
-      let productPage = products.slice(
+      const productPage = products.slice(
         (page - 1) * PAGE_SIZE,
         page * PAGE_SIZE
       );
