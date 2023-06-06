@@ -1,10 +1,44 @@
 import { renderWithRouteAuthenticated } from "../../../../test/utils";
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { carts } from "../../../../test/server/db/cart";
+import { CartItemMock, carts } from "../../../../test/server/db/cart";
 import { customer } from "../../../../test/server/db/credential";
 import { formatCurrency } from "../../../../utils/currency";
 import userEvent from "@testing-library/user-event";
 import { wait } from "@testing-library/user-event/dist/utils";
+
+const getUpdatedItemsQuantity = (
+  itemList: CartItemMock[],
+  item: CartItemMock,
+  newQuantity: number
+) => {
+  return itemList.map((_item) => {
+    const updatedItem = { ..._item };
+    if (updatedItem.id === item.id) {
+      updatedItem.quantity = newQuantity;
+    }
+    return updatedItem;
+  });
+};
+
+const getTotalPriceFromItems = (itemsList: CartItemMock[]) => {
+  return itemsList.reduce((previousValue, item) => {
+    return previousValue + item.product.unit_price * item.quantity;
+  }, 0);
+};
+
+const expectNewQuantityIsReflected = async (
+  item: CartItemMock,
+  newQuantity: number,
+  newTotalPrice: number
+) => {
+  expect(screen.getByTestId("qty-" + item.id).textContent).toEqual(
+    newQuantity.toString()
+  );
+  await screen.findAllByText(
+    new RegExp("\\" + formatCurrency(newQuantity * item.product.unit_price))
+  );
+  await screen.findAllByText(new RegExp("\\" + formatCurrency(newTotalPrice)));
+};
 
 describe("Cart", () => {
   it("should show the correct cart items", async () => {
@@ -44,20 +78,26 @@ describe("Cart", () => {
 
   it("should update when clicking decrease qty button", async () => {
     await renderWithRouteAuthenticated("/cart/");
-
     const cart = carts.filter((cart) => cart.customer === customer.id)[0];
-
     await screen.findByText(cart.items[0].product.title);
 
+    let currentItems = cart.items;
     for (const item of cart.items) {
+      const newQuantity = item.quantity - 1;
+
       await userEvent.click(
         screen.getByAltText(
           "Button to decrease quantity for " + item.product.title
         )
       );
+
       await wait(100);
-      expect(screen.getByTestId("qty-" + item.id).textContent).toEqual(
-        (item.quantity - 1).toString()
+
+      currentItems = getUpdatedItemsQuantity(currentItems, item, newQuantity);
+      await expectNewQuantityIsReflected(
+        item,
+        newQuantity,
+        getTotalPriceFromItems(currentItems)
       );
     }
   });
@@ -67,15 +107,23 @@ describe("Cart", () => {
     const cart = carts.filter((cart) => cart.customer === customer.id)[0];
     await screen.findByText(cart.items[0].product.title);
 
+    let currentItems = cart.items;
     for (const item of cart.items) {
+      const newQuantity = item.quantity + 1;
+
       await userEvent.click(
         screen.getByAltText(
           "Button to increase quantity for " + item.product.title
         )
       );
+
       await wait(100);
-      expect(screen.getByTestId("qty-" + item.id).textContent).toEqual(
-        (item.quantity + 1).toString()
+
+      currentItems = getUpdatedItemsQuantity(currentItems, item, newQuantity);
+      await expectNewQuantityIsReflected(
+        item,
+        newQuantity,
+        getTotalPriceFromItems(currentItems)
       );
     }
   });
@@ -85,7 +133,7 @@ describe("Cart", () => {
     const cart = carts.filter((cart) => cart.customer === customer.id)[0];
     await screen.findByText(cart.items[0].product.title);
 
-    let currentItems = cart.items;
+    let currentItems = [...cart.items];
     for (const item of cart.items) {
       await userEvent.click(
         screen.getByAltText("Button to delete item " + item.product.title)
