@@ -2,6 +2,7 @@ import React from "react";
 import { RouteObject } from "react-router-dom";
 import Login from "./Login";
 import ProductSearch from "../../Products/routes/ProductSearch";
+import GoogleOAuthCallback from "./GoogleOAuthCallback";
 
 const AuthRoutes: RouteObject[] = [
   {
@@ -11,6 +12,15 @@ const AuthRoutes: RouteObject[] = [
   {
     path: "login",
     element: <Login />,
+  },
+  {
+    path: "o/",
+    children: [
+      {
+        path: "google-oauth2/callback/",
+        element: <GoogleOAuthCallback />,
+      },
+    ],
   },
 ];
 

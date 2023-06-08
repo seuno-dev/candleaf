@@ -39,10 +39,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['username']
+    list_display = ['email']
 
     def username(self, customer):
-        return customer.user.username
+        return customer.user.email
 
 
 @admin.register(models.Category)

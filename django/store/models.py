@@ -1,10 +1,9 @@
 import stripe
+from django.conf import settings
 from django.core.cache import cache
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_fsm import FSMField, transition
-
-from ShopZone import settings
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -16,7 +15,7 @@ class Customer(models.Model):
 
     # noinspection PyUnresolvedReferences
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 class Category(models.Model):

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import useGoogleAuthLink from "../hooks/useGoogleAuthLink";
 
 function Login() {
   const { mutate, isSuccess, error } = useLogin();
+  const { data: googleAuth, refetch: googleAuthRefetch } = useGoogleAuthLink();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -30,8 +32,18 @@ function Login() {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (googleAuth) {
+      window.location.replace(googleAuth.authorizationUrl);
+    }
+  }, [googleAuth]);
+
   const handleLogin = async () => {
     mutate({ username, password });
+  };
+
+  const handleGoogleLogin = () => {
+    googleAuthRefetch();
   };
 
   return (
@@ -71,6 +83,13 @@ function Login() {
           )}
           <Button className="mt-4 w-full" onClick={handleLogin}>
             Login
+          </Button>
+          <Button
+            className="mt-4 w-full"
+            color="white"
+            onClick={handleGoogleLogin}
+          >
+            Login with Google
           </Button>
         </div>
       </div>
