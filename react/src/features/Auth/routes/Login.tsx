@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Button, Input, Typography } from "@material-tailwind/react";
+import React, {useEffect, useState} from "react";
+import {Button, Input, Typography} from "@material-tailwind/react";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import useGoogleAuthLink from "../hooks/useGoogleAuthLink";
+import GoogleIcon from "../../../assets/images/google.svg";
 
 function Login() {
-  const { mutate, isSuccess, error } = useLogin();
-  const { data: googleAuth, refetch: googleAuthRefetch } = useGoogleAuthLink();
+  const {mutate, isSuccess, error} = useLogin();
+  const {data: googleAuth, refetch: googleAuthRefetch} = useGoogleAuthLink();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -39,7 +40,7 @@ function Login() {
   }, [googleAuth]);
 
   const handleLogin = async () => {
-    mutate({ username, password });
+    mutate({username, password});
   };
 
   const handleGoogleLogin = () => {
@@ -85,10 +86,12 @@ function Login() {
             Login
           </Button>
           <Button
-            className="mt-4 w-full"
-            color="white"
+            className="mt-4 w-full flex items-center justify-center gap-3"
+            variant="outlined"
+            color="blue-gray"
             onClick={handleGoogleLogin}
           >
+            <img src={GoogleIcon} alt="metamask" className="h-6 w-6"/>
             Login with Google
           </Button>
         </div>
