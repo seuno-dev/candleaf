@@ -17,6 +17,14 @@ from decouple import config
 import stripe
 from django.conf import settings
 
+# Hack workaround for deprecated/removed functions
+import django
+from django.utils.encoding import force_str
+from urllib.parse import quote
+
+django.utils.encoding.force_text = force_str
+django.utils.http.urlquote = quote
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'djoser',
+    'social_django',
     'core',
     'store'
 ]
@@ -57,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.common.CommonMiddleware'
 ]
 
@@ -149,15 +159,34 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'BLACKLIST_AFTER_ROTATION': False
+    'BLACKLIST_AFTER_ROTATION': False,
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',)
 }
 
 DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://127.0.0.1:3000/auth/o/google-oauth2/callback/'],
     'SERIALIZERS': {
         'user_create': 'core.serializers.CreateUserSerializer',
         'current_user': 'core.serializers.UserSerializer'
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '216541218428-arufaav4b73fue6a34ld8jdphuohqa99.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'openid'
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
@@ -173,3 +202,8 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         'http://127.0.0.1:3000',
     ]
+
+    CORS_ALLOW_CREDENTIALS = True
+
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = False
