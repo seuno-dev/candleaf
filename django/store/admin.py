@@ -41,7 +41,7 @@ class OrderAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ['email']
 
-    def username(self, customer):
+    def email(self, customer):
         return customer.user.email
 
 
