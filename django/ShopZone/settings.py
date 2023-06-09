@@ -21,9 +21,10 @@ from django.conf import settings
 import django
 from django.utils.encoding import force_str
 from urllib.parse import quote
+from django.utils import http
 
 django.utils.encoding.force_text = force_str
-django.utils.http.urlquote = quote
+http.urlquote = quote
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

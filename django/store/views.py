@@ -7,6 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from ShopZone import settings
+from core.serializers import CreateUserSerializer
 from . import models, serializers, filters
 from .paginations import PageNumberPagination
 
@@ -277,3 +278,20 @@ class ReviewViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CreateUserCustomer(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.CreateUserCustomerSerializer
+    queryset = models.Customer.objects.all()
+    def post(self, request):
+        with transaction.atomic():
+            customer_serializer = serializers.CreateCustomerSerializer(data=request.data)
+            customer_serializer.is_valid(raise_exception=True)
+            user_serializer = CreateUserSerializer(data=request.data)
+            user_serializer.is_valid(raise_exception=True)
+
+            user = user_serializer.save()
+            customer_serializer.save(user=user)
+
+            return Response(request.data, status=status.HTTP_201_CREATED)

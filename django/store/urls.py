@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path('orders/stripe-webhook/', views.StripeWebHook.as_view(), name='stripe-webhook'),
     path('orders/create_payment', views.CreatePayment.as_view(), name='payment-create'),
+    path('create-user-customer/', views.CreateUserCustomer.as_view(), name='create-user-customer'),
 ]
 
 router = DefaultRouter()
