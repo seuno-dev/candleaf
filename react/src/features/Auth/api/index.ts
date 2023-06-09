@@ -1,4 +1,5 @@
 import {client} from "../../../api";
+import {UserCustomer} from "../hooks/useSignUp";
 
 interface OAuthUrl {
   authorizationUrl: string;
@@ -24,5 +25,11 @@ export const getGoogleAuthToken = async (credential: OAuthCredential) => {
     headers: {"content-type": "application/x-www-form-urlencoded",},
     withCredentials: true
   });
+  return response.data;
+};
+
+
+export const createUserCustomer = async (data: UserCustomer) =>{
+  const response = await client.post("/store/create-user-customer/", data);
   return response.data;
 };

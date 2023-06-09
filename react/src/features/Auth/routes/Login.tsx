@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Input, Typography} from "@material-tailwind/react";
 import useLogin from "../hooks/useLogin";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import useGoogleAuthLink from "../hooks/useGoogleAuthLink";
 import GoogleIcon from "../../../assets/images/google.svg";
 
@@ -82,6 +82,11 @@ function Login() {
               </Typography>
             </div>
           )}
+          <div className="mt-4">
+            <Typography variant="paragraph">
+              Don&apos;t have an account? <Link to="/auth/signup" className="text-blue-600  hover:underline">Sign Up</Link>
+            </Typography>
+          </div>
           <Button className="mt-4 w-full" onClick={handleLogin}>
             Login
           </Button>
