@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@faker-js/faker": "^8.0.1",
+    "@hookform/resolvers": "^3.1.0",
     "@material-tailwind/react": "^1.4.2",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.52.0",
@@ -22,11 +23,13 @@
     "nock": "^13.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "slugify": "^1.6.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zod": "^3.21.4"
   },
   "scripts": {
     "start": "react-scripts start",

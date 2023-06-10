@@ -24,6 +24,23 @@ class UpdateCustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'address']
 
 
+class CreateUserCustomerSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.CharField()
+    password = serializers.CharField(style={"input_type": "password"})
+
+    class Meta:
+        model = models.Customer
+        fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'address']
+
+
+class CreateCustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Customer
+        fields = ['phone', 'address']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     slug = serializers.CharField(read_only=True)
 

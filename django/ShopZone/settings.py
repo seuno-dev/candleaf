@@ -21,9 +21,10 @@ from django.conf import settings
 import django
 from django.utils.encoding import force_str
 from urllib.parse import quote
+from django.utils import http
 
 django.utils.encoding.force_text = force_str
-# django.utils.http.urlquote = quote
+http.urlquote = quote
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -178,8 +179,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend'
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_CLIENT_ID')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_CLIENT_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '216541218428-arufaav4b73fue6a34ld8jdphuohqa99.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',

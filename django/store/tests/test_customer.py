@@ -36,7 +36,6 @@ def customer_auth(api_client):
 class TestRegisterCustomer:
     def test_user_if_correct_returns_201(self, api_client):
         response_user = api_client.post('/auth/users/', {
-            'username': 'a',
             'email': 'email@g.com',
             'password': ')P38`dwzSNpA5[Q4',
             'first_name': 'd',
@@ -47,21 +46,12 @@ class TestRegisterCustomer:
 
     @pytest.mark.parametrize('params', [
         {
-            'username': '',
-            'email': 'email@g.com',
-            'password': ')P38`dwzSNp4',
-            'first_name': 'd',
-            'last_name': 'e'
-        },
-        {
-            'username': 'a',
             'email': '',
             'password': ')P38`dwzSNp4',
             'first_name': 'd',
             'last_name': 'e'
         },
         {
-            'username': 'a',
             'email': '',
             'password': '',
             'first_name': 'd',
@@ -99,6 +89,38 @@ class TestRegisterCustomer:
         response = authenticate_client().post(customers_list_url, params)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_create_user_customer_if_correct_return_201(self, api_client):
+        params = {
+            'email': 'email@g.com',
+            'password': ')P38`dwzSNpA5[Q4',
+            'first_name': 'd',
+            'last_name': 'e',
+            'phone': '907890',
+            'address': 'a',
+        }
+
+        response = api_client.post("/store/create-user-customer/", params)
+
+        assert response.status_code == status.HTTP_201_CREATED
+
+    @pytest.mark.parametrize("field", [{"email": ""}, {"password": ""}, {"first_name": ""}, {"last_name": ""}, {"phone": ""}, {"address": ""} ])
+    def test_create_user_customer_if_wrong_return_400(self, api_client, field):
+        params = {
+            'email': 'email@g.com',
+            'password': ')P38`dwzSNpA5[Q4',
+            'first_name': 'd',
+            'last_name': 'e',
+            'phone': '907890',
+            'address': 'a',
+        }
+        params.update(field)
+
+        response = api_client.post("/store/create-user-customer/", params)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        if params["phone"] is None or params["address"] is None:
+            assert get_user_model().objects.count() == 0
 
 
 @pytest.mark.django_db
