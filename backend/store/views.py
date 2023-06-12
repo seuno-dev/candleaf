@@ -87,6 +87,7 @@ class OrderViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PageNumberPagination
+    filterset_class = filters.OrderFilter
 
     def get_queryset(self):
         customer = get_object_or_404(models.Customer, user=self.request.user)
