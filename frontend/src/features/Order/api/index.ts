@@ -1,5 +1,5 @@
 import { client } from "../../../api";
-import { CreateReview, OrderList, SubmitOrder } from "../types";
+import {CreateReview, OrderList, OrderTimeFilter, SubmitOrder} from "../types";
 import { decamelizeKeys } from "humps";
 
 export const submitOrder = async () => {
@@ -7,8 +7,10 @@ export const submitOrder = async () => {
   return response.data.orderId;
 };
 
-export const retrieveOrderList = async (): Promise<OrderList> => {
-  const response = await client.get<OrderList>("/store/orders/");
+export const retrieveOrderList = async (params:OrderTimeFilter): Promise<OrderList> => {
+  const response = await client.get<OrderList>("/store/orders/",{
+    params: decamelizeKeys(params)
+  });
   return response.data;
 };
 

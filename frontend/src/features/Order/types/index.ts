@@ -33,3 +33,8 @@ export interface CreateReview {
   rating: number;
   comment: string;
 }
+
+export interface OrderTimeFilter{
+  orderTimeMin: string | undefined,
+  orderTimeMax: string | undefined,
+}
