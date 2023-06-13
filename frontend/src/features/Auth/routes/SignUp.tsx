@@ -32,7 +32,6 @@ const SignUp = () => {
   useEffect(() => {
     if (created) {
       login({email: data.email, password: data.password});
-      console.log(data);
 
     }
   }, [created]);
