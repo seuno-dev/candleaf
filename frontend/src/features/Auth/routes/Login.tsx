@@ -8,13 +8,13 @@ import GoogleIcon from "../../../assets/images/google.svg";
 function Login() {
   const {mutate, isSuccess, error} = useLogin();
   const {data: googleAuth, refetch: googleAuthRefetch} = useGoogleAuthLink();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ function Login() {
   }, [googleAuth]);
 
   const handleLogin = async () => {
-    mutate({username, password});
+    mutate({email, password});
   };
 
   const handleGoogleLogin = () => {
@@ -60,10 +60,10 @@ function Login() {
           <div className="w-full">
             <Input
               type="text"
-              label="Username"
+              label="Email"
               data-testid="username-input"
-              onChange={handleUsername}
-              value={username}
+              onChange={handleEmail}
+              value={email}
             />
           </div>
           <div className="mt-4 w-full">
