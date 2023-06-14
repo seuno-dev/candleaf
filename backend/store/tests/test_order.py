@@ -124,6 +124,41 @@ class TestListOrder:
             for item_response, order_item in zip(order_response['items'], order_items):
                 assert_order_item_response(item_response, order_item)
 
+    def test_if_order_time_filter_works_returns_200(self, authenticate_client, order_list_url):
+        customer = baker.make(models.Customer)
+        client = authenticate_client(customer.user)
+
+        order_yesterday = baker.make(models.Order, customer=customer, order_time="2023-01-01")
+        baker.make(models.OrderItem, order=order_yesterday)
+        orders = baker.make(models.Order, customer=customer, order_time="2023-01-02", _quantity=random.randint(3, 5))
+        orders.reverse()
+        order_items_set = []
+        for order in orders:
+            order_items = baker.make(models.OrderItem, order=order, _quantity=random.randint(1, 10))
+            order_items_set.append(order_items)
+
+            for order_item in order_items:
+                baker.make(models.Review, order_item=order_item)
+
+        order_tomorrow = baker.make(models.Order, customer=customer, order_time="2023-01-03")
+        baker.make(models.OrderItem, order=order_tomorrow)
+
+        response = client.get(f"{order_list_url}?order_time_min=2023-01-02&order_time_max=2023-01-02")
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data['results']
+        for order_response, order, order_items in zip(results, orders, order_items_set):
+            assert order_response['id'] == order.id
+            assert order_response['status'] == order.status
+            assert len(order_items) != 0
+
+            for item_response, order_item in zip(order_response['items'], order_items):
+                assert_order_item_response(item_response, order_item)
+
+        assert all(d["id"] != order_yesterday.id for d in results)
+        assert all(d["id"] != order_tomorrow.id for d in results)
+
     def test_empty_returns_200(self, authenticate_client, order_list_url):
         customer = baker.make(models.Customer)
         client = authenticate_client(customer.user)

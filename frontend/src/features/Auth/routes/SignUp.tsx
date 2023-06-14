@@ -28,11 +28,11 @@ const SignUp = () => {
   const {mutate:login, isSuccess} = useLogin();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormData> = data => mutate(data);
-  console.log(data);
 
   useEffect(() => {
     if (created) {
-      login({username: data.email, password: data.password});
+      login({email: data.email, password: data.password});
+
     }
   }, [created]);
 

@@ -87,6 +87,7 @@ class OrderViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PageNumberPagination
+    filterset_class = filters.OrderFilter
 
     def get_queryset(self):
         customer = get_object_or_404(models.Customer, user=self.request.user)
@@ -284,12 +285,14 @@ class CreateUserCustomer(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.CreateUserCustomerSerializer
     queryset = models.Customer.objects.all()
+
     def post(self, request):
         with transaction.atomic():
             customer_serializer = serializers.CreateCustomerSerializer(data=request.data)
             customer_serializer.is_valid(raise_exception=True)
             user_serializer = CreateUserSerializer(data=request.data)
             user_serializer.is_valid(raise_exception=True)
+            user_serializer.validated_data["is_active"] = True
 
             user = user_serializer.save()
             customer_serializer.save(user=user)
