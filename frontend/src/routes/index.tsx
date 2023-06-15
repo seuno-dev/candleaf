@@ -16,13 +16,13 @@ import ProfileRoutes from "../features/Profile/routes";
 import { getAuthenticationStatus } from "../api";
 import { Typography } from "@material-tailwind/react";
 import HomeRoutes from "../features/Home/routes";
-import {Box, Container, Flex, VStack} from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 
 const App = () => {
   return (
     <VStack w="full">
       <Navbar />
-      <Box as="main" mt="navbarH" w="100%" >
+      <Box as="main" mt="navbarH" w="100%">
         <Outlet />
       </Box>
     </VStack>
