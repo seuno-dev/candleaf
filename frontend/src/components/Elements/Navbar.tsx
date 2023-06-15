@@ -39,7 +39,7 @@ function Navbar() {
   };
 
   return (
-    <Box w="full">
+    <Box w="full" h="80px">
       <Stack
         direction="row"
         w="container.xl"
