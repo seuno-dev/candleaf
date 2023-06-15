@@ -15,6 +15,7 @@ import StripePaymentRoutes from "../features/StripePayment/routes";
 import ProfileRoutes from "../features/Profile/routes";
 import { getAuthenticationStatus } from "../api";
 import { Typography } from "@material-tailwind/react";
+import HomeRoutes from "../features/Home/routes";
 
 const App = () => {
   return (
@@ -61,7 +62,7 @@ const getRoutes = (): RouteObject[] => [
     element: <App />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Navigate to="/products" /> },
+      { path: "/", children: HomeRoutes },
       { path: "profile/", children: ProfileRoutes },
       { path: "products/", children: ProductRoutes },
       { path: "cart/", element: requireAuthenticated(CartRoutes) },

@@ -21,11 +21,6 @@ export const login = async (credential: Credential) => {
 };
 
 export const getAuthenticationStatus = () => {
-  console.log(
-    "Get Authentication status",
-    localStorage.getItem(REFRESH_KEY),
-    localStorage.getItem(ACCESS_KEY)
-  );
   return (
     localStorage.getItem(REFRESH_KEY) !== null &&
     localStorage.getItem(ACCESS_KEY) !== null
