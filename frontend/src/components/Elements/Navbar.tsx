@@ -50,7 +50,7 @@ function Navbar() {
     >
       <Stack
         direction="row"
-        w={{ base: "full", md: "container.md" }}
+        w={{ base: "full", lg: "container.lg" }}
         mx="auto"
         h="navbarH"
         px={{ base: 4, md: 0 }}

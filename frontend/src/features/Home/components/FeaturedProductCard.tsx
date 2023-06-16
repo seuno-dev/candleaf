@@ -9,12 +9,12 @@ interface Props {
 
 const FeaturedProductCard = ({ product }: Props) => {
   return (
-    <Card w="250px" variant="elevated" shadow="md">
+    <Card w={{ base: "350px", lg: "250px" }} variant="elevated" shadow="md">
       <CardHeader p={0} bgColor="#F7F8FA">
         <Image
           src={product.images[0].image}
           w="full"
-          h="150px"
+          h={{ base: "100px", md: "150px" }}
           objectFit="cover"
           alt={"Image of " + product.title}
         />
