@@ -18,13 +18,13 @@ const Button = defineStyleConfig({
   },
   variants: {
     solid: {
-      backgroundColor: "#56B280",
+      backgroundColor: "primary",
       color: "#FFFFFF",
       _hover: {
-        backgroundColor: "#358f5e",
+        backgroundColor: "primaryDarker",
       },
       _active: {
-        backgroundColor: "#1d653e",
+        backgroundColor: "primaryDarkest",
       },
     },
   },

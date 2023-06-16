@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import baseUrl from "../url";
-import { products } from "../db/products";
+import { featuredProducts, products } from "../db/products";
 
 export const PAGE_SIZE = 15.0;
 export const productsHandler = [
@@ -46,6 +46,10 @@ export const productsHandler = [
         total_pages: Math.ceil(filteredProducts.length / PAGE_SIZE),
       })
     );
+  }),
+
+  rest.get(baseUrl("/store/products/featured/"), (req, res, context) => {
+    return res(context.status(200), context.json(featuredProducts));
   }),
 
   rest.get(baseUrl("/store/products/:slug/"), (req, res, context) => {

@@ -39,7 +39,7 @@ function Navbar() {
   };
 
   return (
-    <Box w="full" h="80px">
+    <Box as="header" position="fixed" w="full" h="navbarH" bgColor="#FFFFFF" zIndex={200}>
       <Stack
         direction="row"
         w="container.xl"

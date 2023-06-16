@@ -5,6 +5,11 @@ import Link from "./components/Link";
 const navbarH = "80px";
 
 const theme = extendTheme({
+  colors: {
+    primary: "#56B280",
+    primaryDarker: "#358f5e",
+    primaryDarkest: "#1d653e",
+  },
   space: {
     navbarH,
   },

@@ -2,10 +2,10 @@ import React from "react";
 import { Button, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import Background from "../../../assets/images/hero-bg.png";
 
-function Hero() {
+function HeroSection() {
   return (
     <Stack
-      h="calc(100vh - 80px)"
+      h="sectionH"
       w="full"
       bgImage={Background}
       bgRepeat="no-repeat"
@@ -38,4 +38,4 @@ function Hero() {
   );
 }
 
-export default Hero;
+export default HeroSection;

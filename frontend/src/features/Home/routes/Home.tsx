@@ -1,11 +1,13 @@
 import React from "react";
 import { VStack } from "@chakra-ui/react";
-import Hero from "../components/Hero";
+import HeroSection from "../components/HeroSection";
+import FeaturedProductsSection from "../components/FeaturedProductsSection";
 
 function Home() {
   return (
     <VStack>
-      <Hero />
+      <HeroSection />
+      <FeaturedProductsSection />
     </VStack>
   );
 }

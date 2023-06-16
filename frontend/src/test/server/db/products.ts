@@ -2,6 +2,16 @@ import { faker } from "@faker-js/faker";
 import slugify from "slugify";
 import { categories } from "./categories";
 
+// Featured Product Image
+import SpicedMint from "../assets/images/Spiced Mint.png";
+import SweetStraweberry from "../assets/images/Sweet Straweberry.png";
+import CoolBlueberries from "../assets/images/Cool Blueberries.png";
+import JuicyLemon from "../assets/images/Juicy Lemon.png";
+import FreshOrange from "../assets/images/Fresh Orange.png";
+import FragrantCinnamon from "../assets/images/Fragrant Cinnamon.png";
+import SummerCherries from "../assets/images/Summer Cherries.png";
+import CleanLavander from "../assets/images/Clean Lavander.png";
+
 export type CategoryMock = {
   id: number;
   title: string;
@@ -86,4 +96,30 @@ export const products = [
   ...createProducts(categories.length, 2, 11.0, 19.0),
   ...createProducts(categories.length, 2, 21.0, 29.0),
   ...createProducts(categories.length, 2, 31.0, 39.0),
+];
+
+let featuredProductId = 201;
+const createFeaturedProduct = (title: string, image: string): ProductMock => ({
+  id: featuredProductId++,
+  title,
+  slug: slugify(title),
+  unit_price: 9.99,
+  description:
+    "All hand-made with natural soy wax, Candleaf is made for your pleasure moments.",
+  inventory: 10,
+  category: categories[0],
+  images: [{ id, image }],
+  average_rating: 5,
+  review_count: 0,
+  reviews: [],
+});
+export const featuredProducts: ProductMock[] = [
+  createFeaturedProduct("Spiced Mint", SpicedMint),
+  createFeaturedProduct("Sweet Straweberry", SweetStraweberry),
+  createFeaturedProduct("Cool Blueberries", CoolBlueberries),
+  createFeaturedProduct("Juicy Lemon", JuicyLemon),
+  createFeaturedProduct("Fresh Orange", FreshOrange),
+  createFeaturedProduct("Fragrant Cinnamon", FragrantCinnamon),
+  createFeaturedProduct("Summer Cherries", SummerCherries),
+  createFeaturedProduct("Clean Lavander", CleanLavander),
 ];
