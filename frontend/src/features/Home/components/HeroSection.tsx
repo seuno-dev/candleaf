@@ -10,11 +10,12 @@ function HeroSection() {
       bgImage={Background}
       bgRepeat="no-repeat"
       bgSize="cover"
+      bgPosition="center"
       justifyContent="center"
       align="center"
     >
       <VStack
-        w={[330, 530, 730]}
+        w={[350, 530, 730]}
         px={[50, 70, 90]}
         py={16}
         bgColor="rgba(247, 248, 250, 0.8)"
@@ -23,7 +24,7 @@ function HeroSection() {
         align="center"
         textAlign="center"
       >
-        <Heading fontSize={40}>
+        <Heading fontWeight="medium" fontSize={40}>
           🌱
           <br />
           The nature candle
@@ -32,7 +33,7 @@ function HeroSection() {
           All handmade with natural soy wax, Candleaf is a companion for all
           your pleasure moments
         </Text>
-        <Button mt="50px">Discover our collection</Button>
+        <Button mt={["35px", "50px"]}>Discover our collection</Button>
       </VStack>
     </Stack>
   );
