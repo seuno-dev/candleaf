@@ -13,6 +13,7 @@ import {
   MenuList,
   Stack,
 } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 // Images
 import Logo from "../../assets/images/logo.svg";

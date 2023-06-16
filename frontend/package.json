@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -33,7 +34,9 @@
     "react-scripts": "5.0.1",
     "slugify": "^1.6.6",
     "web-vitals": "^2.1.4",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "@react-buddy/ide-toolbox": "^2.3.1",
+    "@react-buddy/palette-chakra-ui": "^2.3.1"
   },
   "scripts": {
     "start_msw": "react-scripts start",
