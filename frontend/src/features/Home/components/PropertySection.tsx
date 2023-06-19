@@ -30,7 +30,7 @@ const PropertySection = () => {
 
   return (
     <Box w="full" bgColor="#F7F8FA">
-      <Container maxW={{ base: "full", lg: "container.lg" }}>
+      <Container maxW="container.xl">
         <HStack
           justifyContent="space-between"
           alignItems="center"
