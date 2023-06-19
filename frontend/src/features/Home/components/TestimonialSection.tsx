@@ -48,7 +48,6 @@ const TestimonialSection = () => {
       <Box mt="50px">
         <Slider
           centerMode={true}
-          centerPadding="10px"
           slidesToShow={1}
           slidesToScroll={1}
           swipeToSlide={true}
