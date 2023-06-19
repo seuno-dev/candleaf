@@ -47,6 +47,7 @@ const TestimonialSection = () => {
       </Container>
       <Box mt="50px">
         <Slider
+          arrows={false}
           centerMode={true}
           slidesToShow={1}
           slidesToScroll={1}
