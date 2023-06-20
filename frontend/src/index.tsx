@@ -7,7 +7,10 @@ import { worker } from "./mocks/browser";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 
-if (process.env.NODE_ENV === "development" && process.env.REACT_APP_SERVER === "msw") {
+if (
+  process.env.NODE_ENV === "development" &&
+  process.env.REACT_APP_SERVER === "msw"
+) {
   worker.start();
 }
 

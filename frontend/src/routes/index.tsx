@@ -16,13 +16,18 @@ import ProfileRoutes from "../features/Profile/routes";
 import { getAuthenticationStatus } from "../api";
 import { Typography } from "@material-tailwind/react";
 import HomeRoutes from "../features/Home/routes";
+import { Box, VStack } from "@chakra-ui/react";
+import Footer from "../components/Elements/Footer";
 
 const App = () => {
   return (
-    <>
+    <VStack w="full" spacing={0}>
       <Navbar />
-      <Outlet />
-    </>
+      <Box as="main" mt="navbarH" w="100%">
+        <Outlet />
+      </Box>
+      <Footer />
+    </VStack>
   );
 };
 
