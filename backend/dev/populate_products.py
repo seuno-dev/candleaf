@@ -8,7 +8,7 @@ from django.db.models.fields import files
 from model_bakery import baker
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      'ShopZone.settings')
+                      'candleaf.settings')
 
 import requests
 import django
