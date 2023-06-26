@@ -1,5 +1,4 @@
 import itertools
-import random
 
 import pytest
 from django.urls import reverse
@@ -20,6 +19,11 @@ def products_detail_url():
         return reverse('products-detail', kwargs=dict(slug=slug))
 
     return _method
+
+
+@pytest.fixture
+def products_featured_url():
+    return reverse('products-featured')
 
 
 def assert_product_response(product_response, product):
@@ -133,3 +137,30 @@ class TestRetrieveProduct:
         response = api_client.get(products_detail_url(9999))
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+class TestFeaturedProduct:
+    def test_returns_200(self, api_client, products_featured_url):
+        featured_products = baker.make(models.FeaturedProduct, _quantity=8)
+
+        response = api_client.get(products_featured_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data
+        assert len(results) == len(featured_products)
+
+        for fp_response, fp in zip(results, featured_products):
+            assert fp_response['id'] == fp.id
+            assert_product_response(fp_response['product'], fp.product)
+
+    def test_only_returns_eight_products(self, api_client, products_featured_url):
+        featured_products = baker.make(models.FeaturedProduct, _quantity=10)
+
+        response = api_client.get(products_featured_url)
+
+        assert response.status_code == status.HTTP_200_OK
+
+        results = response.data
+        assert len(results) == 8

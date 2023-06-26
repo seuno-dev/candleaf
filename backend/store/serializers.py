@@ -97,6 +97,14 @@ class ProductSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, source="few_reviews")
 
 
+class FeaturedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.FeaturedProduct
+        fields = ['id', 'product']
+
+    product = ProductSerializer(read_only=True)
+
+
 class CreateProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product

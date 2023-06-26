@@ -10,6 +10,7 @@ from candleaf import settings
 from core.serializers import CreateUserSerializer
 from . import models, serializers, filters
 from .paginations import PageNumberPagination
+from .serializers import FeaturedProductSerializer
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -169,6 +170,12 @@ class ProductViewSet(mixins.ListModelMixin,
             return serializers.CreateProductSerializer
         else:
             return serializers.ProductSerializer
+
+    @action(detail=False)
+    def featured(self, request):
+        queryset = models.FeaturedProduct.objects.all()[:8]
+        serializer = FeaturedProductSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
