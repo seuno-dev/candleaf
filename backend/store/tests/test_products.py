@@ -26,6 +26,7 @@ def assert_product_response(product_response, product):
     assert product_response['id'] == product.id
     assert product_response['title'] == product.title
     assert product_response['slug'] == product.slug
+    assert product_response['description'] == product.description
     assert product_response['unit_price'] == product.unit_price
     assert product_response['inventory'] == product.inventory
     assert product_response['average_rating'] == product.average_rating
