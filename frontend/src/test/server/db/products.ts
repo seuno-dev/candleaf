@@ -4,13 +4,13 @@ import { categories } from "./categories";
 
 // Featured Product Image
 import SpicedMint from "../assets/images/Spiced Mint.png";
-import SweetStraweberry from "../assets/images/Sweet Straweberry.png";
+import SweetStrawberry from "../assets/images/Sweet Strawberry.png";
 import CoolBlueberries from "../assets/images/Cool Blueberries.png";
 import JuicyLemon from "../assets/images/Juicy Lemon.png";
 import FreshOrange from "../assets/images/Fresh Orange.png";
 import FragrantCinnamon from "../assets/images/Fragrant Cinnamon.png";
 import SummerCherries from "../assets/images/Summer Cherries.png";
-import CleanLavander from "../assets/images/Clean Lavander.png";
+import CleanLavender from "../assets/images/Clean Lavender.png";
 
 export type CategoryMock = {
   id: number;
@@ -41,6 +41,11 @@ export interface ProductMock {
   average_rating: number;
   review_count: number;
   reviews: SimpleReviewMock[];
+}
+
+interface FeaturedProductMock {
+  id: number;
+  product: ProductMock;
 }
 
 export interface SimpleProductMock {
@@ -113,13 +118,13 @@ const createFeaturedProduct = (title: string, image: string): ProductMock => ({
   review_count: 0,
   reviews: [],
 });
-export const featuredProducts: ProductMock[] = [
-  createFeaturedProduct("Spiced Mint", SpicedMint),
-  createFeaturedProduct("Sweet Straweberry", SweetStraweberry),
-  createFeaturedProduct("Cool Blueberries", CoolBlueberries),
-  createFeaturedProduct("Juicy Lemon", JuicyLemon),
-  createFeaturedProduct("Fresh Orange", FreshOrange),
-  createFeaturedProduct("Fragrant Cinnamon", FragrantCinnamon),
-  createFeaturedProduct("Summer Cherries", SummerCherries),
-  createFeaturedProduct("Clean Lavander", CleanLavander),
+export const featuredProducts: FeaturedProductMock[] = [
+  {id: 1, product: createFeaturedProduct("Spiced Mint", SpicedMint)},
+  {id: 2, product: createFeaturedProduct("Sweet Strawberry", SweetStrawberry)},
+  {id: 3, product: createFeaturedProduct("Cool Blueberries", CoolBlueberries)},
+  {id: 4, product: createFeaturedProduct("Juicy Lemon", JuicyLemon)},
+  {id: 5, product: createFeaturedProduct("Fresh Orange", FreshOrange)},
+  {id: 6, product: createFeaturedProduct("Fragrant Cinnamon", FragrantCinnamon)},
+  {id: 7, product: createFeaturedProduct("Summer Cherries", SummerCherries)},
+  {id: 8, product: createFeaturedProduct("Clean Lavender", CleanLavender)},
 ];

@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  Button,
-  Container,
-  Heading,
-  SimpleGrid,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import {Button, Container, Heading, SimpleGrid, Text, VStack,} from "@chakra-ui/react";
 import useFeaturedProducts from "../hooks/useFeaturedProducts";
 import FeaturedProductCard from "./FeaturedProductCard";
 
 const FeaturedProductsSection = () => {
-  const { data } = useFeaturedProducts();
+  const {data} = useFeaturedProducts();
 
   return (
     <Container maxW="container.xl">
@@ -21,8 +14,8 @@ const FeaturedProductsSection = () => {
           Order it for you or for your beloved ones
         </Text>
         <SimpleGrid columns={1} mt="60px" spacing="20px" hideFrom="lg">
-          {data?.slice(0, 4)?.map((product) => (
-            <FeaturedProductCard key={product.id} product={product} />
+          {data?.slice(0, 4)?.map((featuredProduct) => (
+            <FeaturedProductCard key={featuredProduct.id} product={featuredProduct.product}/>
           ))}
           <Button w="180px" mt="55px" mx="auto">
             See more
@@ -36,8 +29,8 @@ const FeaturedProductsSection = () => {
           spacingY="20px"
           hideBelow="lg"
         >
-          {data?.slice(0, 8).map((product) => (
-            <FeaturedProductCard key={product.id} product={product} />
+          {data?.slice(0, 8).map((featuredProduct) => (
+            <FeaturedProductCard key={featuredProduct.id} product={featuredProduct.product}/>
           ))}
         </SimpleGrid>
       </VStack>
