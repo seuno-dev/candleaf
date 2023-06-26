@@ -1,6 +1,7 @@
 import stripe
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_fsm import FSMField, transition
@@ -32,18 +33,30 @@ class Category(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
-    description = models.TextField(null=True, blank=True)
     unit_price = models.DecimalField(
         max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(1)]
     )
-    inventory = models.IntegerField(blank=True, default=0)
+    inventory = models.PositiveIntegerField(blank=True, default=0)
     last_update = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
+    # Candle specifications
+    wax = models.TextField()
+    fragrance = models.TextField()
+    dimension = models.CharField(max_length=100)
+    # in grams
+    weight = models.PositiveIntegerField()
+    # in hours
+    minimum_burning_time = models.PositiveIntegerField()
+    maximum_burning_time = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if self.minimum_burning_time > self.maximum_burning_time:
+            raise ValidationError("Minimum burning time may not be more than maximum burning time.")
 
     @property
     def image(self):

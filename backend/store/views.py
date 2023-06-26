@@ -146,22 +146,8 @@ class CartItemViewSet(viewsets.ModelViewSet):
             return serializers.CartItemSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    class Permission(permissions.IsAdminUser):
-        def has_permission(self, request, view):
-            # Everyone can look at the products
-            if request.method in permissions.SAFE_METHODS:
-                return True
-
-            return super().has_permission(request, view)
-
-    permission_classes = [Permission]
-    queryset = models.Category.objects.all()
-    serializer_class = serializers.CategorySerializer
-    lookup_field = 'slug'
-
-
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     class Permission(permissions.IsAdminUser):
         def has_permission(self, request, view):
             # Everyone can look at the products

@@ -66,4 +66,3 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['title']}
     list_display = ['title', 'unit_price', 'inventory', 'average_rating']
-    autocomplete_fields = ['category']
