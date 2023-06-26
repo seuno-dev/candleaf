@@ -90,7 +90,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product
         fields = ['id', 'title', 'slug', 'unit_price', 'inventory', 'wax', 'fragrance', 'dimension', 'weight',
-                  'minimum_burning_time', 'maximum_burning_time', 'images',
+                  'burning_time', 'images',
                   'average_rating', 'review_count', 'reviews']
 
     slug = serializers.CharField(read_only=True)

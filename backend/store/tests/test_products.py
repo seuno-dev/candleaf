@@ -36,8 +36,7 @@ def assert_product_response(product_response, product):
     assert product_response['fragrance'] == product.fragrance
     assert product_response['dimension'] == product.dimension
     assert product_response['weight'] == product.weight
-    assert product_response['minimum_burning_time'] == product.minimum_burning_time
-    assert product_response['maximum_burning_time'] == product.maximum_burning_time
+    assert product_response['burning_time'] == product.burning_time
 
     if product.review_count > 0:
         for review_response, review in zip(product_response['reviews'], product.few_reviews):
@@ -100,11 +99,11 @@ class TestListProduct:
             assert_product_response(product_response, product)
 
     def test_burning_time_filter_returns_200(self, api_client, products_list_url):
-        baker.make(models.Product, minimum_burning_time=10, maximum_burning_time=15, _quantity=5)
-        baker.make(models.Product, minimum_burning_time=30, maximum_burning_time=35, _quantity=5)
+        baker.make(models.Product, burning_time=15, _quantity=5)
+        baker.make(models.Product, burning_time=35, _quantity=5)
 
         # Only this product should be returned by the API
-        products = baker.make(models.Product, minimum_burning_time=20, maximum_burning_time=25, _quantity=10)
+        products = baker.make(models.Product, burning_time=25, _quantity=10)
 
         url = f"{products_list_url}?minimum_burning_time=20&maximum_burning_time=30"
         response = api_client.get(url)

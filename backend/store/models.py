@@ -48,15 +48,10 @@ class Product(models.Model):
     # in grams
     weight = models.PositiveIntegerField()
     # in hours
-    minimum_burning_time = models.PositiveIntegerField()
-    maximum_burning_time = models.PositiveIntegerField()
+    burning_time = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title
-
-    def clean(self):
-        if self.minimum_burning_time > self.maximum_burning_time:
-            raise ValidationError("Minimum burning time may not be more than maximum burning time.")
 
     @property
     def image(self):
