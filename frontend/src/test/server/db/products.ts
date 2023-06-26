@@ -1,6 +1,6 @@
-import { faker } from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 import slugify from "slugify";
-import { categories } from "./categories";
+import {categories} from "./categories";
 
 // Featured Product Image
 import SpicedMint from "../assets/images/Spiced Mint.png";
@@ -41,6 +41,11 @@ export interface ProductMock {
   average_rating: number;
   review_count: number;
   reviews: SimpleReviewMock[];
+  wax: string;
+  fragrance: string;
+  burning_time: number;
+  dimension: string;
+  weight: number;
 }
 
 interface FeaturedProductMock {
@@ -68,7 +73,7 @@ const createProducts = (
   const products: ProductMock[] = [];
 
   for (let i = 1; i <= numProducts; i++) {
-    const title = faker.commerce.product() + faker.number.int({ max: 10000 });
+    const title = faker.commerce.product() + faker.number.int({max: 10000});
     const slug = slugify(title);
 
     products.push({
@@ -76,21 +81,26 @@ const createProducts = (
       title,
       slug,
       unit_price: parseFloat(
-        faker.finance.amount({ min: minPrice, max: maxPrice })
+        faker.finance.amount({min: minPrice, max: maxPrice})
       ),
       description: faker.commerce.productDescription(),
-      inventory: faker.number.int({ min: 10, max: 100 }),
+      inventory: faker.number.int({min: 10, max: 100}),
       category: categories[i % numOfCategories],
-      images: [{ id, image: `${slug}.png` }],
-      average_rating: faker.number.float({ min: 1, max: 5, precision: 2 }),
-      review_count: faker.number.int({ min: 10, max: 100 }),
+      images: [{id, image: `${slug}.png`}],
+      average_rating: faker.number.float({min: 1, max: 5, precision: 2}),
+      review_count: faker.number.int({min: 10, max: 100}),
       reviews: [
         {
           id,
-          rating: faker.number.int({ min: 1, max: 5 }),
+          rating: faker.number.int({min: 1, max: 5}),
           comment: faker.hacker.phrase(),
         },
       ],
+      wax: "Top grade Soy wax that delivers a smoke less,  consistent burn",
+      fragrance: "Premium quality ingredients with natural essential oils",
+      burning_time: 70,
+      dimension: "10cm x 5cm",
+      weight: 400
     });
     id++;
   }
@@ -113,11 +123,17 @@ const createFeaturedProduct = (title: string, image: string): ProductMock => ({
     "All hand-made with natural soy wax, Candleaf is made for your pleasure moments.",
   inventory: 10,
   category: categories[0],
-  images: [{ id, image }],
+  images: [{id, image}],
   average_rating: 5,
   review_count: 0,
   reviews: [],
+  wax: "Top grade Soy wax that delivers a smoke less,  consistent burn",
+  fragrance: "Premium quality ingredients with natural essential oils",
+  burning_time: 70,
+  dimension: "10cm x 5cm",
+  weight: 400
 });
+
 export const featuredProducts: FeaturedProductMock[] = [
   {id: 1, product: createFeaturedProduct("Spiced Mint", SpicedMint)},
   {id: 2, product: createFeaturedProduct("Sweet Strawberry", SweetStrawberry)},

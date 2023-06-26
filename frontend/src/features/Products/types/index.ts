@@ -1,4 +1,4 @@
-import { Category, SimpleReview } from "../../../types";
+import {Category, SimpleReview} from "../../../types";
 
 export type ProductImage = {
   id: number;
@@ -25,6 +25,11 @@ export type Product = {
   averageRating: number | null;
   reviewCount: number;
   reviews: SimpleReview[];
+  wax: string;
+  fragrance: string;
+  burningTime: number;
+  dimension: string;
+  weight: number;
 };
 
 export type ProductList = {
