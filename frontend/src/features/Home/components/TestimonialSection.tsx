@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  Container,
-  Heading,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
 import Slider from "react-slick";
 
 import TestimonialCard, { TestimonialCardProps } from "./TestimonialCard";
@@ -58,9 +51,9 @@ const TestimonialSection = () => {
           infinite={false}
         >
           {testimonials.map((testimonial, index) => (
-            <Center key={index} mx={["10px", "25px"]}>
+            <Box key={index} mx={["0px", "10px", "25px"]}>
               <TestimonialCard key={index} {...testimonial} />
-            </Center>
+            </Box>
           ))}
         </Slider>
       </Box>
