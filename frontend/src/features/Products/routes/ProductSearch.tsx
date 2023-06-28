@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../../components/Elements/Pagination";
 import FilterSideBar from "../components/filter";
 import useProducts from "../hooks/useProducts";
+import { Box, Container, SimpleGrid, Stack, VStack } from "@chakra-ui/react";
 
 function ProductSearch() {
   const [searchParams] = useSearchParams();
@@ -59,32 +60,34 @@ function ProductSearch() {
   }, [searchParams]);
 
   return (
-    <div className="container mx-auto mt-5 flex flex-row">
-      <div className="w-[480px]">
-        <FilterSideBar
-          minPrice={priceMin}
-          maxPrice={priceMax}
-          onCategorySelect={handleCategorySelect}
-          onPriceFilter={handlePriceFilter}
-          selectedCategory={category}
-        />
-      </div>
-      <div className="ml-5">
-        <ul className="flex flex-row flex-wrap gap-1">
-          {data?.results.map((product) => (
-            <Link key={product.id} to={`/products/${product.slug}`}>
-              <ProductCard product={product} />
-            </Link>
-          ))}
-        </ul>
-        <div className="mt-5 flex flex-row justify-center">
-          <Pagination
-            onPageChange={handlePageClick}
-            pageCount={data?.totalPages || 0}
+    <Container maxW="container.xl" py="40px">
+      <Stack direction={{ base: "column", lg: "row" }}>
+        <Box w="480px">
+          <FilterSideBar
+            minPrice={priceMin}
+            maxPrice={priceMax}
+            onCategorySelect={handleCategorySelect}
+            onPriceFilter={handlePriceFilter}
+            selectedCategory={category}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+        <VStack w="full">
+          <SimpleGrid columns={3} w="full" spacingY="20px">
+            {data?.results.map((product) => (
+              <Link key={product.id} to={`/products/${product.slug}`}>
+                <ProductCard product={product} />
+              </Link>
+            ))}
+          </SimpleGrid>
+          <Box mt="24px">
+            <Pagination
+              onPageChange={handlePageClick}
+              pageCount={data?.totalPages || 0}
+            />
+          </Box>
+        </VStack>
+      </Stack>
+    </Container>
   );
 }
 
