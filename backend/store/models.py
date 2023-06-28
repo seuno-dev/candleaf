@@ -96,7 +96,7 @@ class ProductImage(models.Model):
 
 
 class FeaturedProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=True)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
 
 
 class Cart(models.Model):
