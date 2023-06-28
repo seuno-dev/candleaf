@@ -27,7 +27,7 @@ const FeaturedProductsSection = () => {
               product={featuredProduct.product}
             />
           ))}
-          <Button w="180px" mt="55px" mx="auto">
+          <Button size="hero" w="180px" mt="55px" mx="auto">
             See more
           </Button>
         </SimpleGrid>

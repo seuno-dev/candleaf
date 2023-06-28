@@ -17,7 +17,13 @@ const Button = defineStyleConfig({
     md: {
       fontSize: 20,
       fontWeight: 500,
-      p: "40px",
+    },
+    hero: {
+      fontSize: 20,
+      fontWeight: 500,
+      lineHeight: 1.2,
+      px: 50,
+      py: "14px",
     },
   },
   variants: {
