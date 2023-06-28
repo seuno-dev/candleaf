@@ -168,13 +168,15 @@ class ProductViewSet(mixins.ListModelMixin,
     def get_serializer_class(self):
         if self.action in ['create', 'partial_update']:
             return serializers.CreateProductSerializer
+        elif self.action == 'featured':
+            return serializers.FeaturedProductSerializer
         else:
             return serializers.ProductSerializer
 
     @action(detail=False)
     def featured(self, request):
         queryset = models.FeaturedProduct.objects.all()[:8]
-        serializer = FeaturedProductSerializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
