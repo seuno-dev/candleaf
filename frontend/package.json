@@ -43,8 +43,7 @@
     "zod": "^3.21.4"
   },
   "scripts": {
-    "start_msw": "react-scripts start",
-    "start_backend": "--env.server=backend && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
