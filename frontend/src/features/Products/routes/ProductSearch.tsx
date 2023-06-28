@@ -6,17 +6,24 @@ import FilterSideBar from "../components/filter";
 import useProducts from "../hooks/useProducts";
 import { Box, Container, SimpleGrid, Stack, VStack } from "@chakra-ui/react";
 
+const BURNING_TIME_MIN_KEY = "bt_min";
+const BURNING_TIME_MAX_KEY = "bt_max";
+const PRICE_MIN_KEY = "price_min";
+const PRICE_MAX_KEY = "price_max";
+
 function ProductSearch() {
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const [title, setTitle] = useState("");
+  const [burningTimeMin, setBurningTimeMin] = useState("");
+  const [burningTimeMax, setBurningTimeMax] = useState("");
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
-  const [category, setCategory] = useState<string>();
   const { data } = useProducts({
     page,
     title,
-    category,
+    burningTimeMin,
+    burningTimeMax,
     priceMax,
     priceMin,
   });
@@ -31,8 +38,12 @@ function ProductSearch() {
     window.history.pushState(null, "", url.toString());
   };
 
-  const handleCategorySelect = (id: number | null) => {
-    searchParams.set("category", id ? id.toString() : "");
+  const handleBurningTimeFilter = (
+    minPrice: number | null,
+    maxPrice: number | null
+  ) => {
+    searchParams.set(BURNING_TIME_MIN_KEY, minPrice ? minPrice.toString() : "");
+    searchParams.set(BURNING_TIME_MAX_KEY, maxPrice ? maxPrice.toString() : "");
     navigate({
       pathname: "/products",
       search: searchParams.toString(),
@@ -40,11 +51,17 @@ function ProductSearch() {
   };
 
   const handlePriceFilter = (
-    minPrice: number | null,
-    maxPrice: number | null
+    minBurningTime: number | null,
+    maxBurningTime: number | null
   ) => {
-    searchParams.set("price_min", minPrice ? minPrice.toString() : "");
-    searchParams.set("price_max", maxPrice ? maxPrice.toString() : "");
+    searchParams.set(
+      PRICE_MIN_KEY,
+      minBurningTime ? minBurningTime.toString() : ""
+    );
+    searchParams.set(
+      PRICE_MAX_KEY,
+      maxBurningTime ? maxBurningTime.toString() : ""
+    );
     navigate({
       pathname: "/products",
       search: searchParams.toString(),
@@ -54,9 +71,10 @@ function ProductSearch() {
   useEffect(() => {
     setTitle(searchParams.get("search") || "");
     setPage(parseInt(searchParams.get("page") || "1"));
-    setCategory(searchParams.get("category") || "");
-    setPriceMin(searchParams.get("price_min") || "");
-    setPriceMax(searchParams.get("price_max") || "");
+    setPriceMin(searchParams.get(PRICE_MIN_KEY) || "");
+    setPriceMax(searchParams.get(PRICE_MAX_KEY) || "");
+    setBurningTimeMin(searchParams.get(BURNING_TIME_MIN_KEY) || "");
+    setBurningTimeMax(searchParams.get(BURNING_TIME_MAX_KEY) || "");
   }, [searchParams]);
 
   return (
@@ -64,11 +82,12 @@ function ProductSearch() {
       <Stack direction={{ base: "column", lg: "row" }}>
         <Box w="480px">
           <FilterSideBar
+            minBurningTime={burningTimeMin}
+            maxBurningTime={burningTimeMax}
+            onBurningTimeFilter={handleBurningTimeFilter}
             minPrice={priceMin}
             maxPrice={priceMax}
-            onCategorySelect={handleCategorySelect}
             onPriceFilter={handlePriceFilter}
-            selectedCategory={category}
           />
         </Box>
         <VStack w="full">

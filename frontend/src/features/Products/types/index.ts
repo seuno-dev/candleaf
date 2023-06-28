@@ -1,4 +1,4 @@
-import {Category, SimpleReview} from "../../../types";
+import { Category, SimpleReview } from "../../../types";
 
 export type ProductImage = {
   id: number;
@@ -40,7 +40,8 @@ export type ProductList = {
 export type ProductFilterParams = {
   page: number;
   title: string | undefined;
-  category: string | undefined;
+  burningTimeMin: string | undefined;
+  burningTimeMax: string | undefined;
   priceMin: string | undefined;
   priceMax: string | undefined;
 };
