@@ -9,7 +9,7 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   return (
-    <Card w={{ base: "350px", lg: "250px" }} variant="elevated" shadow="md">
+    <Card minW="256px" variant="elevated" shadow="md">
       <CardHeader p={0} bgColor="#F7F8FA">
         <Image
           src={product.images[0].image}

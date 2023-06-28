@@ -78,9 +78,13 @@ function ProductSearch() {
   }, [searchParams]);
 
   return (
-    <Container maxW="container.xl" py="40px">
-      <Stack direction={{ base: "column", lg: "row" }}>
-        <Box w="480px">
+    <Container maxW="container.xl" py={{ base: "20px", lg: "40px" }}>
+      <Stack
+        direction={{ base: "column", lg: "row" }}
+        alignItems={{ base: "center", lg: "start" }}
+        spacing={{ base: 0, lg: "100px" }}
+      >
+        <Box w={{ base: "full", lg: "256px" }}>
           <FilterSideBar
             minBurningTime={burningTimeMin}
             maxBurningTime={burningTimeMax}
@@ -90,12 +94,14 @@ function ProductSearch() {
             onPriceFilter={handlePriceFilter}
           />
         </Box>
-        <VStack w="full">
-          <SimpleGrid columns={3} w="full" spacingY="20px">
+        <VStack w="full" mt={{ base: "60px", lg: 0 }} alignItems="center">
+          <SimpleGrid w="full" spacing="40px" minChildWidth="256px">
             {data?.results.map((product) => (
-              <Link key={product.id} to={`/products/${product.slug}`}>
-                <ProductCard product={product} />
-              </Link>
+              <Box w="full" mx="auto" key={product.id}>
+                <Link to={`/products/${product.slug}`}>
+                  <ProductCard product={product} />
+                </Link>
+              </Box>
             ))}
           </SimpleGrid>
           <Box mt="24px">

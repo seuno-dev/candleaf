@@ -1,5 +1,6 @@
 import React from "react";
 import FilterNumber from "./FilterNumber";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 
 interface Props {
   minBurningTime: string | null;
@@ -22,24 +23,25 @@ function FilterSideBar({
   onPriceFilter,
 }: Props) {
   return (
-    <div className="w-[16rem] border-2 border-gray-200 rounded-lg">
-      <div className="p-3">
+    <VStack w="full" rounded="lg" alignItems="start">
+      <Heading size="md">Filter</Heading>
+      <Box w="full">
         <FilterNumber
           title="Burning time"
           onApply={onBurningTimeFilter}
           min={minBurningTime}
           max={maxBurningTime}
         />
-      </div>
-      <div className="p-3 border-t-2 border-gray-200">
+      </Box>
+      <Box mt="40px" w="full">
         <FilterNumber
           title="Price"
           onApply={onPriceFilter}
           min={minPrice}
           max={maxPrice}
         />
-      </div>
-    </div>
+      </Box>
+    </VStack>
   );
 }
 

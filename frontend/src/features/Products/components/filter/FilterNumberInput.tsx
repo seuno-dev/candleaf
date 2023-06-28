@@ -26,7 +26,7 @@ function FilterNumberInput({ value: _value, placeholder, onChange }: Props) {
   }, [_value]);
 
   return (
-    <div className="w-full max-w-[16rem] flex flex-row items-center">
+    <div className="w-full flex flex-row items-center">
       <Input
         placeholder={placeholder}
         className="!border-t-blue-gray-200 focus:!border-t-blue-500"
