@@ -110,7 +110,7 @@ class TestListProduct:
         # Only this product should be returned by the API
         products = baker.make(models.Product, burning_time=25, _quantity=10)
 
-        url = f"{products_list_url}?minimum_burning_time=20&maximum_burning_time=30"
+        url = f"{products_list_url}?burning_time_min=20&burning_time_max=30"
         response = api_client.get(url)
 
         assert response.status_code == status.HTTP_200_OK
