@@ -23,7 +23,7 @@ from django.utils.text import slugify
 import json
 
 django.setup()
-from store.models import Category, Product, ProductImage, Review, OrderItem, Order
+from store.models import Category, Product, ProductImage, Review, OrderItem, Order, FeaturedProduct
 
 
 def clean_and_create_category(title):
@@ -67,11 +67,16 @@ def populate(products_data):
                    rating=itertools.cycle([4, 5]),
                    comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis blandit sem tristique, ultricies ex ac, congue ligula.")
 
+    products = Product.objects.all()
+    for i in range(8):
+        FeaturedProduct.objects.create(product=products[i])
+
 
 def delete_current_data():
     OrderItem.objects.all().delete()
     Order.objects.all().delete()
     Product.objects.all().delete()
+    FeaturedProduct.objects.all().delete()
     Review.objects.all().delete()
 
 
