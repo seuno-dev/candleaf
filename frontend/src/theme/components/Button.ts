@@ -4,16 +4,20 @@ const Button = defineStyleConfig({
   baseStyle: {
     fontFamily: "Roboto, sans-serif",
   },
+  defaultProps: {
+    size: "sm",
+    variant: "solid",
+  },
   sizes: {
     sm: {
       fontSize: 16,
       fontWeight: 500,
-      px: 40,
+      p: "20px",
     },
     md: {
       fontSize: 20,
       fontWeight: 500,
-      px: 50,
+      p: "40px",
     },
   },
   variants: {
@@ -22,6 +26,9 @@ const Button = defineStyleConfig({
       color: "#FFFFFF",
       _hover: {
         backgroundColor: "primaryDarker",
+        _disabled: {
+          backgroundColor: "primary",
+        },
       },
       _active: {
         backgroundColor: "primaryDarkest",

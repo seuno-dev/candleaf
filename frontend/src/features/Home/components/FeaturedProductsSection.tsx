@@ -35,8 +35,7 @@ const FeaturedProductsSection = () => {
           columns={4}
           w="full"
           mt="60px"
-          spacingX="auto"
-          spacingY="20px"
+          spacing="20px"
           hideBelow="lg"
         >
           {data?.slice(0, 8).map((featuredProduct) => (

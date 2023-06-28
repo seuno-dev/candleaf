@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import Pagination from "../../../components/Elements/Pagination";
 import FilterSideBar from "../components/filter";
 import useProducts from "../hooks/useProducts";
-import { Box, Container, SimpleGrid, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  HStack,
+  SimpleGrid,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
+import {
+  Pagination,
+  PaginationNext,
+  PaginationPage,
+  PaginationPageGroup,
+  PaginationPrevious,
+  usePagination,
+} from "@ajna/pagination";
 
 const BURNING_TIME_MIN_KEY = "bt_min";
 const BURNING_TIME_MAX_KEY = "bt_max";
@@ -13,14 +27,19 @@ const PRICE_MAX_KEY = "price_max";
 
 function ProductSearch() {
   const [searchParams] = useSearchParams();
-  const [page, setPage] = useState(1);
   const [title, setTitle] = useState("");
   const [burningTimeMin, setBurningTimeMin] = useState("");
   const [burningTimeMax, setBurningTimeMax] = useState("");
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
+
+  const [totalPages, setTotalPages] = useState(0);
+  const { currentPage, setCurrentPage, pages } = usePagination({
+    pagesCount: totalPages,
+    initialState: { currentPage: 1 },
+  });
   const { data } = useProducts({
-    page,
+    page: currentPage,
     title,
     burningTimeMin,
     burningTimeMax,
@@ -28,15 +47,6 @@ function ProductSearch() {
     priceMin,
   });
   const navigate = useNavigate();
-
-  const handlePageClick = (e: { selected: number }) => {
-    const newPage = e.selected + 1;
-    setPage(newPage);
-
-    const url = new URL(window.location.toString());
-    url.searchParams.set("page", newPage.toString());
-    window.history.pushState(null, "", url.toString());
-  };
 
   const handleBurningTimeFilter = (
     minPrice: number | null,
@@ -69,8 +79,20 @@ function ProductSearch() {
   };
 
   useEffect(() => {
+    setTotalPages(data?.totalPages || 0);
+  }, [data]);
+
+  useEffect(() => {
+    const url = new URL(window.location.toString());
+    url.searchParams.set("page", currentPage.toString());
+    window.history.pushState(null, "", url.toString());
+  }, [currentPage]);
+
+  useEffect(() => {
+    // Reset to the first page
+    setCurrentPage(1);
+
     setTitle(searchParams.get("search") || "");
-    setPage(parseInt(searchParams.get("page") || "1"));
     setPriceMin(searchParams.get(PRICE_MIN_KEY) || "");
     setPriceMax(searchParams.get(PRICE_MAX_KEY) || "");
     setBurningTimeMin(searchParams.get(BURNING_TIME_MIN_KEY) || "");
@@ -106,9 +128,31 @@ function ProductSearch() {
           </SimpleGrid>
           <Box mt="24px">
             <Pagination
-              onPageChange={handlePageClick}
-              pageCount={data?.totalPages || 0}
-            />
+              pagesCount={data?.totalPages || 0}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              isDisabled={false}
+            >
+              <HStack spacing="10px">
+                <PaginationPrevious size="sm" p="20px">
+                  {"< previous"}
+                </PaginationPrevious>
+                <PaginationPageGroup align="center" spacing="10px">
+                  {pages.map((page: number) => (
+                    <PaginationPage
+                      key={`pagination_page_${page}`}
+                      page={page}
+                      size="sm"
+                      p="20px"
+                      _current={{
+                        isActive: true,
+                      }}
+                    />
+                  ))}
+                </PaginationPageGroup>
+                <PaginationNext>{"next >"}</PaginationNext>
+              </HStack>
+            </Pagination>
           </Box>
         </VStack>
       </Stack>
