@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import Background from "../../../assets/images/hero-bg.png";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
@@ -34,7 +35,7 @@ function HeroSection() {
           your pleasure moments
         </Text>
         <Button mt={["35px", "50px"]} size="hero">
-          Discover our collection
+          <Link to="/products">Discover our collection</Link>
         </Button>
       </VStack>
     </Stack>

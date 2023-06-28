@@ -67,7 +67,9 @@ function Navbar() {
             justifyContent="space-between"
             hideBelow="md"
           >
-            <ChakraLink href="#">Discovery</ChakraLink>
+            <ChakraLink>
+              <Link to="/products">All products</Link>
+            </ChakraLink>
             <ChakraLink href="#">About</ChakraLink>
             <ChakraLink href="#">Contact us</ChakraLink>
           </Stack>
