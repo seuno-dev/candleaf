@@ -1,6 +1,7 @@
 import stripe
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_fsm import FSMField, transition
@@ -38,9 +39,17 @@ class Product(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(1)]
     )
-    inventory = models.IntegerField(blank=True, default=0)
+    inventory = models.PositiveIntegerField(blank=True, default=0)
     last_update = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
+    # Candle specifications
+    wax = models.TextField()
+    fragrance = models.TextField()
+    dimension = models.CharField(max_length=100)
+    # in grams
+    weight = models.PositiveIntegerField()
+    # in hours
+    burning_time = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title
@@ -84,6 +93,10 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='store/images/')
+
+
+class FeaturedProduct(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
 
 
 class Cart(models.Model):

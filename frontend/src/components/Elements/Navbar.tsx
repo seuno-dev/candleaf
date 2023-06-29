@@ -54,7 +54,6 @@ function Navbar() {
           direction="row"
           mx="auto"
           h="navbarH"
-          px={{ base: 4, md: 0 }}
           justifyContent="space-between"
           alignItems="center"
         >
@@ -67,7 +66,9 @@ function Navbar() {
             justifyContent="space-between"
             hideBelow="md"
           >
-            <ChakraLink href="#">Discovery</ChakraLink>
+            <ChakraLink>
+              <Link to="/products">All products</Link>
+            </ChakraLink>
             <ChakraLink href="#">About</ChakraLink>
             <ChakraLink href="#">Contact us</ChakraLink>
           </Stack>

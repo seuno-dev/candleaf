@@ -1,12 +1,7 @@
 import { ACCESS_KEY, BASE_URL, client, logout, REFRESH_KEY } from "./client";
-import { Category, Credential } from "../types";
+import { Credential } from "../types";
 
 export { client, logout };
-
-export const retrieveCategoryList = async (): Promise<Category[]> => {
-  const response = await client.get<Category[]>("/store/categories/");
-  return response.data;
-};
 
 export const login = async (credential: Credential) => {
   const response = await fetch(`${BASE_URL}/auth/jwt/create/`, {

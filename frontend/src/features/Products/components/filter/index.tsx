@@ -1,42 +1,47 @@
 import React from "react";
-import FilterCategory from "./FilterCategory";
-import FilterPrice from "./FilterPrice";
+import FilterNumber from "./FilterNumber";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 
 interface Props {
+  minBurningTime: string | null;
+  maxBurningTime: string | null;
+  onBurningTimeFilter: (
+    minPrice: number | null,
+    maxPrice: number | null
+  ) => void;
   minPrice: string | null;
   maxPrice: string | null;
-  selectedCategory: number | string | undefined;
-  onCategorySelect: (id: number | null) => void;
   onPriceFilter: (minPrice: number | null, maxPrice: number | null) => void;
 }
 
 function FilterSideBar({
+  minBurningTime,
+  maxBurningTime,
+  onBurningTimeFilter,
   minPrice,
   maxPrice,
-  selectedCategory,
-  onCategorySelect,
   onPriceFilter,
 }: Props) {
-  const handleCategoryClick = (id: number | null) => {
-    onCategorySelect(id);
-  };
-
   return (
-    <div className="w-[16rem] border-2 border-gray-200 rounded-lg">
-      <div className="p-3">
-        <FilterCategory
-          onCategoryClick={handleCategoryClick}
-          selectedCategory={selectedCategory}
+    <VStack w="full" rounded="lg" alignItems="start">
+      <Heading size="md">Filter</Heading>
+      <Box w="full">
+        <FilterNumber
+          title="Burning time"
+          onApply={onBurningTimeFilter}
+          min={minBurningTime}
+          max={maxBurningTime}
         />
-      </div>
-      <div className="p-3 border-t-2 border-gray-200">
-        <FilterPrice
-          onPriceFilter={onPriceFilter}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
+      </Box>
+      <Box mt="40px" w="full">
+        <FilterNumber
+          title="Price"
+          onApply={onPriceFilter}
+          min={minPrice}
+          max={maxPrice}
         />
-      </div>
-    </div>
+      </Box>
+    </VStack>
   );
 }
 

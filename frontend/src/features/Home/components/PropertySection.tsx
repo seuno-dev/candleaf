@@ -76,7 +76,7 @@ const PropertySection = () => {
                 </ListItem>
               ))}
             </List>
-            <Button w="195px" mt="40px">
+            <Button size="hero" w="195px" mt="40px">
               Learn more
             </Button>
           </VStack>

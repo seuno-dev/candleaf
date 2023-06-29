@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import useFeaturedProducts from "../hooks/useFeaturedProducts";
-import FeaturedProductCard from "./FeaturedProductCard";
+import ProductCard from "../../Products/components/ProductCard";
 
 const FeaturedProductsSection = () => {
   const { data } = useFeaturedProducts();
@@ -21,10 +21,13 @@ const FeaturedProductsSection = () => {
           Order it for you or for your beloved ones
         </Text>
         <SimpleGrid columns={1} mt="60px" spacing="20px" hideFrom="lg">
-          {data?.slice(0, 4)?.map((product) => (
-            <FeaturedProductCard key={product.id} product={product} />
+          {data?.slice(0, 4)?.map((featuredProduct) => (
+            <ProductCard
+              key={featuredProduct.id}
+              product={featuredProduct.product}
+            />
           ))}
-          <Button w="180px" mt="55px" mx="auto">
+          <Button size="hero" w="180px" mt="55px" mx="auto">
             See more
           </Button>
         </SimpleGrid>
@@ -32,12 +35,14 @@ const FeaturedProductsSection = () => {
           columns={4}
           w="full"
           mt="60px"
-          spacingX="auto"
-          spacingY="20px"
+          spacing="20px"
           hideBelow="lg"
         >
-          {data?.slice(0, 8).map((product) => (
-            <FeaturedProductCard key={product.id} product={product} />
+          {data?.slice(0, 8).map((featuredProduct) => (
+            <ProductCard
+              key={featuredProduct.id}
+              product={featuredProduct.product}
+            />
           ))}
         </SimpleGrid>
       </VStack>

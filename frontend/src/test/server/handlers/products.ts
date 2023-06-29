@@ -11,6 +11,9 @@ export const productsHandler = [
 
     const filteredProducts = products.filter((product) => {
       const unitPrice = product.unit_price;
+      const burningTime = product.burning_time;
+
+      console.log("params", params.get(""));
 
       if (
         params.get("price_min") &&
@@ -24,10 +27,16 @@ export const productsHandler = [
       )
         return false;
 
+      if (
+        params.get("burning_time_min") &&
+        burningTime < parseFloat(<string>params.get("burning_time_min"))
+      )
+        return false;
+
       // noinspection RedundantIfStatementJS
       if (
-        params.get("category") &&
-        product.category.id !== parseInt(<string>params.get("category"))
+        params.get("burning_time_max") &&
+        burningTime > parseFloat(<string>params.get("burning_time_max"))
       )
         return false;
 

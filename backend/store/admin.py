@@ -66,4 +66,20 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['title']}
     list_display = ['title', 'unit_price', 'inventory', 'average_rating']
-    autocomplete_fields = ['category']
+
+
+@admin.register(models.FeaturedProduct)
+class FeaturedProductAdmin(admin.ModelAdmin):
+    model = models.FeaturedProduct
+    list_display = ['id', 'get_product']
+
+    @admin.display(ordering='product__title', description="Product")
+    def get_product(self, featured_product: models.FeaturedProduct):
+        if featured_product.product:
+            return featured_product.product.title
+        return ""
+
+
+@admin.register(models.CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    pass

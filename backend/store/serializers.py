@@ -41,14 +41,6 @@ class CreateCustomerSerializer(serializers.ModelSerializer):
         fields = ['phone', 'address']
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    slug = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = models.Category
-        fields = ['id', 'title', 'slug']
-
-
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProductImage
@@ -97,19 +89,27 @@ class CreateReviewSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product
-        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'category', 'images',
-                  'average_rating', 'review_count', 'reviews']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price', 'inventory', 'wax', 'fragrance', 'dimension',
+                  'weight', 'burning_time', 'images', 'average_rating', 'review_count', 'reviews']
 
     slug = serializers.CharField(read_only=True)
     images = ProductImageSerializer(many=True, read_only=True)
-    category = CategorySerializer()
     reviews = ReviewSerializer(many=True, source="few_reviews")
+
+
+class FeaturedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.FeaturedProduct
+        fields = ['id', 'product']
+
+    product = ProductSerializer(read_only=True)
 
 
 class CreateProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product
-        fields = ['id', 'title', 'description', 'unit_price', 'inventory', 'category', ]
+        fields = ['id', 'title', 'unit_price', 'inventory', 'wax', 'fragrance', 'dimension', 'weight',
+                  'minimum_burning_time', 'maximum_burning_time', ]
 
 
 class CartItemSerializer(serializers.ModelSerializer):

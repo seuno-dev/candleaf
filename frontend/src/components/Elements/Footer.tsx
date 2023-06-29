@@ -65,7 +65,7 @@ const Footer = () => {
   return (
     <Box as="footer" w="100%">
       <Box pt="32px" pb="85px" bgColor="#272727" w="100%">
-        <Container maxW="container.lg">
+        <Container maxW="container.xl">
           <Divider colorScheme="whiteAlpha" />
           <Stack
             direction={{ base: "column", lg: "row" }}

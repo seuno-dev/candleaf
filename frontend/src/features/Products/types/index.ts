@@ -1,4 +1,4 @@
-import { Category, SimpleReview } from "../../../types";
+import { SimpleReview } from "../../../types";
 
 export type ProductImage = {
   id: number;
@@ -20,11 +20,15 @@ export type Product = {
   description: string;
   unitPrice: number;
   inventory: number;
-  category: Category | null;
   images: ProductImage[];
   averageRating: number | null;
   reviewCount: number;
   reviews: SimpleReview[];
+  wax: string;
+  fragrance: string;
+  burningTime: number;
+  dimension: string;
+  weight: number;
 };
 
 export type ProductList = {
@@ -35,7 +39,8 @@ export type ProductList = {
 export type ProductFilterParams = {
   page: number;
   title: string | undefined;
-  category: string | undefined;
+  burningTimeMin: string | undefined;
+  burningTimeMax: string | undefined;
   priceMin: string | undefined;
   priceMax: string | undefined;
 };

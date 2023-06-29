@@ -1,22 +1,15 @@
 import { faker } from "@faker-js/faker";
 import slugify from "slugify";
-import { categories } from "./categories";
 
 // Featured Product Image
 import SpicedMint from "../assets/images/Spiced Mint.png";
-import SweetStraweberry from "../assets/images/Sweet Straweberry.png";
+import SweetStrawberry from "../assets/images/Sweet Strawberry.png";
 import CoolBlueberries from "../assets/images/Cool Blueberries.png";
 import JuicyLemon from "../assets/images/Juicy Lemon.png";
 import FreshOrange from "../assets/images/Fresh Orange.png";
 import FragrantCinnamon from "../assets/images/Fragrant Cinnamon.png";
 import SummerCherries from "../assets/images/Summer Cherries.png";
-import CleanLavander from "../assets/images/Clean Lavander.png";
-
-export type CategoryMock = {
-  id: number;
-  title: string;
-  slug: string;
-};
+import CleanLavender from "../assets/images/Clean Lavender.png";
 
 export interface SimpleReviewMock {
   id: number;
@@ -36,11 +29,20 @@ export interface ProductMock {
   description: string;
   unit_price: number;
   inventory: number;
-  category: CategoryMock;
   images: ProductImageMock[];
   average_rating: number;
   review_count: number;
   reviews: SimpleReviewMock[];
+  wax: string;
+  fragrance: string;
+  burning_time: number;
+  dimension: string;
+  weight: number;
+}
+
+interface FeaturedProductMock {
+  id: number;
+  product: ProductMock;
 }
 
 export interface SimpleProductMock {
@@ -54,12 +56,12 @@ export interface SimpleProductMock {
 let id = 1;
 
 const createProducts = (
-  numOfCategories: number,
-  numEachCategory: number,
+  numProducts: number,
+  minBurningTime: number,
+  maxBurningTime: number,
   minPrice: number,
   maxPrice: number
 ) => {
-  const numProducts = numOfCategories * numEachCategory;
   const products: ProductMock[] = [];
 
   for (let i = 1; i <= numProducts; i++) {
@@ -75,7 +77,6 @@ const createProducts = (
       ),
       description: faker.commerce.productDescription(),
       inventory: faker.number.int({ min: 10, max: 100 }),
-      category: categories[i % numOfCategories],
       images: [{ id, image: `${slug}.png` }],
       average_rating: faker.number.float({ min: 1, max: 5, precision: 2 }),
       review_count: faker.number.int({ min: 10, max: 100 }),
@@ -86,6 +87,14 @@ const createProducts = (
           comment: faker.hacker.phrase(),
         },
       ],
+      wax: "Top grade Soy wax that delivers a smoke less,  consistent burn",
+      fragrance: "Premium quality ingredients with natural essential oils",
+      burning_time: faker.number.int({
+        min: minBurningTime,
+        max: maxBurningTime,
+      }),
+      dimension: "10cm x 5cm",
+      weight: 400,
     });
     id++;
   }
@@ -93,9 +102,9 @@ const createProducts = (
 };
 
 export const products = [
-  ...createProducts(categories.length, 2, 11.0, 19.0),
-  ...createProducts(categories.length, 2, 21.0, 29.0),
-  ...createProducts(categories.length, 2, 31.0, 39.0),
+  ...createProducts(10, 21, 29, 11.0, 19.0),
+  ...createProducts(10, 41, 49, 21.0, 29.0),
+  ...createProducts(10, 81, 89, 31.0, 39.0),
 ];
 
 let featuredProductId = 201;
@@ -107,19 +116,33 @@ const createFeaturedProduct = (title: string, image: string): ProductMock => ({
   description:
     "All hand-made with natural soy wax, Candleaf is made for your pleasure moments.",
   inventory: 10,
-  category: categories[0],
   images: [{ id, image }],
   average_rating: 5,
   review_count: 0,
   reviews: [],
+  wax: "Top grade Soy wax that delivers a smoke less,  consistent burn",
+  fragrance: "Premium quality ingredients with natural essential oils",
+  burning_time: 70,
+  dimension: "10cm x 5cm",
+  weight: 400,
 });
-export const featuredProducts: ProductMock[] = [
-  createFeaturedProduct("Spiced Mint", SpicedMint),
-  createFeaturedProduct("Sweet Straweberry", SweetStraweberry),
-  createFeaturedProduct("Cool Blueberries", CoolBlueberries),
-  createFeaturedProduct("Juicy Lemon", JuicyLemon),
-  createFeaturedProduct("Fresh Orange", FreshOrange),
-  createFeaturedProduct("Fragrant Cinnamon", FragrantCinnamon),
-  createFeaturedProduct("Summer Cherries", SummerCherries),
-  createFeaturedProduct("Clean Lavander", CleanLavander),
+
+export const featuredProducts: FeaturedProductMock[] = [
+  { id: 1, product: createFeaturedProduct("Spiced Mint", SpicedMint) },
+  {
+    id: 2,
+    product: createFeaturedProduct("Sweet Strawberry", SweetStrawberry),
+  },
+  {
+    id: 3,
+    product: createFeaturedProduct("Cool Blueberries", CoolBlueberries),
+  },
+  { id: 4, product: createFeaturedProduct("Juicy Lemon", JuicyLemon) },
+  { id: 5, product: createFeaturedProduct("Fresh Orange", FreshOrange) },
+  {
+    id: 6,
+    product: createFeaturedProduct("Fragrant Cinnamon", FragrantCinnamon),
+  },
+  { id: 7, product: createFeaturedProduct("Summer Cherries", SummerCherries) },
+  { id: 8, product: createFeaturedProduct("Clean Lavender", CleanLavender) },
 ];
