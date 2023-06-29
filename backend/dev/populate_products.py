@@ -45,6 +45,7 @@ def populate(products_data):
     for (index, product_dict) in enumerate(products_data):
         print(index)
         product = Product.objects.create(title=product_dict['title'], slug=slugify(product_dict['title']),
+                                         inventory=10,
                                          description=product_dict['description'],
                                          unit_price=product_dict['unit_price'],
                                          wax=product_dict['wax'],
