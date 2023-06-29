@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProductImage } from "../types";
 import useAddCartItem from "../../Cart/hooks/useAddCartItem";
 import useProduct from "../hooks/useProduct";
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Container,
+  Fade,
   Heading,
   HStack,
   Image,
@@ -15,6 +18,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { formatCurrency } from "../../../utils/currency";
+import { getAuthenticationStatus } from "../../../api";
 
 function ProductDetail() {
   const { mutate, isSuccess, isError } = useAddCartItem();
@@ -27,6 +31,8 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState<ProductImage | undefined>(
     undefined
   );
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (product) {
@@ -61,11 +67,27 @@ function ProductDetail() {
   if (!product) return <></>;
 
   const onAddToCart = () => {
-    mutate({ productId: product.id, quantity: 1 });
+    if (getAuthenticationStatus())
+      mutate({ productId: product.id, quantity: 1 });
+    else navigate("/auth/login");
   };
 
   return (
     <Box>
+      <Box w="full" position="absolute">
+        <Fade in={showCartSuccessAlert}>
+          <Alert maxW="300px" mx="auto" status="success" rounded="lg">
+            <AlertTitle>Added to cart successfully.</AlertTitle>
+          </Alert>
+        </Fade>
+      </Box>
+      <Box w="full" position="absolute">
+        <Fade in={showCartFailedAlert}>
+          <Alert maxW="300px" mx="auto" status="error" rounded="lg">
+            <AlertTitle textAlign="center">Failed adding to cart.</AlertTitle>
+          </Alert>
+        </Fade>
+      </Box>
       <Container maxW="container.xl" pt="20px" pb="140px">
         <Stack direction={{ base: "column", lg: "row" }} spacing="22px">
           <VStack w={{ base: "full", lg: "500px" }}>
@@ -73,9 +95,23 @@ function ProductDetail() {
               {product.title}
             </Heading>
             <Image
-              src={product.images[0].image}
+              w="350px"
+              h="350px"
+              objectFit="cover"
+              src={selectedImage ? selectedImage.image : "logo512.png"}
               alt={"Image of " + product.title}
             />
+            <HStack overflowX="auto" alignSelf={"start"}>
+              {product.images.map((image) => (
+                <Image
+                  key={image.id}
+                  w="80px"
+                  src={image.image}
+                  onPointerEnter={() => setSelectedImage(image)}
+                  alt={`Image of product ${product.title}`}
+                />
+              ))}
+            </HStack>
             <Text
               textAlign="center"
               fontSize="xl"
@@ -97,7 +133,7 @@ function ProductDetail() {
               <Text color="primary" fontSize="2xl" fontWeight="semibold">
                 {formatCurrency(product.unitPrice)}
               </Text>
-              <Button>Add to cart</Button>
+              <Button onClick={onAddToCart}>Add to cart</Button>
             </HStack>
             <Text>{product.description}</Text>
             <VStack
