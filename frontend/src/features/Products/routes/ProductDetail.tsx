@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Typography } from "@material-tailwind/react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/currency";
 import { ProductImage } from "../types";
 import ProductRatingLabel from "../components/ProductRatingLabel";
@@ -110,17 +110,6 @@ function ProductDetail() {
             {formatCurrency(product.unitPrice)}
           </Typography>
           <div className="border-t-[0.5px] mt-5 border-gray-200">
-            {product.category && (
-              <Typography>
-                Category:{" "}
-                <Link
-                  className="text-light-green-700 font-bold"
-                  to={`/products/?category=${product.category.id}`}
-                >
-                  {product.category.title}
-                </Link>
-              </Typography>
-            )}
             <Typography className="mt-5" variant="paragraph">
               {product.description}
             </Typography>

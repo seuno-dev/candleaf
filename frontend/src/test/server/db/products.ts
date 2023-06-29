@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import slugify from "slugify";
-import { categories } from "./categories";
 
 // Featured Product Image
 import SpicedMint from "../assets/images/Spiced Mint.png";
@@ -11,12 +10,6 @@ import FreshOrange from "../assets/images/Fresh Orange.png";
 import FragrantCinnamon from "../assets/images/Fragrant Cinnamon.png";
 import SummerCherries from "../assets/images/Summer Cherries.png";
 import CleanLavender from "../assets/images/Clean Lavender.png";
-
-export type CategoryMock = {
-  id: number;
-  title: string;
-  slug: string;
-};
 
 export interface SimpleReviewMock {
   id: number;
@@ -36,7 +29,6 @@ export interface ProductMock {
   description: string;
   unit_price: number;
   inventory: number;
-  category: CategoryMock;
   images: ProductImageMock[];
   average_rating: number;
   review_count: number;
@@ -64,14 +56,12 @@ export interface SimpleProductMock {
 let id = 1;
 
 const createProducts = (
-  numOfCategories: number,
-  numEachCategory: number,
+  numProducts: number,
   minBurningTime: number,
   maxBurningTime: number,
   minPrice: number,
   maxPrice: number
 ) => {
-  const numProducts = numOfCategories * numEachCategory;
   const products: ProductMock[] = [];
 
   for (let i = 1; i <= numProducts; i++) {
@@ -87,7 +77,6 @@ const createProducts = (
       ),
       description: faker.commerce.productDescription(),
       inventory: faker.number.int({ min: 10, max: 100 }),
-      category: categories[i % numOfCategories],
       images: [{ id, image: `${slug}.png` }],
       average_rating: faker.number.float({ min: 1, max: 5, precision: 2 }),
       review_count: faker.number.int({ min: 10, max: 100 }),
@@ -113,9 +102,9 @@ const createProducts = (
 };
 
 export const products = [
-  ...createProducts(categories.length, 2, 21, 29, 11.0, 19.0),
-  ...createProducts(categories.length, 2, 41, 49, 21.0, 29.0),
-  ...createProducts(categories.length, 2, 81, 89, 31.0, 39.0),
+  ...createProducts(10, 21, 29, 11.0, 19.0),
+  ...createProducts(10, 41, 49, 21.0, 29.0),
+  ...createProducts(10, 81, 89, 31.0, 39.0),
 ];
 
 let featuredProductId = 201;
@@ -127,7 +116,6 @@ const createFeaturedProduct = (title: string, image: string): ProductMock => ({
   description:
     "All hand-made with natural soy wax, Candleaf is made for your pleasure moments.",
   inventory: 10,
-  category: categories[0],
   images: [{ id, image }],
   average_rating: 5,
   review_count: 0,
