@@ -78,3 +78,8 @@ class FeaturedProductAdmin(admin.ModelAdmin):
         if featured_product.product:
             return featured_product.product.title
         return ""
+
+
+@admin.register(models.CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    pass
