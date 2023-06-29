@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Typography } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
-import { formatCurrency } from "../../../utils/currency";
 import { ProductImage } from "../types";
-import ProductRatingLabel from "../components/ProductRatingLabel";
-import ProductReview from "../components/ProductReview";
 import useAddCartItem from "../../Cart/hooks/useAddCartItem";
 import useProduct from "../hooks/useProduct";
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  HStack,
+  Image,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { formatCurrency } from "../../../utils/currency";
 
 function ProductDetail() {
   const { mutate, isSuccess, isError } = useAddCartItem();
@@ -28,7 +36,6 @@ function ProductDetail() {
     }
   }, [product]);
 
-  const defaultImagesClassName = "w-16 h-16 mr-3 rounded-lg";
   const showAlertTemporarily = (setShowAlert: (show: boolean) => void) => {
     setShowAlert(true);
     const timer = setTimeout(() => {
@@ -58,86 +65,80 @@ function ProductDetail() {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className="absolute container flex justify-center">
-        <Alert
-          className="w-80"
-          show={showCartSuccessAlert}
-          color="green"
-          dismissible={{ onClose: () => setShowCartSuccessAlert(false) }}
-        >
-          Added to cart successfully.
-        </Alert>
-        <Alert
-          className="w-80"
-          show={showCartFailedAlert}
-          color="red"
-          dismissible={{ onClose: () => setShowCartFailedAlert(false) }}
-        >
-          Failed adding to cart.
-        </Alert>
-      </div>
-      <div className="mt-5 flex flex-row justify-center">
-        <div className="w-[380px] h-full flex flex-col items-center">
-          <img
-            className="object-cover w-[350px] h-[350px]"
-            src={selectedImage ? selectedImage.image : "logo512.png"}
-            alt={`Image of product ${product.title}`}
-          />
-          <div className="overflow-x-auto flex flex-row pt-10">
-            {product.images.map((image) => (
-              <img
-                className={
-                  image === selectedImage
-                    ? defaultImagesClassName +
-                      " border-light-green-500 border-2"
-                    : defaultImagesClassName
-                }
-                key={image.id}
-                src={image.image}
-                onPointerEnter={() => setSelectedImage(image)}
-                alt={`Image of product ${product.title}`}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="w-[480px] ml-4 flex flex-col">
-          <Typography variant="h4" className="break-words">
-            {product.title}
-          </Typography>
-          {product.averageRating && <ProductRatingLabel product={product} />}
-          <Typography variant="h2" className="mt-6">
-            {formatCurrency(product.unitPrice)}
-          </Typography>
-          <div className="border-t-[0.5px] mt-5 border-gray-200">
-            <Typography className="mt-5" variant="paragraph">
-              {product.description}
-            </Typography>
-          </div>
-          <div className="border-t-[0.5px] mt-5 border-gray-200 flex flex-col gap-4">
-            <Typography variant="h6">Reviews</Typography>
-            {product.reviews.map((review) => (
-              <ProductReview review={review} key={review.id} />
-            ))}
-          </div>
-        </div>
-        <div className="w-[270px] ml-4 flex flex-col items-center">
-          <Button
-            fullWidth={true}
-            color="light-green"
-            onClick={onAddToCart}
-            disabled={product.inventory === 0}
-          >
-            Add to cart
-          </Button>
-          {product.inventory === 0 && (
-            <Typography className="mt-3" color="red" variant="h6">
-              Out of stock
-            </Typography>
-          )}
-        </div>
-      </div>
-    </div>
+    <Box>
+      <Container maxW="container.xl" pt="20px" pb="140px">
+        <Stack direction={{ base: "column", lg: "row" }} spacing="22px">
+          <VStack w={{ base: "full", lg: "500px" }}>
+            <Heading fontWeight="medium" hideFrom="lg">
+              {product.title}
+            </Heading>
+            <Image
+              src={product.images[0].image}
+              alt={"Image of " + product.title}
+            />
+            <Text
+              textAlign="center"
+              fontSize="xl"
+              fontWeight="medium"
+              hideBelow="lg"
+            >
+              All hand-made with natural soy wax, Candleaf is made for your
+              pleasure moments.
+              <br />
+              <br />
+              🚚 FREE SHIPPING
+            </Text>
+          </VStack>
+          <VStack alignItems="start" spacing="22px">
+            <Heading fontWeight="medium" hideBelow="lg">
+              {product.title}
+            </Heading>
+            <HStack w="full" justifyContent="space-between">
+              <Text color="primary" fontSize="2xl" fontWeight="semibold">
+                {formatCurrency(product.unitPrice)}
+              </Text>
+              <Button>Add to cart</Button>
+            </HStack>
+            <Text>{product.description}</Text>
+            <VStack
+              w="full"
+              p="22px"
+              alignItems="start"
+              borderWidth={1}
+              borderColor="gray"
+              borderRadius="md"
+            >
+              {[
+                { key: "Wax", value: product.wax },
+                { key: "Fragrance", value: product.fragrance },
+                { key: "Burning Time", value: product.burningTime + " hours" },
+                { key: "Dimension", value: product.dimension },
+                { key: "Weight", value: product.weight + "g" },
+              ].map(({ key, value }) => (
+                <Text key={key} color="#849A8E" display="inline">
+                  <Text color="#1D252C" display="inline">
+                    {key}:{" "}
+                  </Text>
+                  {value}
+                </Text>
+              ))}
+            </VStack>
+            <Text
+              textAlign="center"
+              fontSize="2xl"
+              fontWeight="semibold"
+              hideFrom="lg"
+            >
+              All hand-made with natural soy wax, Candleaf is made for your
+              pleasure moments.
+              <br />
+              <br />
+              🚚 FREE SHIPPING
+            </Text>
+          </VStack>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
 
