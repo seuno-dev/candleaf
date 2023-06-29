@@ -54,7 +54,6 @@ function Navbar() {
           direction="row"
           mx="auto"
           h="navbarH"
-          px={{ base: 4, md: 0 }}
           justifyContent="space-between"
           alignItems="center"
         >
