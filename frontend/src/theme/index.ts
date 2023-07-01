@@ -1,6 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import Button from "./components/Button";
 import Link from "./components/Link";
+import Heading from "./components/Heading";
 
 const navbarH = "80px";
 
@@ -25,6 +26,7 @@ const theme = extendTheme({
   components: {
     Link,
     Button,
+    Heading,
   },
 });
 
