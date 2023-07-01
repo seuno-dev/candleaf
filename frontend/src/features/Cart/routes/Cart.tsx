@@ -97,7 +97,7 @@ function Cart() {
       </Stack>
       <HStack justifyContent="end" hideBelow="md" my="30px">
         <Stack textAlign="end" mr="40px">
-          <Text fontSize="xl">Sub-total {formatCurrency(totalPrice)}</Text>
+          <Text fontSize="xl">Total {formatCurrency(totalPrice)}</Text>
           <Text color="grey">
             Tax and shipping cost will be calculated later
           </Text>
