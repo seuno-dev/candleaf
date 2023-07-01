@@ -1,10 +1,19 @@
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartItemRow from "../components/CartItemRow";
 import { submitOrder } from "../../Order/api";
 import useCartItems from "../hooks/useCartItems";
 import { formatCurrency } from "../../../utils/currency";
-import {Box, Button, Divider, Grid, GridItem, HStack, Stack, Text} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  GridItem,
+  HStack,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 function Cart() {
   const { data } = useCartItems();
@@ -26,7 +35,12 @@ function Cart() {
     ) || 0;
 
   return (
-    <Stack maxW={{base:"full", md:"container.xl"}} pb="100px" px="15px" mx={{md:"auto"}}>
+    <Stack
+      maxW={{ base: "full", md: "container.xl" }}
+      pb="100px"
+      px="15px"
+      mx={{ md: "auto" }}
+    >
       <Box>
         <Stack width="full" py="70px" align="center">
           <Text fontSize="3xl">Your cart items</Text>
@@ -55,7 +69,7 @@ function Cart() {
               <Text align="end">Total</Text>
             </GridItem>
           </Grid>
-          <Divider/>
+          <Divider />
           <Box>
             {data?.map((item) => (
               <CartItemRow key={item.id} item={item} />
@@ -67,7 +81,9 @@ function Cart() {
         <Text fontSize="xl" mt="30px">
           Sub-total {formatCurrency(totalPrice)}
         </Text>
-        <Text mb="30px" color="grey">Tax and shipping cost will be calculated later</Text>
+        <Text mb="30px" color="grey">
+          Tax and shipping cost will be calculated later
+        </Text>
         <Button
           w="full"
           colorScheme="primary"
@@ -81,10 +97,10 @@ function Cart() {
       </Stack>
       <HStack justifyContent="end" hideBelow="md" my="30px">
         <Stack textAlign="end" mr="40px">
-          <Text fontSize="xl">
-            Sub-total {formatCurrency(totalPrice)}
+          <Text fontSize="xl">Sub-total {formatCurrency(totalPrice)}</Text>
+          <Text color="grey">
+            Tax and shipping cost will be calculated later
           </Text>
-          <Text color="grey">Tax and shipping cost will be calculated later</Text>
         </Stack>
         <Button
           colorScheme="primary"
