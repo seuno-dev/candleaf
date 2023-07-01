@@ -1,17 +1,17 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import StripePayment from "./StripePayment";
+import Payment from "./Payment";
 import Success from "./Success";
 import Fail from "./Fail";
 
-const StripePaymentRoutes = () => {
+const PaymentRoutes = () => {
   return (
     <Routes>
-      <Route path="" element={<StripePayment />}></Route>
+      <Route path="" element={<Payment />}></Route>
       <Route path="success" element={<Success />}></Route>
       <Route path="fail" element={<Fail />}></Route>
     </Routes>
   );
 };
 
-export default StripePaymentRoutes;
+export default PaymentRoutes;
