@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import OrderCard from "../components/OrderCard";
 import { Order } from "../types";
 import OrderDetailDialog from "../components/OrderDetailDialog";
 import OrderFilter from "../components/OrderFilter";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import useOrderList from "../hooks/useOrderList";
+import {Box, Button, useDisclosure} from "@chakra-ui/react";
 
 function OrderList() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -21,6 +22,7 @@ function OrderList() {
     setOpenDetailDialog(true);
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const handleSubmit = (dateMin:string, dateMax:string) => {
     searchParams.set("order_time_min", dateMin ? dateMin : "");
     searchParams.set("order_time_max", dateMax ? dateMax : "");
@@ -28,6 +30,7 @@ function OrderList() {
       pathname: "/orders",
       search: searchParams.toString(),
     });
+    onClose();
   };
 
   useEffect(() =>  {
@@ -39,8 +42,13 @@ function OrderList() {
 
 
   return (
-    <div className="container mx-auto mt-5">
-      <OrderFilter handleSubmit={handleSubmit} dateFilter={dateFilter}/>
+    <Box maxW={{base:"full", md:"container.xl"}} mx={{md:"auto"}} px={{base:"15px", md:0}}>
+      <Box textAlign="right">
+        <Button colorScheme="primary" onClick={onOpen} my="20px">
+          Date Filter
+        </Button>
+      </Box>
+      <OrderFilter isOpen={isOpen} onClose={onClose} handleSubmit={handleSubmit} dateFilter={dateFilter}/>
       <ul>
         {orders?.results.map((order) => (
           <li key={order.id} className="mb-2">
@@ -55,7 +63,7 @@ function OrderList() {
           handler={handleOpenDetailDialog}
         />
       )}
-    </div>
+    </Box>
   );
 }
 
