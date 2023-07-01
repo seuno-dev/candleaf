@@ -3,8 +3,22 @@ import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 import OrderStatusLabel from "./OrderStatusLabel";
 import { useNavigate } from "react-router-dom";
-import {Box, Button, Card, HStack, Stack, Text, Image, Divider, IconButton} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  HStack,
+  Stack,
+  Text,
+  Image,
+  Divider,
+  IconButton,
+  MenuList,
+  MenuItem,
+  Menu, MenuButton
+} from "@chakra-ui/react";
 import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
+import {BsThreeDotsVertical} from "react-icons/bs";
 
 type OrderItemProps = {
   order: Order;
@@ -19,7 +33,22 @@ function OrderCard({ order }: OrderItemProps) {
     <Card variant="outline" p={{base:"10px", md:"20px"}} my={{md:"20px"}}>
       <HStack justifyContent="space-between">
         <Text>{order.orderTime.split("T")[0]}</Text>
-        <OrderStatusLabel statusKey={order.status} />
+        <HStack>
+          <OrderStatusLabel statusKey={order.status} />
+          {order.status === "a" &&
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<BsThreeDotsVertical />}
+                variant="ghost"
+              />
+              <MenuList>
+                <MenuItem>Cancel order</MenuItem>
+              </MenuList>
+            </Menu>
+          }
+        </HStack>
       </HStack>
       <Stack divider={<Divider/>}>
         {items.map(item=>
