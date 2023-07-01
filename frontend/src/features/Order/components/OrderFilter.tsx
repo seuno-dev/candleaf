@@ -1,48 +1,86 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Button,
-  Stack,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Input,
   InputGroup,
   InputLeftAddon,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton, DrawerHeader, DrawerBody
+  Stack,
 } from "@chakra-ui/react";
-import {OrderTimeFilter} from "../types";
+import { OrderTimeFilter } from "../types";
 
-interface Props{
-  dateFilter: OrderTimeFilter
-  handleSubmit: (dateMin:string, dateMax:string) => void,
-  isOpen: boolean,
-  onClose: () => void,
+interface Props {
+  dateFilter: OrderTimeFilter;
+  handleSubmit: (dateMin: string, dateMax: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
-const OrderFilter = ({dateFilter:orderTime, handleSubmit, isOpen, onClose}:Props) => {
+
+const OrderFilter = ({
+  dateFilter: orderTime,
+  handleSubmit,
+  isOpen,
+  onClose,
+}: Props) => {
   const [dateFilter, setDateFilter] = useState({
-    orderTimeMin:"",
-    orderTimeMax:""
+    orderTimeMin: "",
+    orderTimeMax: "",
   });
   const handleDateFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDateFilter({...dateFilter, [e.target.id]: e.target.value});
+    setDateFilter({ ...dateFilter, [e.target.id]: e.target.value });
   };
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
-      <DrawerOverlay/>
+      <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton/>
+        <DrawerCloseButton />
         <DrawerHeader>Date Filter</DrawerHeader>
         <DrawerBody>
-          <Stack alignItems="end" spacing="15px" >
+          <Stack alignItems="end" spacing="15px">
             <InputGroup size="sm" borderColor="primary">
-              <InputLeftAddon bgColor="primary" color="white">From</InputLeftAddon>
-              <Input id="orderTimeMin" focusBorderColor="primary" _hover={{borderColor:"primaryDarker"}} type="date" value={dateFilter.orderTimeMin||orderTime.orderTimeMin} onChange={handleDateFilter}/>
+              <InputLeftAddon bgColor="primary" color="white">
+                From
+              </InputLeftAddon>
+              <Input
+                id="orderTimeMin"
+                focusBorderColor="primary"
+                _hover={{ borderColor: "primaryDarker" }}
+                type="date"
+                value={dateFilter.orderTimeMin || orderTime.orderTimeMin}
+                onChange={handleDateFilter}
+              />
             </InputGroup>
             <InputGroup size="sm" borderColor="primary">
-              <InputLeftAddon bgColor="primary" color="white">To</InputLeftAddon>
-              <Input id="orderTimeMax" focusBorderColor="primary" _hover={{borderColor:"primaryDarker"}} type="date"  value={dateFilter.orderTimeMax||orderTime.orderTimeMax}  onChange={handleDateFilter}/>
+              <InputLeftAddon bgColor="primary" color="white">
+                To
+              </InputLeftAddon>
+              <Input
+                id="orderTimeMax"
+                focusBorderColor="primary"
+                _hover={{ borderColor: "primaryDarker" }}
+                type="date"
+                value={dateFilter.orderTimeMax || orderTime.orderTimeMax}
+                onChange={handleDateFilter}
+              />
             </InputGroup>
-            <Button variant="outline" color="primary" borderRadius={0} size="sm" w="70px" py="16px"  onClick={()=>handleSubmit(dateFilter.orderTimeMin, dateFilter.orderTimeMax)}>Filter</Button>
+            <Button
+              variant="outline"
+              color="primary"
+              borderRadius={0}
+              size="sm"
+              w="70px"
+              py="16px"
+              onClick={() =>
+                handleSubmit(dateFilter.orderTimeMin, dateFilter.orderTimeMax)
+              }
+            >
+              Filter
+            </Button>
           </Stack>
         </DrawerBody>
       </DrawerContent>

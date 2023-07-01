@@ -1,4 +1,4 @@
-import {Product} from "../../Products/types";
+import { Product } from "../../Products/types";
 
 export interface FeaturedProduct {
   id: number;

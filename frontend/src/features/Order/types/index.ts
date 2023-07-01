@@ -34,7 +34,7 @@ export interface CreateReview {
   comment: string;
 }
 
-export interface OrderTimeFilter{
-  orderTimeMin: string | undefined,
-  orderTimeMax: string | undefined,
+export interface OrderTimeFilter {
+  orderTimeMin: string | undefined;
+  orderTimeMax: string | undefined;
 }

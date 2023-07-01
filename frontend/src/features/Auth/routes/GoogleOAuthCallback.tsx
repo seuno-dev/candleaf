@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
-import {Navigate, useNavigate, useSearchParams} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import useGoogleAuthToken from "../hooks/useGoogleAuthToken";
-import {getAuthenticationStatus} from "../../../api";
+import { getAuthenticationStatus } from "../../../api";
 
 const GoogleOAuthCallback = () => {
   const [searchParams] = useSearchParams();
-  const {mutate, isSuccess, isError} = useGoogleAuthToken();
+  const { mutate, isSuccess, isError } = useGoogleAuthToken();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const GoogleOAuthCallback = () => {
     const state = searchParams.get("state");
 
     if (code && state) {
-      mutate({code, state});
+      mutate({ code, state });
     }
   }, [searchParams]);
 
@@ -24,11 +24,12 @@ const GoogleOAuthCallback = () => {
     }
   }, [isSuccess]);
 
-
-  return <>
-    {isSuccess || getAuthenticationStatus() && <Navigate to="/"/>}
-    {isError && <Navigate to="/auth/login/"/>}
-  </>;
+  return (
+    <>
+      {isSuccess || (getAuthenticationStatus() && <Navigate to="/" />)}
+      {isError && <Navigate to="/auth/login/" />}
+    </>
+  );
 };
 
 export default GoogleOAuthCallback;

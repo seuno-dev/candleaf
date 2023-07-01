@@ -9,7 +9,8 @@ const useGoogleAuthToken = () =>
     onSuccess: (data) => {
       const { refresh, access } = data;
       localStorage.setItem(REFRESH_KEY, refresh);
-      localStorage.setItem(ACCESS_KEY, access);    },
+      localStorage.setItem(ACCESS_KEY, access);
+    },
   });
 
 export default useGoogleAuthToken;

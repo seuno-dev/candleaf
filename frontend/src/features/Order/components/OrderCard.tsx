@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 import OrderStatusLabel from "./OrderStatusLabel";
@@ -7,18 +7,19 @@ import {
   Box,
   Button,
   Card,
+  Divider,
   HStack,
+  IconButton,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
-  Image,
-  Divider,
-  IconButton,
-  MenuList,
-  MenuItem,
-  Menu, MenuButton
 } from "@chakra-ui/react";
-import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
-import {BsThreeDotsVertical} from "react-icons/bs";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 type OrderItemProps = {
   order: Order;
@@ -26,16 +27,20 @@ type OrderItemProps = {
 
 function OrderCard({ order }: OrderItemProps) {
   const [openDetail, setOpenDetail] = useState(false);
-  const items = openDetail ? order.items: [order.items[0]];
+  const items = openDetail ? order.items : [order.items[0]];
   const navigate = useNavigate();
 
   return (
-    <Card variant="outline" p={{base:"10px", md:"20px"}} my={{md:"20px"}}>
+    <Card
+      variant="outline"
+      p={{ base: "10px", md: "20px" }}
+      my={{ md: "20px" }}
+    >
       <HStack justifyContent="space-between">
         <Text>{order.orderTime.split("T")[0]}</Text>
         <HStack>
           <OrderStatusLabel statusKey={order.status} />
-          {order.status === "a" &&
+          {order.status === "a" && (
             <Menu>
               <MenuButton
                 as={IconButton}
@@ -47,36 +52,42 @@ function OrderCard({ order }: OrderItemProps) {
                 <MenuItem>Cancel order</MenuItem>
               </MenuList>
             </Menu>
-          }
+          )}
         </HStack>
       </HStack>
-      <Stack divider={<Divider/>}>
-        {items.map(item=>
-          <HStack key={item.id} justifyContent={{base:"space-between", md:"start"}} my="15px">
+      <Stack divider={<Divider />}>
+        {items.map((item) => (
+          <HStack
+            key={item.id}
+            justifyContent={{ base: "space-between", md: "start" }}
+            my="15px"
+          >
             <Image
               src={item.product.image.image}
               alt={`Image of ${item.product.title}`}
               bgColor="#F7F8FA"
-              maxW={{base:"100px", md:"120px"}}
+              maxW={{ base: "100px", md: "120px" }}
             />
-            <Box textAlign={{base:"right", md:"left"}} ml={{md:"30px"}}>
-              <Text fontSize={{base:"lg", md:"xl"}}>{item.product.title}</Text>
+            <Box textAlign={{ base: "right", md: "left" }} ml={{ md: "30px" }}>
+              <Text fontSize={{ base: "lg", md: "xl" }}>
+                {item.product.title}
+              </Text>
               <Text>
                 {item.quantity} x {formatCurrency(item.unitPrice)}
               </Text>
             </Box>
           </HStack>
-        )}
+        ))}
       </Stack>
-      {openDetail &&
-        (<IconButton
+      {openDetail && (
+        <IconButton
           icon={<ChevronUpIcon />}
           aria-label="See Less"
           variant="ghost"
           my="5px"
           onClick={() => setOpenDetail(false)}
-        />)
-      }
+        />
+      )}
       {order.items.length > 1 && !openDetail && (
         <Stack spacing={0}>
           <Text textAlign="right">
@@ -100,7 +111,7 @@ function OrderCard({ order }: OrderItemProps) {
           {order.status === "a" && (
             <Button
               colorScheme="primary"
-              ml={{md:"20px"}}
+              ml={{ md: "20px" }}
               onClick={() =>
                 navigate("/payment/", { state: { orderId: order.id } })
               }

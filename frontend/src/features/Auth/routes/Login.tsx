@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {Button, Input, Typography} from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import { Button, Input, Typography } from "@material-tailwind/react";
 import useLogin from "../hooks/useLogin";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGoogleAuthLink from "../hooks/useGoogleAuthLink";
 import GoogleIcon from "../../../assets/images/google.svg";
 
 function Login() {
-  const {mutate, isSuccess, error} = useLogin();
-  const {data: googleAuth, refetch: googleAuthRefetch} = useGoogleAuthLink();
+  const { mutate, isSuccess, error } = useLogin();
+  const { data: googleAuth, refetch: googleAuthRefetch } = useGoogleAuthLink();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -40,7 +40,7 @@ function Login() {
   }, [googleAuth]);
 
   const handleLogin = async () => {
-    mutate({email, password});
+    mutate({ email, password });
   };
 
   const handleGoogleLogin = () => {
@@ -84,7 +84,13 @@ function Login() {
           )}
           <div className="mt-4">
             <Typography variant="paragraph">
-              Don&apos;t have an account? <Link to="/auth/signup" className="text-blue-600  hover:underline">Sign Up</Link>
+              Don&apos;t have an account?{" "}
+              <Link
+                to="/auth/signup"
+                className="text-blue-600  hover:underline"
+              >
+                Sign Up
+              </Link>
             </Typography>
           </div>
           <Button className="mt-4 w-full" onClick={handleLogin}>
@@ -96,7 +102,7 @@ function Login() {
             color="blue-gray"
             onClick={handleGoogleLogin}
           >
-            <img src={GoogleIcon} alt="metamask" className="h-6 w-6"/>
+            <img src={GoogleIcon} alt="metamask" className="h-6 w-6" />
             Login with Google
           </Button>
         </div>
