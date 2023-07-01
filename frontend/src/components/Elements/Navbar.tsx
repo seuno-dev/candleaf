@@ -83,8 +83,8 @@ function Navbar() {
               <MenuList>
                 {isAuthenticated ? (
                   <>
-                    <MenuItem onClick={handleOrders}>Profile</MenuItem>
-                    <MenuItem onClick={handleProfile}>Orders</MenuItem>
+                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                    <MenuItem onClick={handleOrders}>Orders</MenuItem>
                     <MenuDivider />
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </>
