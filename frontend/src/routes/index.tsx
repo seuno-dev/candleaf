@@ -72,11 +72,11 @@ const getRoutes = (): RouteObject[] => [
       { path: "products/", children: ProductRoutes },
       { path: "cart/", element: requireAuthenticated(CartRoutes) },
       { path: "orders/", element: requireAuthenticated(OrderRoutes) },
+      {
+        path: "/payment/",
+        element: requireAuthenticated(PaymentRoutes),
+      },
     ],
-  },
-  {
-    path: "/payment/",
-    element: requireAuthenticated(PaymentRoutes),
   },
 ];
 
