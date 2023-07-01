@@ -66,7 +66,7 @@ function Cart() {
               <Text>Quantity</Text>
             </GridItem>
             <GridItem colSpan={1}>
-              <Text align="end">Total</Text>
+              <Text align="end">Sub-total</Text>
             </GridItem>
           </Grid>
           <Divider />
@@ -79,7 +79,7 @@ function Cart() {
       </Box>
       <Stack textAlign="center" hideFrom="md">
         <Text fontSize="xl" mt="30px">
-          Sub-total {formatCurrency(totalPrice)}
+          Total {formatCurrency(totalPrice)}
         </Text>
         <Text mb="30px" color="grey">
           Tax and shipping cost will be calculated later
