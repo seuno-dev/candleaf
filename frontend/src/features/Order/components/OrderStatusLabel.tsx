@@ -1,5 +1,5 @@
-import { Typography } from "@material-tailwind/react";
 import React from "react";
+import {Badge} from "@chakra-ui/react";
 
 interface Props {
   statusKey: string;
@@ -8,41 +8,24 @@ interface Props {
 function OrderStatusLabel({ statusKey }: Props) {
   if (statusKey === "a") {
     return (
-      <div className="bg-orange-200 px-2 py-1 rounded-md">
-        <Typography variant="small">Awaiting Payment</Typography>
-      </div>
+      <Badge colorScheme="orange" px={2} py={1}>Awaiting Payment</Badge>
     );
   } else if (statusKey === "b") {
     return (
-      <div className="bg-light-green-500 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Processed
-        </Typography>
-      </div>
+      <Badge colorScheme="green" px={2} py={1}>Processed</Badge>
     );
   } else if (statusKey === "c") {
     return (
-      <div className="bg-blue-800 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Shipped
-        </Typography>
-      </div>
+      <Badge colorScheme="blue" px={2} py={1}>Shipped</Badge>
+
     );
   } else if (statusKey === "d") {
     return (
-      <div className="bg-light-green-500 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Completed
-        </Typography>
-      </div>
+      <Badge px={2} py={1}>Completed</Badge>
     );
   } else if (statusKey === "p") {
     return (
-      <div className="bg-red-900 px-2 py-1 rounded-md">
-        <Typography variant="small" className="text-white">
-          Cancelled
-        </Typography>
-      </div>
+      <Badge colorScheme="red" px={2} py={1}>Cancelled</Badge>
     );
   } else {
     return <></>;

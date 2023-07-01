@@ -1,83 +1,115 @@
-import React from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
+import React, {useState} from "react";
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 import OrderStatusLabel from "./OrderStatusLabel";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Card,
+  HStack,
+  Stack,
+  Text,
+  Image,
+  Divider,
+  IconButton,
+  MenuList,
+  MenuItem,
+  Menu, MenuButton
+} from "@chakra-ui/react";
+import {ChevronDownIcon, ChevronUpIcon} from "@chakra-ui/icons";
+import {BsThreeDotsVertical} from "react-icons/bs";
 
 type OrderItemProps = {
   order: Order;
-  handleClickDetail: (order: Order) => void;
 };
 
-function OrderCard({ order, handleClickDetail }: OrderItemProps) {
-  const items = order.items;
-  const firstItem = items[0];
+function OrderCard({ order }: OrderItemProps) {
+  const [openDetail, setOpenDetail] = useState(false);
+  const items = openDetail ? order.items: [order.items[0]];
   const navigate = useNavigate();
 
   return (
-    <Card className="border-[0.5px] border-gray-200" shadow={false}>
-      <CardHeader
-        className="mx-6 flex flex-row items-center"
-        floated={false}
-        shadow={false}
-      >
-        <Typography>{order.orderTime.split("T")[0]}</Typography>
-        <div className="ml-5">
+    <Card variant="outline" p={{base:"10px", md:"20px"}} my={{md:"20px"}}>
+      <HStack justifyContent="space-between">
+        <Text>{order.orderTime.split("T")[0]}</Text>
+        <HStack>
           <OrderStatusLabel statusKey={order.status} />
-        </div>
-      </CardHeader>
-      <CardBody className="flex flex-row justify-between items-center">
-        <img
-          src={firstItem.product.image.image}
-          alt={`Image of ${firstItem.product.title}`}
-          className="w-20 h-20 rounded-lg"
-        />
-        <div className="flex flex-col ml-4 w-[950px]">
-          <Typography variant="h6">{firstItem.product.title}</Typography>
-          <Typography variant="paragraph">
-            {firstItem.quantity} x {formatCurrency(firstItem.unitPrice)}
-          </Typography>
-          {items.length > 1 && (
-            <Typography variant="paragraph" className="mt-2">
-              + {items.length - 1} other item(s)
-            </Typography>
-          )}
-        </div>
-        <div className="flex flex-col items-end">
-          <Typography variant="paragraph">Total price</Typography>
-          <Typography variant="h6">
-            {formatCurrency(order.totalPrice)}
-          </Typography>
-          <div className="flex flex-row gap-3">
+          {order.status === "a" &&
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<BsThreeDotsVertical />}
+                variant="ghost"
+              />
+              <MenuList>
+                <MenuItem>Cancel order</MenuItem>
+              </MenuList>
+            </Menu>
+          }
+        </HStack>
+      </HStack>
+      <Stack divider={<Divider/>}>
+        {items.map(item=>
+          <HStack key={item.id} justifyContent={{base:"space-between", md:"start"}} my="15px">
+            <Image
+              src={item.product.image.image}
+              alt={`Image of ${item.product.title}`}
+              bgColor="#F7F8FA"
+              maxW={{base:"100px", md:"120px"}}
+            />
+            <Box textAlign={{base:"right", md:"left"}} ml={{md:"30px"}}>
+              <Text fontSize={{base:"lg", md:"xl"}}>{item.product.title}</Text>
+              <Text>
+                {item.quantity} x {formatCurrency(item.unitPrice)}
+              </Text>
+            </Box>
+          </HStack>
+        )}
+      </Stack>
+      {openDetail &&
+        (<IconButton
+          icon={<ChevronUpIcon />}
+          aria-label="See Less"
+          variant="ghost"
+          my="5px"
+          onClick={() => setOpenDetail(false)}
+        />)
+      }
+      {order.items.length > 1 && !openDetail && (
+        <Stack spacing={0}>
+          <Text textAlign="right">
+            + {order.items.length - 1} other item(s)
+          </Text>
+          <IconButton
+            icon={<ChevronDownIcon />}
+            aria-label="See Detail"
+            variant="ghost"
+            onClick={() => setOpenDetail(true)}
+          />
+        </Stack>
+      )}
+      <Divider />
+      <HStack justifyContent="end" mt="10px">
+        <Box textAlign="right">
+          <Text>Total price</Text>
+          <Text>{formatCurrency(order.totalPrice)}</Text>
+        </Box>
+        <Box>
+          {order.status === "a" && (
             <Button
-              className="mt-5"
-              color="light-green"
-              onClick={() => handleClickDetail(order)}
+              colorScheme="primary"
+              ml={{md:"20px"}}
+              onClick={() =>
+                navigate("/payment/", { state: { orderId: order.id } })
+              }
             >
-              See details
+              Complete payment
             </Button>
-            {order.status === "a" && (
-              <Button
-                className="mt-5"
-                color="light-green"
-                variant="outlined"
-                onClick={() =>
-                  navigate("/payment/", { state: { orderId: order.id } })
-                }
-              >
-                Complete payment
-              </Button>
-            )}
-          </div>
-        </div>
-      </CardBody>
+          )}
+        </Box>
+      </HStack>
     </Card>
   );
 }
