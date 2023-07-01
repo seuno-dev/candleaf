@@ -75,9 +75,9 @@ const getRoutes = (): RouteObject[] => [
     ],
   },
   {
-    path: "/",
+    path: "/payment/",
     element: requireAuthenticated(PaymentRoutes),
-  }
+  },
 ];
 
 export default getRoutes;
