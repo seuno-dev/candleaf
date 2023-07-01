@@ -11,7 +11,7 @@ import React from "react";
 import CartRoutes from "../features/Cart/routes";
 import OrderRoutes from "../features/Order/routes";
 import Navbar from "../components/Elements/Navbar";
-import StripePaymentRoutes from "../features/Payment/routes";
+import PaymentRoutes from "../features/Payment/routes";
 import ProfileRoutes from "../features/Profile/routes";
 import { getAuthenticationStatus } from "../api";
 import { Typography } from "@material-tailwind/react";
@@ -72,12 +72,12 @@ const getRoutes = (): RouteObject[] => [
       { path: "products/", children: ProductRoutes },
       { path: "cart/", element: requireAuthenticated(CartRoutes) },
       { path: "orders/", element: requireAuthenticated(OrderRoutes) },
-      {
-        path: "payment/",
-        element: requireAuthenticated(StripePaymentRoutes),
-      },
     ],
   },
+  {
+    path: "/",
+    element: requireAuthenticated(PaymentRoutes),
+  }
 ];
 
 export default getRoutes;
