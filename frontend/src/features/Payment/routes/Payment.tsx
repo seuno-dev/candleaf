@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import PaymentForm from "../components/PaymentForm";
 import useCreatePayment from "../hooks/useCreatePayment";
 import {
   Box,
+  Button,
   calc,
   Container,
   Heading,
@@ -27,10 +28,16 @@ const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
 export default function Payment() {
   const { state } = useLocation();
+
+  if (!state || !state.orderId) {
+    return <Navigate to="/cart/" />;
+  }
+
   const { orderId } = state;
   const { data: clientSecret } = useCreatePayment(orderId);
   const { data: order } = useOrder(orderId);
   const [options, setOptions] = useState<StripeElementsOptions | null>(null);
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     setOptions({
@@ -52,16 +59,16 @@ export default function Payment() {
           pl={{
             md: "100px",
           }}
-          py="60px"
+          py={{ base: "20px", md: "60px" }}
         >
-          {order && (
+          {order && showDetail && (
             <VStack spacing="20px">
               {order.items.map((item) => (
                 <OrderItemRow key={item.id} orderItem={item} />
               ))}
               <HStack
                 w="full"
-                mt="50px"
+                mt={{ base: "25px", md: "50px" }}
                 pt="20px"
                 borderColor="#e5e5e5"
                 borderTopWidth="1px"
@@ -97,12 +104,29 @@ export default function Payment() {
               </HStack>
             </VStack>
           )}
-          <HStack justifyContent="space-between" hideFrom="md">
-            <Text color="primary">See your order details</Text>
-            <Text fontWeight="medium">
-              {formatCurrency(order?.totalPrice || 0)}
-            </Text>
-          </HStack>
+          {!showDetail && (
+            <HStack justifyContent="space-between">
+              <Button
+                variant="link"
+                color="primary"
+                onClick={() => setShowDetail(true)}
+              >
+                See your order details
+              </Button>
+              <Text fontWeight="medium">
+                {formatCurrency(order?.totalPrice || 0)}
+              </Text>
+            </HStack>
+          )}
+          {showDetail && (
+            <Button
+              variant="link"
+              color="primary"
+              onClick={() => setShowDetail(false)}
+            >
+              See less
+            </Button>
+          )}
         </Container>
       </Box>
       <Box w={{ base: "full", md: "50wv" }}>
