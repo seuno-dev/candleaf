@@ -77,7 +77,8 @@ function CartItemRow({ item }: CartItemProps) {
             Quantity
           </Text>
           <HStack
-            border="1px"
+            borderTop="1px"
+            borderBottom="1px"
             borderColor="primary"
             w="75px"
             ml={{ base: "auto", md: "0" }}
@@ -90,6 +91,7 @@ function CartItemRow({ item }: CartItemProps) {
               minW="25px"
               borderRadius={0}
               color="primary"
+              borderLeft="1px"
             >
               -
             </Button>
@@ -103,6 +105,7 @@ function CartItemRow({ item }: CartItemProps) {
               minW="25px"
               borderRadius={0}
               color="primary"
+              borderRight="1px"
             >
               +
             </Button>
