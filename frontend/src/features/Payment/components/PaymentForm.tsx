@@ -1,6 +1,6 @@
 import React from "react";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
-import { Button } from "@material-tailwind/react";
+import { Button } from "@chakra-ui/react";
 
 type PaymentFormProps = {
   clientSecret: string;
@@ -38,7 +38,9 @@ function PaymentForm({ clientSecret }: PaymentFormProps) {
   return (
     <>
       <form>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button w="full" onClick={handleSubmit}>
+          Pay now
+        </Button>
       </form>
     </>
   );

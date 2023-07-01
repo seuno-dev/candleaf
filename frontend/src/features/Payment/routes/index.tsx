@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Payment from "./StripePayment";
+import Payment from "./Payment";
 import Success from "./Success";
 import Fail from "./Fail";
 

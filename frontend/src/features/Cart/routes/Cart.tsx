@@ -14,6 +14,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { getTotalPrice } from "../util";
 
 function Cart() {
   const { data } = useCartItems();
@@ -28,11 +29,7 @@ function Cart() {
     navigate("/payment/", { state: { orderId: orderId } });
   };
 
-  const totalPrice =
-    data?.reduce(
-      (previousItem, currentItem) => previousItem + currentItem.totalPrice,
-      0
-    ) || 0;
+  const totalPrice = data ? getTotalPrice(data) : 0;
 
   return (
     <Stack
