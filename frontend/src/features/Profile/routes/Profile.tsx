@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import useRetrieveProfile from "../hooks/useRetrieveProfile";
-import { Typography } from "@material-tailwind/react";
-import ProfileItemValue from "../components/ProfileItemValue";
 import UpdateProfileDialog from "../components/UpdateProfileDialog";
 import { ProfileFieldName } from "../types";
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  HStack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr,
+} from "@chakra-ui/react";
 
 const Profile = () => {
   const { data: profile, error } = useRetrieveProfile();
@@ -26,42 +36,81 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <div className="mt-5 mx-auto w-[450px] grid grid-cols-2 gap-4">
-        <Typography>First name</Typography>
-        <ProfileItemValue
-          value={profile.firstName}
-          onUpdateClick={() => handleUpdateClick("First name", "firstName")}
+    <Box>
+      <Container maxW="xl" py="60px">
+        <HStack py="14px" px="21px" bgColor="#c0e2cf" borderTopRadius="lg">
+          <Heading fontSize="lg" color="primary">
+            My profile
+          </Heading>
+        </HStack>
+        <TableContainer borderColor="#e5e5e5" borderWidth="1px">
+          <Table variant="simple">
+            <Tbody>
+              <Tr>
+                <Td fontWeight="semibold">First name</Td>
+                <Td>{profile.firstName}</Td>
+                <Td>
+                  <Button
+                    onClick={() => handleUpdateClick("First name", "firstName")}
+                  >
+                    Update
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td fontWeight="semibold">Last name</Td>
+                <Td>{profile.lastName}</Td>
+                <Td>
+                  <Button
+                    onClick={() => handleUpdateClick("Last name", "lastName")}
+                  >
+                    Update
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td fontWeight="semibold">Email</Td>
+                <Td>{profile.email}</Td>
+                <Td>
+                  <Button onClick={() => handleUpdateClick("Email", "email")}>
+                    Update
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td fontWeight="semibold">Phone number</Td>
+                <Td>{profile.phone}</Td>
+                <Td>
+                  <Button
+                    onClick={() => handleUpdateClick("Phone number", "phone")}
+                  >
+                    Update
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td fontWeight="semibold">Address</Td>
+                <Td>{profile.address}</Td>
+                <Td>
+                  <Button
+                    onClick={() => handleUpdateClick("Address", "address")}
+                  >
+                    Update
+                  </Button>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <UpdateProfileDialog
+          open={openDialog}
+          handler={handleOpen}
+          title={titleDialog}
+          fieldName={fieldNameDialog}
+          profile={profile}
         />
-        <Typography>Last name</Typography>
-        <ProfileItemValue
-          value={profile.lastName}
-          onUpdateClick={() => handleUpdateClick("Last name", "lastName")}
-        />
-        <Typography>Email</Typography>
-        <ProfileItemValue
-          value={profile.email}
-          onUpdateClick={() => handleUpdateClick("Email", "email")}
-        />
-        <Typography>Phone number</Typography>
-        <ProfileItemValue
-          value={profile.phone}
-          onUpdateClick={() => handleUpdateClick("Phone number", "phone")}
-        />
-        <Typography>Address</Typography>
-        <ProfileItemValue
-          value={profile.address}
-          onUpdateClick={() => handleUpdateClick("Address", "address")}
-        />
-      </div>
-      <UpdateProfileDialog
-        open={openDialog}
-        handler={handleOpen}
-        title={titleDialog}
-        fieldName={fieldNameDialog}
-        profile={profile}
-      />
-    </>
+      </Container>
+    </Box>
   );
 };
 
