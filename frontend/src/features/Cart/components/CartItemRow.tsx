@@ -84,20 +84,6 @@ function CartItemRow({ item }: CartItemProps) {
           >
             <Button
               variant="ghost"
-              className="cursor-pointer"
-              onClick={() => update({ ...item, quantity: item.quantity + 1 })}
-              isDisabled={item.quantity == item.product.inventory}
-              p={0}
-              minW="25px"
-              borderRadius={0}
-              color="primary"
-            >
-              +
-            </Button>
-            <Text>{item.quantity}</Text>
-            <Button
-              variant="ghost"
-              className="cursor-pointer"
               isDisabled={item.quantity == 1}
               onClick={() => update({ ...item, quantity: item.quantity - 1 })}
               p={0}
@@ -106,6 +92,19 @@ function CartItemRow({ item }: CartItemProps) {
               color="primary"
             >
               -
+            </Button>
+            <Text>{item.quantity}</Text>
+
+            <Button
+              variant="ghost"
+              onClick={() => update({ ...item, quantity: item.quantity + 1 })}
+              isDisabled={item.quantity == item.product.inventory}
+              p={0}
+              minW="25px"
+              borderRadius={0}
+              color="primary"
+            >
+              +
             </Button>
           </HStack>
         </GridItem>
