@@ -1,4 +1,7 @@
-import {renderWithRoute, renderWithRouteAuthenticated} from "../../../../test/utils";
+import {
+  renderWithRoute,
+  renderWithRouteAuthenticated,
+} from "../../../../test/utils";
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { CartItemMock, carts } from "../../../../test/server/db/cart";
 import { customer } from "../../../../test/server/db/credential";

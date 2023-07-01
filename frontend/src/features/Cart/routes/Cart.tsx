@@ -1,10 +1,19 @@
 import React from "react";
-import { Button, Card, Typography } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
-import CartItemCard from "../components/CartItemCard";
+import { Link, useNavigate } from "react-router-dom";
+import CartItemRow from "../components/CartItemRow";
 import { submitOrder } from "../../Order/api";
 import useCartItems from "../hooks/useCartItems";
 import { formatCurrency } from "../../../utils/currency";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  GridItem,
+  HStack,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 function Cart() {
   const { data } = useCartItems();
@@ -26,28 +35,85 @@ function Cart() {
     ) || 0;
 
   return (
-    <div className="container mx-auto mt-5 flex flex-row justify-center">
-      <div className="w-[680px]">
-        <Typography variant="h4">Cart</Typography>
-        <div className="mt-10 flex flex-col">
-          {data?.map((item) => (
-            <CartItemCard key={item.id} item={item} />
-          ))}
-        </div>
-      </div>
-      <Card className="w-[300px] h-[200px] ml-10 flex flex-col justify-between p-5">
-        <Typography variant="h4">Summary</Typography>
-        <Typography className="mt-5" variant="h5">
-          Total: {formatCurrency(totalPrice)}
-        </Typography>
+    <Stack
+      maxW={{ base: "full", md: "container.xl" }}
+      pb="100px"
+      px="15px"
+      mx={{ md: "auto" }}
+    >
+      <Box>
+        <Stack width="full" py="70px" align="center">
+          <Text fontSize="3xl">Your cart items</Text>
+          <Link to="/products">
+            <Text as="u" color="primary" fontSize="xl">
+              Back to shopping
+            </Text>
+          </Link>
+        </Stack>
+        <Box>
+          <HStack justifyContent="space-between" mb="15px" hideFrom="md">
+            <Text>Product</Text>
+            <Text>Price</Text>
+          </HStack>
+          <Grid templateColumns="repeat(12, 1fr)" mb="15px" hideBelow="md">
+            <GridItem colSpan={7}>
+              <Text>Product</Text>
+            </GridItem>
+            <GridItem colSpan={2}>
+              <Text>Price</Text>
+            </GridItem>
+            <GridItem colSpan={2}>
+              <Text>Quantity</Text>
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Text align="end">Sub-total</Text>
+            </GridItem>
+          </Grid>
+          <Divider />
+          <Box>
+            {data?.map((item) => (
+              <CartItemRow key={item.id} item={item} />
+            ))}
+          </Box>
+        </Box>
+      </Box>
+      <Stack textAlign="center" hideFrom="md">
+        <Text fontSize="xl" mt="30px">
+          Total {formatCurrency(totalPrice)}
+        </Text>
+        <Text mb="30px" color="grey">
+          Tax and shipping cost will be calculated later
+        </Text>
         <Button
-          className="mt-5 bg-light-green-500 text-white rounded-lg h-12"
+          w="full"
+          colorScheme="primary"
+          borderRadius="5px"
+          size="md"
+          height="50px"
           onClick={handleCreateOrderClick}
         >
-          Create Order
+          Checkout
         </Button>
-      </Card>
-    </div>
+      </Stack>
+      <HStack justifyContent="end" hideBelow="md" my="30px">
+        <Stack textAlign="end" mr="40px">
+          <Text fontSize="xl">Total {formatCurrency(totalPrice)}</Text>
+          <Text color="grey">
+            Tax and shipping cost will be calculated later
+          </Text>
+        </Stack>
+        <Button
+          colorScheme="primary"
+          borderRadius="5px"
+          size="md"
+          w="180px"
+          h="50px"
+          onClick={handleCreateOrderClick}
+        >
+          Checkout
+        </Button>
+      </HStack>
+    </Stack>
   );
 }
 
