@@ -17,7 +17,7 @@ The backend is built with Django and the frontend is built with React and Typesc
 ## Preview
 <img src="readme_images/Home.png" width="500px">
 <img src="readme_images/Products.png" width="500px">
-<img src="readme_images/Cart.png" width="500px">
+<img src="readme_images/CartPage.png" width="500px">
 <img src="readme_images/Payment.png" width="500px">
 <img src="readme_images/OrderList.png" width="500px">
 
