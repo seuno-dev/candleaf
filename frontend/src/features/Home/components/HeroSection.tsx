@@ -34,9 +34,11 @@ function HeroSection() {
           All handmade with natural soy wax, Candleaf is a companion for all
           your pleasure moments
         </Text>
-        <Button mt={["35px", "50px"]} size="hero">
-          <Link to="/products">Discover our collection</Link>
-        </Button>
+        <Link to="/products">
+          <Button mt={["35px", "50px"]} size="hero">
+            Discover our collection
+          </Button>
+        </Link>
       </VStack>
     </Stack>
   );
