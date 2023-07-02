@@ -77,35 +77,44 @@ function CartItemRow({ item }: CartItemProps) {
             Quantity
           </Text>
           <HStack
-            borderTop="1px"
-            borderBottom="1px"
+            borderTopWidth="1px"
+            borderBottomWidth="1px"
             borderColor="primary"
             w="75px"
             ml={{ base: "auto", md: "0" }}
           >
             <Button
               variant="ghost"
+              w="30%"
               isDisabled={item.quantity == 1}
               onClick={() => update({ ...item, quantity: item.quantity - 1 })}
               p={0}
               minW="25px"
               borderRadius={0}
               color="primary"
-              borderLeft="1px"
+              borderLeftWidth="1px"
+              borderColor="primary"
+              _disabled={{
+                borderColor: "primary",
+              }}
             >
               -
             </Button>
-            <Text>{item.quantity}</Text>
-
+            <Text w="40%">{item.quantity}</Text>
             <Button
               variant="ghost"
+              w="30%"
               onClick={() => update({ ...item, quantity: item.quantity + 1 })}
               isDisabled={item.quantity == item.product.inventory}
               p={0}
               minW="25px"
               borderRadius={0}
               color="primary"
-              borderRight="1px"
+              borderRightWidth="1px"
+              borderColor="primary"
+              _disabled={{
+                borderColor: "primary",
+              }}
             >
               +
             </Button>
