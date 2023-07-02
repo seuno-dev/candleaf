@@ -1,9 +1,104 @@
-# ShopZone
-ShopZone is an ecommerce app that allows users to browse, buy and sell products online. It is built with Django, a Python web framework, and React, a JavaScript library for creating user interfaces.
+# Candleaf Clone: A Django and React Portfolio Project
 
-### Screenshots
-![img.png](readme_images/product_search.png)
-![img_1.png](readme_images/product_detail.png)
-![img_2.png](readme_images/cart.png)
-![img_3.png](readme_images/payment.png)
-![img_4.png](readme_images/orders.png)
+## Overview
+Candleaf-clone is an online shop selling exquisite soy candles inspired by the original Candleaf website.
+The backend is built with Django and the frontend is built with React and Typescript.
+
+## Features
+- User authentication: Users can create accounts, log in, and log out to access personalized features.
+- Product listing: Display a wide range of soy candle products with details such as title, price, and description.
+- Product search and filtering: Easily search for specific products and filter them based on various criteria.
+- Cart functionality: Users can add products to their cart, update quantities, and proceed to checkout.
+- Order management: Admins can manage and process customer orders, update order statuses, and generate invoices.
+- Payment integration: Seamlessly integrate payment processing for a smooth checkout experience.
+- User reviews and ratings: Users can leave reviews and ratings for products they have purchased.
+- Responsive design: Ensure optimal user experience across devices, from desktop to mobile.
+
+## Preview
+<img src="readme_images/Home.png" width="500px">
+<img src="readme_images/Products.png" width="500px">
+<img src="readme_images/Cart.png" width="500px">
+<img src="readme_images/Payment.png" width="500px">
+<img src="readme_images/OrderList.png" width="500px">
+
+## Installation
+- Clone the repository.
+```
+git clone https://github.com/stevelukis/candleaf
+```
+
+- Navigate to the backend directory.
+```
+cd candleaf/backend
+```
+
+- Create a Python virtual environment for the backend.
+```
+python -m venv venv
+```
+
+- Activate the virtual environment.
+```
+cd venv/Scripts
+activate
+cd ../..
+```
+
+- Install the dependencies for the backend.
+```
+pip install -r requirements.txt
+```
+
+- Create an environment file `.env` for the Stripe keys.
+```
+STRIPE_PUBLISHABLE_KEY=***your stripe publishable key***
+STRIPE_SECRET_KEY=***your secret key***
+STRIPE_WEBHOOK_SECRET=***your webhook secret***
+```
+
+- Run the migrations
+```
+python manage.py migrate
+```
+
+- Populate the products
+```
+python dev/populate_products.py
+```
+
+- Start the backend server
+```
+python manage.py runserver
+```
+
+- In a separate terminal, navigate to the frontend directory.
+```
+cd candleaf/frontend
+```
+
+- Install frontend dependencies. 
+```
+pnpm install
+```
+Start the frontend server
+```
+npm run start
+```
+
+
+## Technologies Used
+- Django
+- Django REST framework
+- social-auth-app-django
+- pytest
+- Stripe
+- React
+- Typescript
+- Axios
+- React Query
+- Chakra-UI
+- Mock Service Worker
+
+## Acknowledgments
+- [The Candleaf website for inspiring this project and serving as a reference.](https://shopcandleleaf.com/)
+- [Figma E-Commerce UI KIT by Uxbly.](https://www.figma.com/community/file/999496395784541518)
