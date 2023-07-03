@@ -1,5 +1,5 @@
-import { Input } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
+import { Input } from "@chakra-ui/react";
 
 interface Props {
   placeholder: string;
@@ -26,20 +26,11 @@ function FilterNumberInput({ value: _value, placeholder, onChange }: Props) {
   }, [_value]);
 
   return (
-    <div className="w-full flex flex-row items-center">
-      <Input
-        placeholder={placeholder}
-        className="!border-t-blue-gray-200 focus:!border-t-blue-500"
-        labelProps={{
-          className: "before:content-none after:content-none",
-        }}
-        containerProps={{
-          className: "h-10",
-        }}
-        onChange={(e) => handleChange(e.target.value)}
-        value={value}
-      />
-    </div>
+    <Input
+      value={value}
+      onChange={(e) => handleChange(e.target.value)}
+      placeholder={placeholder}
+    />
   );
 }
 

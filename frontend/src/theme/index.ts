@@ -2,15 +2,13 @@ import { extendTheme } from "@chakra-ui/react";
 import Button from "./components/Button";
 import Link from "./components/Link";
 import Heading from "./components/Heading";
+import Input from "./components/Input";
+import colors from "./colors";
 
 const navbarH = "80px";
 
 const theme = extendTheme({
-  colors: {
-    primary: "#56B280",
-    primaryDarker: "#358f5e",
-    primaryDarkest: "#1d653e",
-  },
+  colors,
   space: {
     navbarH,
   },
@@ -24,9 +22,10 @@ const theme = extendTheme({
     body: "Poppins, sans-serif",
   },
   components: {
-    Link,
     Button,
     Heading,
+    Input,
+    Link,
   },
 });
 
