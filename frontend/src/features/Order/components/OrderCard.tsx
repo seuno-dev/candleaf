@@ -16,10 +16,11 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Text,
+  Text, useDisclosure,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import ReviewModal from "./ReviewModal";
 
 type OrderItemProps = {
   order: Order;
@@ -28,6 +29,8 @@ type OrderItemProps = {
 function OrderCard({ order }: OrderItemProps) {
   const [openDetail, setOpenDetail] = useState(false);
   const items = openDetail ? order.items : [order.items[0]];
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const nullReviewItems = order.items.filter(item => item.review === null);
   const navigate = useNavigate();
 
   return (
@@ -114,11 +117,21 @@ function OrderCard({ order }: OrderItemProps) {
               ml={{ md: "20px" }}
               onClick={() =>
                 navigate("/payment/", { state: { orderId: order.id } })
-              }
-            >
+              }>
               Complete payment
             </Button>
           )}
+          {order.status === "d" && nullReviewItems.length > 0 && (
+            <Button
+              color="primary"
+              ml={{ md: "20px" }}
+              variant="outline"
+              onClick={onOpen}
+            >
+              Leave Review{order.items.length !== 1 && "s"}
+            </Button>
+          )}
+          <ReviewModal orderItems={nullReviewItems} isOpen={isOpen} onClose={onClose}/>
         </Box>
       </HStack>
     </Card>
