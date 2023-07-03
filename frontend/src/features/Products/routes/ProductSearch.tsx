@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import FilterSideBar from "../components/filter";
 import useProducts from "../hooks/useProducts";
 import {
@@ -19,7 +24,9 @@ import {
   PaginationPrevious,
   usePagination,
 } from "@ajna/pagination";
+import TitleSearchInput from "../components/TitleSearchInput";
 
+const TITLE_KEY = "search";
 const BURNING_TIME_MIN_KEY = "bt_min";
 const BURNING_TIME_MAX_KEY = "bt_max";
 const PRICE_MIN_KEY = "price_min";
@@ -78,6 +85,16 @@ function ProductSearch() {
     });
   };
 
+  const handleProductSearch = (search: string) => {
+    return navigate({
+      pathname: "",
+      search: createSearchParams({
+        search: search,
+        page: "1",
+      }).toString(),
+    });
+  };
+
   useEffect(() => {
     setTotalPages(data?.totalPages || 0);
   }, [data]);
@@ -92,7 +109,7 @@ function ProductSearch() {
     // Reset to the first page
     setCurrentPage(1);
 
-    setTitle(searchParams.get("search") || "");
+    setTitle(searchParams.get(TITLE_KEY) || "");
     setPriceMin(searchParams.get(PRICE_MIN_KEY) || "");
     setPriceMax(searchParams.get(PRICE_MAX_KEY) || "");
     setBurningTimeMin(searchParams.get(BURNING_TIME_MIN_KEY) || "");
@@ -116,10 +133,21 @@ function ProductSearch() {
             onPriceFilter={handlePriceFilter}
           />
         </Box>
-        <VStack w="full" mt={{ base: "60px", lg: 0 }} alignItems="center">
-          <SimpleGrid w="full" spacing="40px" minChildWidth="256px">
+        <VStack
+          w="full"
+          mt={{ base: "60px", lg: 0 }}
+          alignItems="center"
+          spacing="20px"
+        >
+          <TitleSearchInput onSubmit={handleProductSearch} />
+          <SimpleGrid
+            w="full"
+            minChildWidth="256px"
+            spacingX="40px"
+            spacingY="40px"
+          >
             {data?.results.map((product) => (
-              <Box w="full" mx="auto" key={product.id}>
+              <Box key={product.id} maxW="300px">
                 <Link to={`/products/${product.slug}`}>
                   <ProductCard product={product} />
                 </Link>
