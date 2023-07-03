@@ -99,6 +99,13 @@ npm run start
 - Chakra-UI
 - Mock Service Worker
 
+## Contributions
+Contributions to this project are welcome! If you find any issues or have suggestions for improvements, feel free to open a new issue or submit a pull request.
+License
+
+## License 
+This project is licensed under the MIT License.
+
 ## Acknowledgments
 - [The Candleaf website for inspiring this project and serving as a reference.](https://shopcandleleaf.com/)
 - [Figma E-Commerce UI KIT by Uxbly.](https://www.figma.com/community/file/999496395784541518)
