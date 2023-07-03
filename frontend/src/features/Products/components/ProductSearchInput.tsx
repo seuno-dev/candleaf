@@ -5,7 +5,7 @@ interface Props {
   onSubmit: (titleQuery: string) => void;
 }
 
-const TitleSearchInput = ({ onSubmit }: Props) => {
+const ProductSearchInput = ({ onSubmit }: Props) => {
   const [query, setQuery] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +20,6 @@ const TitleSearchInput = ({ onSubmit }: Props) => {
           <Input
             variant="flushed"
             placeholder="Search by title"
-            focusBorderColor="primary"
             value={query}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setQuery(e.target.value)
@@ -32,4 +31,4 @@ const TitleSearchInput = ({ onSubmit }: Props) => {
   );
 };
 
-export default TitleSearchInput;
+export default ProductSearchInput;

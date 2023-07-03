@@ -24,7 +24,7 @@ import {
   PaginationPrevious,
   usePagination,
 } from "@ajna/pagination";
-import TitleSearchInput from "../components/TitleSearchInput";
+import ProductSearchInput from "../components/ProductSearchInput";
 
 const TITLE_KEY = "search";
 const BURNING_TIME_MIN_KEY = "bt_min";
@@ -139,7 +139,7 @@ function ProductSearch() {
           alignItems="center"
           spacing="20px"
         >
-          <TitleSearchInput onSubmit={handleProductSearch} />
+          <ProductSearchInput onSubmit={handleProductSearch} />
           <SimpleGrid
             w="full"
             minChildWidth="256px"
