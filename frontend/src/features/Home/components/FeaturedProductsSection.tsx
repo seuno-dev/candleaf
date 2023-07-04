@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import useFeaturedProducts from "../hooks/useFeaturedProducts";
 import ProductCard from "../../Products/components/ProductCard";
+import { Link } from "react-router-dom";
 
 const FeaturedProductsSection = () => {
   const { data } = useFeaturedProducts();
@@ -22,10 +23,12 @@ const FeaturedProductsSection = () => {
         </Text>
         <SimpleGrid columns={1} mt="60px" spacing="20px" hideFrom="lg">
           {data?.slice(0, 4)?.map((featuredProduct) => (
-            <ProductCard
+            <Link
               key={featuredProduct.id}
-              product={featuredProduct.product}
-            />
+              to={`/products/${featuredProduct.product.slug}`}
+            >
+              <ProductCard product={featuredProduct.product} />
+            </Link>
           ))}
           <Button size="hero" w="180px" mt="55px" mx="auto">
             See more
@@ -39,10 +42,15 @@ const FeaturedProductsSection = () => {
           hideBelow="lg"
         >
           {data?.slice(0, 8).map((featuredProduct) => (
-            <ProductCard
+            <Link
               key={featuredProduct.id}
-              product={featuredProduct.product}
-            />
+              to={`/products/${featuredProduct.product.slug}`}
+            >
+              <ProductCard
+                key={featuredProduct.id}
+                product={featuredProduct.product}
+              />
+            </Link>
           ))}
         </SimpleGrid>
       </VStack>
