@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Typography } from "@material-tailwind/react";
 import useLogin from "../hooks/useLogin";
 import { Link, useNavigate } from "react-router-dom";
 import useGoogleAuthLink from "../hooks/useGoogleAuthLink";
-import GoogleIcon from "../../../assets/images/google.svg";
+import {Alert, AlertIcon, Box, Button, FormControl, FormLabel, HStack, Input, Stack, Text} from "@chakra-ui/react";
+import { FcGoogle } from "react-icons/fc";
+
 
 function Login() {
   const { mutate, isSuccess, error } = useLogin();
@@ -48,66 +49,66 @@ function Login() {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="w-[500px] h-[300px] flex flex-col items-center">
-        <div className="w-full h-[150px] flex flex-col items-center justify-center">
-          <Typography variant="h4">Welcome back!</Typography>
-          <Typography variant="paragraph">
-            Please enter your credentials to access your account.
-          </Typography>
-        </div>
-        <div className="w-72 h-full flex flex-col items-center justify-center">
-          <div className="w-full">
-            <Input
-              type="text"
-              label="Email"
-              data-testid="username-input"
-              onChange={handleEmail}
-              value={email}
-            />
-          </div>
-          <div className="mt-4 w-full">
-            <Input
-              type="password"
-              label="Password"
-              data-testid="password-input"
-              onChange={handlePassword}
-              value={password}
-            />
-          </div>
-          {errorMessage && (
-            <div className="mt-4 h-10 w-full bg-red-50 rounded-lg flex items-center justify-center">
-              <Typography variant="paragraph" className="text-red-900">
-                {errorMessage}
-              </Typography>
-            </div>
-          )}
-          <div className="mt-4">
-            <Typography variant="paragraph">
-              Don&apos;t have an account?{" "}
-              <Link
-                to="/auth/signup"
-                className="text-blue-600  hover:underline"
-              >
-                Sign Up
-              </Link>
-            </Typography>
-          </div>
-          <Button className="mt-4 w-full" onClick={handleLogin}>
-            Login
-          </Button>
-          <Button
-            className="mt-4 w-full flex items-center justify-center gap-3"
-            variant="outlined"
-            color="blue-gray"
-            onClick={handleGoogleLogin}
+    <Stack mx="15px" h={{md:"100vh"}} justifyContent="center" align="center">
+      <Box textAlign="center" my="15px">
+        <Text fontSize="3xl" mb="10px">Welcome back!</Text>
+        <Text>
+          Please enter your credentials to access your account.
+        </Text>
+      </Box>
+      <Stack spacing="10px">
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="text"
+            placeholder="Email"
+            data-testid="username-input"
+            onChange={handleEmail}
+            value={email}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Password</FormLabel>
+          <Input
+            type="password"
+            placeholder="Password"
+            data-testid="password-input"
+            onChange={handlePassword}
+            value={password}
+          />
+        </FormControl>
+        {errorMessage && (
+          <Alert status="error" mt="5px">
+            <AlertIcon/>
+            {errorMessage}
+          </Alert>
+        )}
+        <HStack my="10px" mx="auto">
+          <Text>
+            Don&apos;t have an account?
+          </Text>
+          <Link
+            to="/auth/signup"
           >
-            <img src={GoogleIcon} alt="metamask" className="h-6 w-6" />
-            Login with Google
-          </Button>
-        </div>
-      </div>
-    </div>
+            <Button variant="link" colorScheme="green">Sign Up</Button>
+          </Link>
+        </HStack>
+        <Button onClick={handleLogin}>
+          Login
+        </Button>
+        <Button
+          mt="5px"
+          leftIcon={<FcGoogle />}
+          variant="outline"
+          _hover={{bg:"blue.50"}}
+          color="grey"
+          boxShadow="base"
+          onClick={handleGoogleLogin}
+        >
+          Login with Google
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
 
