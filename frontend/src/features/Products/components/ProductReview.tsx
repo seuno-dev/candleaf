@@ -1,7 +1,7 @@
 import React from "react";
-import Typography from "@material-tailwind/react/components/Typography";
 import { SimpleReview } from "../../../types";
 import ReviewStarLabel from "../../../components/ReviewStarLabel";
+import {Stack, Text} from "@chakra-ui/react";
 
 interface Props {
   review: SimpleReview;
@@ -9,10 +9,10 @@ interface Props {
 
 const ProductReview = ({ review }: Props) => {
   return (
-    <div className="flex flex-col">
+    <Stack my="15px">
       <ReviewStarLabel review={review} />
-      <Typography className="mt-2">{review.comment}</Typography>
-    </div>
+      <Text mt={2}>{review.comment}</Text>
+    </Stack>
   );
 };
 

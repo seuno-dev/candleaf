@@ -8,6 +8,7 @@ export type ProductImage = {
 export type SimpleProduct = {
   id: number;
   title: string;
+  slug: string;
   unitPrice: number;
   inventory: number;
   image: ProductImage;

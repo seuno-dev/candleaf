@@ -16,12 +16,12 @@ class ShipOrderForm(forms.Form):
 
 @admin.register(models.Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['id', 'created_at', 'get_username', 'get_product', 'rating']
+    list_display = ['id', 'created_at', 'get_email', 'get_product', 'rating']
 
-    @admin.display(ordering='order_item__order__customer__user__username', description="Username")
-    def get_username(self, review):
+    @admin.display(ordering='order_item__order__customer__user__email', description="Email")
+    def get_email(self, review):
         if review.order_item:
-            return review.order_item.order.customer.user.username
+            return review.order_item.order.customer.user.email
         return ""
 
     @admin.display(ordering='order_item__product__title', description="Product")

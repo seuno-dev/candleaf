@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 import OrderStatusLabel from "./OrderStatusLabel";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
   Box,
   Button,
@@ -10,16 +10,18 @@ import {
   Divider,
   HStack,
   IconButton,
-  Image,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Stack,
-  Text,
+  Text, useDisclosure,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import ReviewedOrder from "./ReviewedOrder";
+import ReviewModal from "./ReviewModal";
+import OrderItemRow from "./OrderItemRow";
 
 type OrderItemProps = {
   order: Order;
@@ -28,6 +30,10 @@ type OrderItemProps = {
 function OrderCard({ order }: OrderItemProps) {
   const [openDetail, setOpenDetail] = useState(false);
   const items = openDetail ? order.items : [order.items[0]];
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenReview, onOpen: onOpenReview, onClose: onCloseReview } = useDisclosure();
+  const nullReviewItems = order.items.filter(item => item.review === null);
+  const reviewedItems = order.items.filter(item => item.review?.id !== null);
   const navigate = useNavigate();
 
   return (
@@ -53,30 +59,25 @@ function OrderCard({ order }: OrderItemProps) {
               </MenuList>
             </Menu>
           )}
+          {order.status === "d" && reviewedItems.length > 0 && (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<BsThreeDotsVertical />}
+                variant="ghost"
+              />
+              <MenuList>
+                <MenuItem onClick={onOpenReview}>My reviews</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+          <ReviewedOrder isOpen={isOpenReview} onClose={onCloseReview} orderItems={reviewedItems}/>
         </HStack>
       </HStack>
       <Stack divider={<Divider />}>
         {items.map((item) => (
-          <HStack
-            key={item.id}
-            justifyContent={{ base: "space-between", md: "start" }}
-            my="15px"
-          >
-            <Image
-              src={item.product.image.image}
-              alt={`Image of ${item.product.title}`}
-              bgColor="#F7F8FA"
-              maxW={{ base: "100px", md: "120px" }}
-            />
-            <Box textAlign={{ base: "right", md: "left" }} ml={{ md: "30px" }}>
-              <Text fontSize={{ base: "lg", md: "xl" }}>
-                {item.product.title}
-              </Text>
-              <Text>
-                {item.quantity} x {formatCurrency(item.unitPrice)}
-              </Text>
-            </Box>
-          </HStack>
+          <OrderItemRow item={item} key={item.id}/>
         ))}
       </Stack>
       {openDetail && (
@@ -114,11 +115,21 @@ function OrderCard({ order }: OrderItemProps) {
               ml={{ md: "20px" }}
               onClick={() =>
                 navigate("/payment/", { state: { orderId: order.id } })
-              }
-            >
+              }>
               Complete payment
             </Button>
           )}
+          {order.status === "d" && nullReviewItems.length > 0 && (
+            <Button
+              color="primary"
+              ml={{ md: "20px" }}
+              variant="outline"
+              onClick={onOpen}
+            >
+              Leave Review{order.items.length !== 1 && "s"}
+            </Button>
+          )}
+          <ReviewModal orderItems={nullReviewItems} isOpen={isOpen} onClose={onClose}/>
         </Box>
       </HStack>
     </Card>

@@ -35,8 +35,7 @@ function OrderList() {
   return (
     <Box
       maxW={{ base: "full", md: "container.xl" }}
-      mx={{ md: "auto" }}
-      px={{ base: "15px", md: 0 }}
+      mx={{ base: "15px", md: "auto" }}
       pb="30px"
     >
       <Box textAlign="right" mb={{ base: "10px", md: 0 }}>

@@ -8,7 +8,7 @@ import {
   AlertTitle,
   Box,
   Button,
-  Container,
+  Container, Divider,
   Fade,
   Heading,
   HStack,
@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { formatCurrency } from "../../../utils/currency";
 import { getAuthenticationStatus } from "../../../api";
+import ProductReview from "../components/ProductReview";
 
 function ProductDetail() {
   const { mutate, isSuccess, isError } = useAddCartItem();
@@ -31,6 +32,9 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState<ProductImage | undefined>(
     undefined
   );
+
+  const [moreReviews, setMoreReviews] = useState(false);
+  const productReviews = product && product.reviews.length > 3 && !moreReviews ? product.reviews.slice(0,3) : product?.reviews ;
 
   const navigate = useNavigate();
 
@@ -171,6 +175,17 @@ function ProductDetail() {
               <br />
               🚚 FREE SHIPPING
             </Text>
+            {product.reviews.length > 0 &&
+              <Box my="20px">
+                <Text as="b" fontSize="xl">Reviews</Text>
+                <Stack divider={<Divider />}>
+                  {productReviews?.map(review =>
+                    <ProductReview key={review.id} review={review}/>
+                  )}
+                </Stack>
+                {product.reviews.length > 3 &&
+                  <Button variant="link" onClick={()=>setMoreReviews(!moreReviews)}>{moreReviews ? "See Less": "See More"}</Button>}
+              </Box>}
           </VStack>
         </Stack>
       </Container>
