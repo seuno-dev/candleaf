@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
-import { Button, Input, Typography } from "@material-tailwind/react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useSignUp from "../hooks/useSignUp";
+import useSignUp, {UserCustomer} from "../hooks/useSignUp";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
+import {
+  Box,
+  Stack,
+  Input,
+  Text,
+  Button,
+  FormControl,
+  FormLabel,
+  FormErrorMessage, useToast
+} from "@chakra-ui/react";
+import {AxiosError} from "axios";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   first_name: z.string().nonempty("First name is required."),
   last_name: z.string().nonempty("Last name is required."),
-  password: z.string().nonempty("Password is required."),
+  password: z.string().nonempty("Password is required.").min(8, {message:"Password is too short."}),
   phone: z.number({ invalid_type_error: "Phone number must be a number." }),
   address: z.string().nonempty("Address is required."),
 });
@@ -24,13 +34,22 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const { mutate, isSuccess: created, data } = useSignUp();
-  const { mutate: login, isSuccess } = useLogin();
+  const { mutate, isSuccess: created, data, error } = useSignUp();
+  const { mutate: login, isSuccess} = useLogin();
+  const toast = useToast();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormData> = (data) => mutate(data);
+  const e = error as AxiosError<UserCustomer>;
 
   useEffect(() => {
     if (created) {
+      toast({
+        title: "Account created.",
+        description: "We've created your account for you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       login({ email: data.email, password: data.password });
     }
   }, [created]);
@@ -41,114 +60,108 @@ const SignUp = () => {
     }
   }, [isSuccess]);
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="w-[500px] h-[500px] flex flex-col items-center">
+    <Stack maxW="full" h={{md:"100vh"}} justifyContent="center" align="center">
+      <Box>
+        <Box textAlign="center">
+          <Text fontSize="3xl" my="10px">Sign Up</Text>
+          <Text mb="10px">
+            Please fill the required information.
+          </Text>
+        </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="w-full flex flex-col items-center justify-center">
-            <Typography variant="h4">Sign Up</Typography>
-            <Typography variant="paragraph">
-              Please fill the required information.
-            </Typography>
-          </div>
-          <div className="w-72 h-full flex flex-col items-center justify-center">
-            <div className="w-full">
+          <Stack spacing="5px" w={{md:"450px"}}>
+            <FormControl isInvalid={errors.email !== undefined || e?.response?.data.email !== undefined} isRequired>
+              <FormLabel>Email</FormLabel>
               <Input
                 {...register("email")}
                 id="email"
-                type="text"
-                label="Email"
-                color={errors.email ? "red" : undefined}
+                type="email"
+                placeholder="Email"
               />
-            </div>
-            {errors.email && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.email.message}
-              </p>
-            )}
-            <div className="mt-4 w-full">
+              {(errors.email || e?.response?.data.email) && (
+                <FormErrorMessage>
+                  {errors.email?.message}
+                  {e?.response?.data.email}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.first_name !== undefined} isRequired>
+              <FormLabel>First Name</FormLabel>
               <Input
                 {...register("first_name")}
                 id="first_name"
                 type="text"
-                label="First Name"
-                color={errors.first_name ? "red" : undefined}
+                placeholder="First Name"
               />
-            </div>
-            {errors.first_name && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.first_name.message}
-              </p>
-            )}
-            <div className="mt-4 w-full">
+              {errors.first_name && (
+                <FormErrorMessage>
+                  {errors.first_name.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.last_name !== undefined} isRequired>
+              <FormLabel>Last Name</FormLabel>
               <Input
                 {...register("last_name")}
                 id="last_name"
                 type="text"
-                label="Last Name"
-                color={errors.last_name ? "red" : undefined}
+                placeholder="Last Name"
               />
-            </div>
-            {errors.last_name && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.last_name.message}
-              </p>
-            )}
-            <div className="mt-4 w-full">
+              {errors.last_name && (
+                <FormErrorMessage>
+                  {errors.last_name.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.password !== undefined} isRequired>
+              <FormLabel>Password</FormLabel>
               <Input
                 {...register("password")}
                 id="password"
                 type="password"
-                label="Password"
-                color={errors.password ? "red" : undefined}
+                placeholder="Password"
               />
-            </div>
-            {errors.password && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.password.message}
-              </p>
-            )}
-            <div className="mt-4 w-full">
+              {errors.password && (
+                <FormErrorMessage>
+                  {errors.password.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.phone !== undefined} isRequired>
+              <FormLabel>Phone Number</FormLabel>
               <Input
-                {...register("phone", { valueAsNumber: true })}
+                {...register("phone", { setValueAs: (v) => v === "" ? undefined : parseInt(v) })}
                 id="phone"
                 type="text"
-                label="Phone Number"
-                color={errors.phone ? "red" : undefined}
+                placeholder="Phone Number"
               />
-            </div>
-            {errors.phone && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.phone.message}
-              </p>
-            )}
-            <div className="mt-4 w-full">
+              {errors.phone && (
+                <FormErrorMessage>
+                  {errors.phone.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.address !== undefined} isRequired>
+              <FormLabel>Address</FormLabel>
               <Input
                 {...register("address")}
                 id="address"
                 type="text"
-                label="Address"
-                color={errors.address ? "red" : undefined}
+                placeholder="Address"
               />
-            </div>
-            {errors.address && (
-              <p className="w-full text-sm text-red-600 items-start">
-                {errors.address.message}
-              </p>
-            )}
-            {created && (
-              <div className="mt-4 h-10 w-full bg-green-50 rounded-lg flex items-center justify-center">
-                <Typography variant="paragraph" className="text-green-900">
-                  Account created.
-                </Typography>
-              </div>
-            )}
-            <Button className="mt-4 w-full" type="submit">
+              {errors.address && (
+                <FormErrorMessage>
+                  {errors.address.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <Button type="submit" mt="10px" size="md">
               Submit
             </Button>
-          </div>
+          </Stack>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Stack>
   );
 };
 export default SignUp;
