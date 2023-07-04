@@ -20,7 +20,7 @@ const cartItemListUrl = baseUrl("/store/cart-items/");
 const cartItemDetailUrl = baseUrl("/store/cart-items/:id/");
 
 let id = 1;
-let writeCartItems: WriteCartItem[] = [];
+export let writeCartItems: WriteCartItem[] = [];
 
 export const cartHandlers = [
   rest.post(cartItemListUrl, async (req, res, context) => {
