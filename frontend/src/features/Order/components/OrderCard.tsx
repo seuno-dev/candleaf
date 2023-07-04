@@ -10,7 +10,6 @@ import {
   Divider,
   HStack,
   IconButton,
-  Image,
   Menu,
   MenuButton,
   MenuItem,
@@ -20,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import ReviewedOrder from "./ReviewedOrder";
 import ReviewModal from "./ReviewModal";
 import OrderItemRow from "./OrderItemRow";
 
@@ -31,7 +31,9 @@ function OrderCard({ order }: OrderItemProps) {
   const [openDetail, setOpenDetail] = useState(false);
   const items = openDetail ? order.items : [order.items[0]];
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenReview, onOpen: onOpenReview, onClose: onCloseReview } = useDisclosure();
   const nullReviewItems = order.items.filter(item => item.review === null);
+  const reviewedItems = order.items.filter(item => item.review?.id !== null);
   const navigate = useNavigate();
 
   return (
@@ -57,6 +59,20 @@ function OrderCard({ order }: OrderItemProps) {
               </MenuList>
             </Menu>
           )}
+          {order.status === "d" && reviewedItems.length > 0 && (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<BsThreeDotsVertical />}
+                variant="ghost"
+              />
+              <MenuList>
+                <MenuItem onClick={onOpenReview}>My reviews</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+          <ReviewedOrder isOpen={isOpenReview} onClose={onCloseReview} orderItems={reviewedItems}/>
         </HStack>
       </HStack>
       <Stack divider={<Divider />}>

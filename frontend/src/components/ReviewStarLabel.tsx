@@ -10,7 +10,7 @@ interface Props {
 
 const ReviewStarLabel = ({ review }: Props) => {
   return (
-    <HStack>
+    <HStack mb={1}>
       {[...Array(review.rating)].map((_, i) => (
         <Image w={4} src={Star} key={i} alt="Star icon" />
       ))}
