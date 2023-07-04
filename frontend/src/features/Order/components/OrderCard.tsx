@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { formatCurrency } from "../../../utils/currency";
 import { Order } from "../types";
 import OrderStatusLabel from "./OrderStatusLabel";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import {
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ReviewModal from "./ReviewModal";
+import OrderItemRow from "./OrderItemRow";
 
 type OrderItemProps = {
   order: Order;
@@ -60,28 +61,7 @@ function OrderCard({ order }: OrderItemProps) {
       </HStack>
       <Stack divider={<Divider />}>
         {items.map((item) => (
-          <Link to={"/products/"+item.product.slug} key={item.id}>
-            <HStack
-
-              justifyContent={{ base: "space-between", md: "start" }}
-              my="15px"
-            >
-              <Image
-                src={item.product.image.image}
-                alt={`Image of ${item.product.title}`}
-                bgColor="#F7F8FA"
-                maxW={{ base: "100px", md: "120px" }}
-              />
-              <Box textAlign={{ base: "right", md: "left" }} ml={{ md: "30px" }}>
-                <Text fontSize={{ base: "lg", md: "xl" }}>
-                  {item.product.title}
-                </Text>
-                <Text>
-                  {item.quantity} x {formatCurrency(item.unitPrice)}
-                </Text>
-              </Box>
-            </HStack>
-          </Link>
+          <OrderItemRow item={item} key={item.id}/>
         ))}
       </Stack>
       {openDetail && (
