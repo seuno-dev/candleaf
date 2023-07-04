@@ -1,12 +1,12 @@
 import { setupWorker } from "msw";
-import { authHandlers } from "../test/server/handlers/auth";
-import { productsHandler } from "../test/server/handlers/products";
-import { profileHandlers } from "../test/server/handlers/profile";
-import { cartHandlers } from "../test/server/handlers/cart";
+import { productsHandler } from "./server/handlers/products";
+import { authHandlers } from "./server/handlers/auth";
+import { cartHandlers } from "./server/handlers/cart";
+import { profileHandlers } from "./server/handlers/profile";
 
 export const worker = setupWorker(
   ...authHandlers,
+  ...cartHandlers,
   ...productsHandler,
-  ...profileHandlers,
-  ...cartHandlers
+  ...profileHandlers
 );
