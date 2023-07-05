@@ -1,4 +1,4 @@
-# Candleaf Clone: Online Shop built with Django and React
+# Online Shop built with Django and React
 
 ## Overview
 
