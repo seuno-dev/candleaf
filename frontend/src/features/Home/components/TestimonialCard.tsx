@@ -10,10 +10,7 @@ export interface TestimonialCardProps {
 
 const TestimonialCard = ({ image, review, name }: TestimonialCardProps) => {
   return (
-    <Card
-      maxW={{ base: "290px", lg: "350px" }}
-      h={{ base: "270px", lg: "320px" }}
-    >
+    <Card h={{ base: "270px", lg: "320px" }}>
       <CardBody p={{ base: "8px", lg: "30px" }}>
         <VStack justifyContent="center" alignItems="center" textAlign="center">
           <Image boxSize="84px" src={image} alt={name + "'s image"} />
@@ -24,7 +21,7 @@ const TestimonialCard = ({ image, review, name }: TestimonialCardProps) => {
           </HStack>
           <Text
             fontSize="22px"
-            mt={{ base: "8px", lg: "22px" }}
+            mt={{ base: "10px", md: "14px", lg: "22px" }}
             fontWeight="medium"
           >
             {review}

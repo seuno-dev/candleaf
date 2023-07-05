@@ -41,18 +41,25 @@ const TestimonialSection = () => {
       <Box mt="50px">
         <Slider
           arrows={false}
-          centerMode={true}
-          slidesToShow={1}
+          slidesToShow={3}
           slidesToScroll={1}
           swipeToSlide={true}
           draggable={true}
           initialSlide={1}
-          variableWidth={true}
           infinite={false}
+          responsive={[
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 1,
+                centerMode: true
+              },
+            },
+          ]}
         >
           {testimonials.map((testimonial, index) => (
-            <Box key={index} mx={["0px", "10px", "25px"]}>
-              <TestimonialCard key={index} {...testimonial} />
+            <Box key={index} px="20px">
+              <TestimonialCard {...testimonial} />
             </Box>
           ))}
         </Slider>
