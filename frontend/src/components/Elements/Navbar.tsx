@@ -1,7 +1,7 @@
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useLogout from "../../features/Auth/hooks/useLogout";
-import {getAuthenticationStatus} from "../../api";
+import { getAuthenticationStatus } from "../../api";
 import {
   Box,
   Container,
@@ -19,7 +19,7 @@ import {
 import Logo from "../../assets/images/logo.svg";
 import Profile from "../../assets/images/profile.svg";
 import Cart from "../../assets/images/cart.svg";
-import {HamburgerIcon} from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 // noinspection JSUnusedGlobalSymbols
 function Navbar() {
@@ -108,7 +108,9 @@ function Navbar() {
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <ChakraLink href="#">Discovery</ChakraLink>
+                    <ChakraLink>
+                      <Link to="/products">All products</Link>
+                    </ChakraLink>
                   </MenuItem>
                   <MenuItem>
                     <ChakraLink href="#">About</ChakraLink>
