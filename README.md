@@ -1,4 +1,4 @@
-# Candleaf Clone: A Django and React Portfolio Project
+# Candleaf Clone: Online Shop built with Django and React
 
 ## Overview
 
