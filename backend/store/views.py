@@ -10,7 +10,6 @@ from candleaf import settings
 from core.serializers import CreateUserSerializer
 from . import models, serializers, filters
 from .paginations import PageNumberPagination
-from .serializers import FeaturedProductSerializer
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -161,7 +160,6 @@ class ProductViewSet(mixins.ListModelMixin,
     permission_classes = [Permission]
     lookup_field = 'slug'
     filter_backends = [DjangoFilterBackend]
-    search_fields = ['title', 'description']
     filterset_class = filters.ProductFilter
     pagination_class = PageNumberPagination
 
