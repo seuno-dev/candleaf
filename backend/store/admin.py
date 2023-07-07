@@ -45,13 +45,6 @@ class CustomerAdmin(admin.ModelAdmin):
         return customer.user.email
 
 
-@admin.register(models.Category)
-class CollectionAdmin(admin.ModelAdmin):
-    list_display = ['title']
-    prepopulated_fields = {'slug': ['title']}
-    search_fields = ['title']
-
-
 class ProductImageInline(admin.TabularInline):
     model = models.ProductImage
     readonly_fields = ['thumbnail']

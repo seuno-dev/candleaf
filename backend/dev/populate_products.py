@@ -23,13 +23,7 @@ from django.utils.text import slugify
 import json
 
 django.setup()
-from store.models import Category, Product, ProductImage, Review, OrderItem, Order, FeaturedProduct
-
-
-def clean_and_create_category(title):
-    title = title.replace('-', ' ')
-    title = title.capitalize()
-    return Category.objects.create(title=title)
+from store.models import Product, ProductImage, Review, OrderItem, Order, FeaturedProduct
 
 
 def download_temp_image(url):
