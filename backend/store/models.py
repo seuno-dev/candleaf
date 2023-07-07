@@ -99,7 +99,7 @@ class CartItem(models.Model):
 
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(validators=[MinValueValidator(1)])
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     @property
     def total_price(self):
