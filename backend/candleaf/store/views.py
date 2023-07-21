@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from config import settings
+from config.settings import base as settings
 from candleaf.core.serializers import CreateUserSerializer
 from . import models, serializers, filters
 from .paginations import PageNumberPagination

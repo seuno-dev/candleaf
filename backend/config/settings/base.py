@@ -10,18 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-import os
-from datetime import timedelta
 from pathlib import Path
-from decouple import config
-import stripe
-from django.conf import settings
+from urllib.parse import quote
 
 # Hack workaround for deprecated/removed functions
 import django
-from django.utils.encoding import force_str
-from urllib.parse import quote
+from decouple import config
 from django.utils import http
+from django.utils.encoding import force_str
 
 django.utils.encoding.force_text = force_str
 http.urlquote = quote
@@ -29,19 +25,9 @@ http.urlquote = quote
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0+ma-70up$xfk-5-tgi1bj*3y6++07)1ib&ar5mauw(a7r^&x_'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+SECRET_KEY = config("SECRET_KEY")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -92,16 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -136,7 +112,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'candleaf', 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -196,16 +171,3 @@ STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET')
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
-
-if DEBUG:
-    SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(days=30)
-
-    CORS_ALLOWED_ORIGINS = [
-        'http://127.0.0.1:3000',
-        'http://localhost:3000',
-    ]
-
-    CORS_ALLOW_CREDENTIALS = True
-
-    SESSION_COOKIE_SECURE = False
-    SESSION_COOKIE_HTTPONLY = False
