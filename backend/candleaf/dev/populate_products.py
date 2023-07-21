@@ -5,7 +5,7 @@ script_path = os.path.dirname(__file__)
 project_dir = os.path.abspath(os.path.join(script_path, '..', '..', 'backend'))
 sys.path.insert(0, project_dir)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'candleaf.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 from django.core.files import File
 
