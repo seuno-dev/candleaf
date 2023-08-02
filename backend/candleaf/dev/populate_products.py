@@ -2,10 +2,8 @@ import sys
 import os
 
 script_path = os.path.dirname(__file__)
-project_dir = os.path.abspath(os.path.join(script_path, '..', '..', 'backend'))
+project_dir = os.path.abspath(os.path.join(script_path, '..', '..', '..', 'backend'))
 sys.path.insert(0, project_dir)
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 from django.core.files import File
 
@@ -23,7 +21,10 @@ from django.utils.text import slugify
 import json
 
 django.setup()
-from store.models import Product, ProductImage, Review, OrderItem, Order, FeaturedProduct
+
+from candleaf.store.models import Product, ProductImage, Review, OrderItem, Order, FeaturedProduct
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 
 def download_temp_image(url):
@@ -51,7 +52,7 @@ def populate(products_data):
         product_image = ProductImage(product=product)
 
         image_file_name = product_dict['title'] + ".png"
-        image_file = open("./dev/products_data/images/" + image_file_name, 'rb')
+        image_file = open("./candleaf/dev/products_data/images/" + image_file_name, 'rb')
         product_image.image.save(image_file_name, File(image_file))
         product_image.save()
         image_file.close()
@@ -79,7 +80,7 @@ def delete_current_data():
 def main():
     delete_current_data()
 
-    f = open("./dev/products_data/products.json")
+    f = open("./candleaf/dev/products_data/products.json")
     populate(json.load(f))
     f.close()
 
