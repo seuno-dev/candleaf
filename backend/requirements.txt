@@ -26,7 +26,7 @@ MarkupSafe==2.1.2
 model-bakery==1.10.1
 oauthlib==3.2.2
 packaging==23.0
-Pillow==9.4.0
+Pillow==10.2.0
 pluggy==1.0.0
 pycparser==2.21
 PyJWT==2.6.0
